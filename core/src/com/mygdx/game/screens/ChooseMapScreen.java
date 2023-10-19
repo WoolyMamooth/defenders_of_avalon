@@ -13,7 +13,7 @@ public class ChooseMapScreen extends MenuScreen {
         super(game);
         System.out.println("LOADING ChooseMapScreen");
         this.mainMenuButton=new LoadScreenButton(this,new Texture("buttons/menu_active.jpg"),new Texture("buttons/menu.jpg"),1,"mainMenu");
-        this.pickMapButton=new PickMapButton(this, new Texture("buttons/pick_map_active.jpg"),new Texture("buttons/pick_map.jpg"),2,new TDMap());
+        this.pickMapButton=new PickMapButton(this, new Texture("buttons/pick_map_active.jpg"),new Texture("buttons/pick_map.jpg"),2,0);
 
     }
 

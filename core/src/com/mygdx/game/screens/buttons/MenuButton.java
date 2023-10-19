@@ -3,7 +3,6 @@ package com.mygdx.game.screens.buttons;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.TDGame;
-import com.mygdx.game.screens.MainMenuScreen;
 import com.mygdx.game.screens.MenuScreen;
 
 import java.util.concurrent.TimeUnit;
@@ -44,9 +43,7 @@ public abstract class MenuButton {
         screen.game.batch.draw((this.isActive() ? this.activeTexture : this.inactiveTexture), this.x, this.y, this.width, this.height);
     }
 
-    public abstract void onClick(); // TODO EXTREMELY IMPORTANT
-    // currently every button gets clicked when the user clicks one for some reason
-    // sleep didn't solve it and game.batch.end() gave a huge error
+    public abstract void onClick();
 
     @Override
     public String toString() {

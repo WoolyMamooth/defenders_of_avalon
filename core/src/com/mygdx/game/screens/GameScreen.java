@@ -1,57 +1,43 @@
 package com.mygdx.game.screens;
 
+import static com.mygdx.game.TDGame.*;
+
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.maps.TDMap;
 
 public class GameScreen implements Screen {
+
     TDMap map;
 
     // TODO
     //display map, implement core gameloop etc.
-    //everything below is just a demo
-    Texture texture;
-    float posX=0;
-    float posY=0;
-    public static final float SPEED=400;
+    Texture backgroundTexture;
+    Texture redSquare=new Texture("red_square.jpg");
     TDGame game;
 
     public GameScreen(TDGame game, TDMap map){
         this.game=game;
         this.map=map;
+        System.out.println(SCREEN_HEIGHT+" "+SCREEN_WIDTH);
     }
 
     @Override
     public void show() {
-        texture = new Texture("red_square.jpg");
+        this.backgroundTexture = this.map.getBackgroundTexture();
     }
 
     @Override
     public void render(float delta) {
         ScreenUtils.clear(1, 1, 1, 1);
 
-
-        if(Gdx.input.isKeyPressed(Input.Keys.W)){
-            posY+=SPEED*Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.S)){
-            posY-=SPEED*Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.A)){
-            posX-=SPEED*Gdx.graphics.getDeltaTime();
-        }
-        if(Gdx.input.isKeyPressed(Input.Keys.D)){
-            posX+=SPEED*Gdx.graphics.getDeltaTime();
-        }
-
+        //if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
         game.batch.begin();
-        game.batch.draw(texture,posX,posY);
+        game.batch.draw(redSquare,SCREEN_CENTER.x()-redSquare.getWidth()/2,SCREEN_CENTER.y());
+        game.batch.draw(redSquare,SCREEN_TOP_LEFT.x(),SCREEN_TOP_LEFT.y()-redSquare.getHeight());
         game.batch.end();
     }
 

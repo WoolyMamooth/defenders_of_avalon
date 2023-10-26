@@ -20,7 +20,7 @@ public abstract class MenuButton {
         this.position = position;
         this.width = activeTexture.getWidth() * screen.MENU_SCALE;
         this.height = activeTexture.getHeight() * screen.MENU_SCALE;
-        this.x = TDGame.SCREEN_WIDTH / 2 + width;
+        this.x = TDGame.SCREEN_WIDTH / 2;
         this.y = TDGame.SCREEN_HEIGHT - ((TDGame.SCREEN_HEIGHT * screen.MENU_SPACING) * position);
     }
 
@@ -33,7 +33,8 @@ public abstract class MenuButton {
 
     public boolean isActive() {
         if (Gdx.input.getX() < this.x + this.width && Gdx.input.getX() > this.x &&
-                TDGame.SCREEN_HEIGHT - Gdx.input.getY() < this.y - this.height && TDGame.SCREEN_HEIGHT - Gdx.input.getY() > this.y - this.height * 2) {
+                TDGame.SCREEN_HEIGHT - Gdx.input.getY() < this.y + this.height &&
+                TDGame.SCREEN_HEIGHT - Gdx.input.getY() > this.y) {
             return true;
         }
         return false;

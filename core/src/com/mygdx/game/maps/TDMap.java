@@ -20,7 +20,7 @@ public class TDMap {
         this.backgroundTexture = loadTexture("map_assets/backgrounds/"+mapID+".jpg");
         this.mapID=mapID;
         path=new PathMarker[]{}; //TODO
-        spawner=new EnemySpawner(path[0].coordinate);
+        //spawner=new EnemySpawner(path[0].coordinate);
     }
 
     private Texture loadTexture(String texturePath){

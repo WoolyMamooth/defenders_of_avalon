@@ -33,9 +33,9 @@ public class TDGame extends Game {
 		SCREEN_TOP_RIGHT = new Coordinate(SCREEN_WIDTH*1f,SCREEN_HEIGHT*1f);
 		SCREEN_BOT_LEFT = new Coordinate(0f,0f);
 		SCREEN_BOT_RIGHT = new Coordinate(SCREEN_WIDTH*1f,0f);
-		//this.setScreen(new MainMenuScreen(this));
+		this.setScreen(new MainMenuScreen(this));
 
-		this.setScreen(new GameScreen(this,new TDMap(0)));
+		//this.setScreen(new GameScreen(this,new TDMap(0)));
 	}
 
 	@Override

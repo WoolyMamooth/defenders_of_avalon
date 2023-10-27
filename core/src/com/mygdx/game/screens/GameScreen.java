@@ -5,40 +5,58 @@ import static com.mygdx.game.TDGame.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.maps.TDMap;
+import com.mygdx.game.units.enemies.DrawableUnit;
 
 public class GameScreen implements Screen {
-
-    TDMap map;
-
-    // TODO
-    //display map, implement core gameloop etc.
-    Texture backgroundTexture;
-    Texture redSquare=new Texture("red_square.jpg");
     TDGame game;
+    TDMap map; //the map that was chosen in the menu
+    Texture backgroundTexture; //background of the map
 
     public GameScreen(TDGame game, TDMap map){
         this.game=game;
         this.map=map;
-        System.out.println(SCREEN_HEIGHT+" "+SCREEN_WIDTH);
     }
 
     @Override
     public void show() {
         this.backgroundTexture = this.map.getBackgroundTexture();
+        map.spawnNextEnemy(); //temporarily here
     }
 
     @Override
     public void render(float delta) {
+        //clear the screen
         ScreenUtils.clear(1, 1, 1, 1);
 
-        //if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
+        //call move method of each enemy
+        boolean lostGame=false;
+        if(map.updateEnemies()){
+            //updateEnemies returns ture if the playerHP reached 0, therefore they lost
+            lostGame=true;
+        }
+
+        //temporary for checking coordinates
+        if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
+
+        //drawing begins here
         game.batch.begin();
-        game.batch.draw(redSquare,SCREEN_CENTER.x()-redSquare.getWidth()/2,SCREEN_CENTER.y());
-        game.batch.draw(redSquare,SCREEN_TOP_LEFT.x(),SCREEN_TOP_LEFT.y()-redSquare.getHeight());
+        //draw the background
+        game.batch.draw(backgroundTexture,SCREEN_BOT_LEFT.x(),SCREEN_BOT_LEFT.y());
+
+        //draw each enemy
+        for (DrawableUnit enemy:map.getAllEnemyTextures()) {
+            game.batch.draw(enemy.texture,enemy.position.x(),enemy.position.y());
+        }
         game.batch.end();
+
+        if(lostGame){
+            this.dispose();
+            game.setScreen(new LostScreen(game));
+        }
     }
 
     @Override
@@ -64,5 +82,9 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         game.batch.dispose();
+        game.batch=new SpriteBatch();
+        map.dispose();
+        backgroundTexture.dispose();
+        System.gc();
     }
 }

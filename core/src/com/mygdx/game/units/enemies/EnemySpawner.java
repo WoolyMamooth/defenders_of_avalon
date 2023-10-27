@@ -8,12 +8,12 @@ public class EnemySpawner {
     public EnemySpawner(Coordinate spawnLocation) {
         this.spawnLocation=spawnLocation;
     }
-    public Enemy spawnEnemy(String name){ // add new enemies here
+    public Enemy spawnEnemy(int spawnID,String name){ // add new enemies here
         switch(name){
             case "test":
             default:
                 Texture texture =new Texture("enemies/"+name+".jpg");
-                return new Enemy(spawnLocation,texture,100,0,0,50f);
+                return new Enemy(spawnID,texture,spawnLocation,100,0,0,200f,100);
         }
     }
 }

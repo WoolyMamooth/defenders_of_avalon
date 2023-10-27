@@ -29,4 +29,10 @@ public class MainMenuScreen extends MenuScreen {
         renderButton(this.exitButton);
         game.batch.end();
     }
+
+    @Override
+    public void dispose() {
+        playButton.dispose();
+        exitButton.dispose();
+    }
 }

@@ -15,8 +15,7 @@ public class LoadScreenButton extends MenuButton {
     @Override
     public void onClick() {
         System.out.println("PLAY BUTTON CLICKED");
-        screen.dispose();
-        MenuScreen screenToLoad = null;
+        MenuScreen screenToLoad;
         switch (screenType) {
             case "mainMenu":
                 screenToLoad = new MainMenuScreen(screen.game);
@@ -29,6 +28,7 @@ public class LoadScreenButton extends MenuButton {
                 System.out.println("your button is configured wrong");
         }
         screen.game.setScreen(screenToLoad);
+        screen.dispose();
     }
 }
 

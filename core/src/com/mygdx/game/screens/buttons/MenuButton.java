@@ -46,6 +46,11 @@ public abstract class MenuButton {
 
     public abstract void onClick();
 
+    public void dispose(){
+        activeTexture.dispose();
+        inactiveTexture.dispose();
+    }
+
     @Override
     public String toString() {
         return "MenuButton{" +

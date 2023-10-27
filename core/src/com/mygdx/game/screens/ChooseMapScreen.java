@@ -27,5 +27,9 @@ public class ChooseMapScreen extends MenuScreen {
         game.batch.end();
     }
 
-
+    @Override
+    public void dispose() {
+        mainMenuButton.dispose();
+        pickMapButton.dispose();
+    }
 }

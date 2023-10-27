@@ -1,38 +1,96 @@
 package com.mygdx.game.units.enemies;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
-import com.mygdx.game.maps.PathMarker;
+import com.mygdx.game.maps.Path;
 
-public class Enemy {
-    Coordinate position;
-    Texture texture;
-    int health;
-    int armor;
-    int magicResistance;
-    float movementSpeed;
-    int previousPathMarkerID=0;
+public class Enemy extends DrawableUnit{
+    int spawnID; // keeps track of where in the enemies list this is
+    int health; //amount of damage that can be taken before dying
+    int armor; //reduces physical damage taken
+    int magicResistance; //reduces magical damage taken
+    float movementSpeed; //speed at which position is changed, used in move function
+    private int previousPathCoordinateID =0; //keeps track of the last position from map.path where this enemy was
+
+    int damageToPlayer;
 
 
 
-    public Enemy(Coordinate position, Texture texture, int health, int armor, int magicResistance, float movementSpeed) {
-        this.position = position;
-        this.texture = texture;
+    public Enemy(int spawnID, Texture texture, Coordinate position, int health, int armor, int magicResistance, float movementSpeed, int damageToPlayer) {
+        super(texture,position);
+        this.spawnID=spawnID;
         this.health = health;
         this.armor = armor;
         this.magicResistance = magicResistance;
         this.movementSpeed = movementSpeed;
+        this.damageToPlayer=damageToPlayer;
     }
 
     //TODO
     public void attack(){
         //attack a summon or hero
     }
-    public void move(PathMarker[] path){
-        // move towards the next path marker by movementSpeed amount
+
+    // move enemy towards the next coordinate on the path by movementSpeed amount
+    public int move(Path path){
+        if(atCoordinate(path.getCoordinate(path.length()-1))){
+            return damageToPlayer;
+        }
+        Coordinate goal=path.getCoordinate(previousPathCoordinateID +1);
+        Coordinate movementDirection=new Coordinate((goal.x()>position.x()?1:-1),(goal.y()> position.y()?1:-1));
+        position=position.add(movementDirection.multiplyByScalar(movementSpeed*Gdx.graphics.getDeltaTime()));
+        if(atCoordinate(goal)){
+            previousPathCoordinateID++;
+            System.out.println(spawnID+" new goal: "+goal);
+        }
+        return 0;
+        //System.out.println(this);
     }
 
+    //triggered when this.health reaches zero
     public void die(){
         // die, duh
     }
+
+    //checks if the enemy has reached a given coordinate
+    private boolean atCoordinate(Coordinate coordinate){
+        if(
+                position.x()>coordinate.x()-texture.getWidth()/2f &&
+                position.y()>coordinate.y()-texture.getHeight()/2f &&
+                position.x()<coordinate.x()+texture.getWidth()/2f &&
+                position.y()<coordinate.y()+texture.getHeight()/2f
+        ) return true;
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Enemy{" +
+                "spawnID=" + spawnID +
+                ", position=" + position +
+                ", health=" + health +
+                '}';
+    }
+
+    public int getSpawnID() {
+        return spawnID;
+    }
+
+    public int getHealth() {
+        return health;
+    }
+
+    public int getArmor() {
+        return armor;
+    }
+
+    public int getMagicResistance() {
+        return magicResistance;
+    }
+
+    public float getMovementSpeed() {
+        return movementSpeed;
+    }
+
 }

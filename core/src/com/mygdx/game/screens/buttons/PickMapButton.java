@@ -1,26 +1,29 @@
 package com.mygdx.game.screens.buttons;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.maps.MapLoader;
 import com.mygdx.game.maps.TDMap;
 import com.mygdx.game.screens.GameScreen;
 import com.mygdx.game.screens.MenuScreen;
 
 public class PickMapButton extends MenuButton {
-    int map;
+    int mapID;
     public PickMapButton(MenuScreen screen, Texture activeTexture, Texture inactiveTexture, int position, int mapID) {
         super(screen, activeTexture, inactiveTexture, position);
-        this.map=mapID;
+        this.mapID =mapID;
     }
 
     @Override
     public void onClick() {
         System.out.println("PICK_MAP BUTTON CLICKED");
+        screen.game.setScreen(new GameScreen(screen.game, getMap(this.mapID)));
         screen.dispose();
-        screen.game.setScreen(new GameScreen(screen.game, getMap(this.map)));
     }
 
     private TDMap getMap(int mapID){
-        return new TDMap(mapID);
+        MapLoader mapLoader=new MapLoader();
+        TDMap map=mapLoader.getMap(mapID);
+        return map;
     }
 
 }

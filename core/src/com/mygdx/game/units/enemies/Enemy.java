@@ -4,8 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.maps.Path;
+import com.mygdx.game.units.DrawableUnit;
 
-public class Enemy extends DrawableUnit{
+public class Enemy extends DrawableUnit {
     int spawnID; // keeps track of where in the enemies list this is
     int health; //amount of damage that can be taken before dying
     int armor; //reduces physical damage taken

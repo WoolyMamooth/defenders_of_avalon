@@ -1,5 +1,7 @@
 package com.mygdx.game.units.enemies;
 
+import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 
@@ -12,7 +14,7 @@ public class EnemySpawner {
         switch(name){
             case "test":
             default:
-                Texture texture =new Texture("enemies/"+name+".jpg");
+                Texture texture =new Texture("enemies/"+name+TEXTURE_EXTENSION);
                 return new Enemy(spawnID,texture,spawnLocation,100,0,0,200f,100);
         }
     }

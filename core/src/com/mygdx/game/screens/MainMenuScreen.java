@@ -1,5 +1,7 @@
 package com.mygdx.game.screens;
 
+import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -16,8 +18,8 @@ public class MainMenuScreen extends MenuScreen {
     public MainMenuScreen(TDGame game){
         super(game);
         System.out.println("LOADING MainMenuScreen");
-        this.playButton=new LoadScreenButton(this, new Texture("buttons/play_active.jpg"),new Texture("buttons/play.jpg"),1,"chooseMap");
-        this.exitButton=new ExitButton(this, new Texture("buttons/exit_active.jpg"),new Texture("buttons/exit.jpg"),2);
+        this.playButton=new LoadScreenButton(this.game, new Texture("buttons/play_active"+TEXTURE_EXTENSION),new Texture("buttons/play"+TEXTURE_EXTENSION),1,"chooseMap");
+        this.exitButton=new ExitButton(this, new Texture("buttons/exit_active"+TEXTURE_EXTENSION),new Texture("buttons/exit"+TEXTURE_EXTENSION),2);
     }
 
     @Override

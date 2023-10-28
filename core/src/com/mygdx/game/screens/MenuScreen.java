@@ -9,8 +9,8 @@ import com.mygdx.game.screens.buttons.MenuButton;
 import java.util.concurrent.TimeUnit;
 
 public abstract class MenuScreen implements Screen {
-        public float MENU_SCALE=1f;
-        public float MENU_SPACING=0.1f;
+        public static float MENU_SCALE=1f;
+        public static float MENU_SPACING=0.1f;
         public TDGame game;
         public MenuScreen(TDGame game){
             this.game=game;

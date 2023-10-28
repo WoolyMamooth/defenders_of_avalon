@@ -18,6 +18,12 @@ public class TDGame extends Game {
 
 	//call batch.draw to draw on the screen efficiently
 	public SpriteBatch batch;
+
+	//we use .png for every texture, this is here in case i decide to change it
+	public static final String TEXTURE_EXTENSION=".png";
+
+	//the player variable stores all data of the player that will be saved
+	public static final Player player=new Player();
 	
 	@Override
 	public void create () {
@@ -30,35 +36,13 @@ public class TDGame extends Game {
 		SCREEN_TOP_RIGHT = new Coordinate(SCREEN_WIDTH*1f,SCREEN_HEIGHT*1f);
 		SCREEN_BOT_LEFT = new Coordinate(0f,0f);
 		SCREEN_BOT_RIGHT = new Coordinate(SCREEN_WIDTH*1f,0f);
+
+		System.out.println("PLAYER LOADED: "+player);
+
 		//sets the first screen, which is the main menu
 		this.setScreen(new MainMenuScreen(this));
 
 		//for quicker testing so we don't have to go through the menu:
 		//this.setScreen(new GameScreen(this,new TDMap(0)));
-	}
-
-	@Override
-	public void resize(int width, int height) {
-
-	}
-
-	@Override
-	public void render () {
-		super.render();
-	}
-
-	@Override
-	public void pause() {
-
-	}
-
-	@Override
-	public void resume() {
-
-	}
-
-	@Override
-	public void dispose () {
-
 	}
 }

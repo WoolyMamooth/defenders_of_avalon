@@ -3,24 +3,32 @@ package com.mygdx.game.maps;
 import static com.mygdx.game.TDGame.SCREEN_BOT_RIGHT;
 import static com.mygdx.game.TDGame.SCREEN_HEIGHT;
 import static com.mygdx.game.TDGame.SCREEN_TOP_LEFT;
+import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.TDGame;
 
 public class MapLoader {
-    public MapLoader() {
+    //responsible for loading in the map data
+    //still needs a lot of work
+
+    TDGame game;
+    public MapLoader(TDGame game) {
+        this.game=game;
     }
 
     public TDMap getMap(int mapID){
         System.out.println("MAPLOADER LOADING");
-        Texture backgroundTexture=loadTexture(mapID); //loads texture for background
+        Texture backgroundTexture= loadBackgroundTexture(mapID); //loads texture for background
         Path path = loadPath(mapID); //loads path that enemies will follow
         String[] enemiesToSpawn=loadEnemiesToSpawn(mapID); //loads enemies that will be spawned
-        return new TDMap(mapID,backgroundTexture,path,enemiesToSpawn);
+        TowerSpace[] towerSpaces=loadTowerLocations(mapID); //loads the buildable spaces
+        return new TDMap(mapID,backgroundTexture,path,enemiesToSpawn,towerSpaces);
     }
 
-    private Texture loadTexture(int mapID){
-        System.out.println("TEXTURE: map_assets/backgrounds/"+mapID+".jpg");
-        return new Texture("map_assets/backgrounds/"+mapID+".jpg");
+    private Texture loadBackgroundTexture(int mapID){
+        System.out.println("TEXTURE: map_assets/backgrounds/"+mapID+TEXTURE_EXTENSION);
+        return new Texture("map_assets/backgrounds/"+mapID+TEXTURE_EXTENSION);
     }
 
     private Path loadPath(int mapID){
@@ -48,5 +56,16 @@ public class MapLoader {
         };
     }
 
-    private void loadTowerLocations(){} //TODO
+    private TowerSpace towerSpaceByCoordinate(Coordinate coordinate){
+        return new TowerSpace(game,coordinate,new Texture("towers/towerButtons/actives/towerspace"+TEXTURE_EXTENSION),new Texture("towers/towerButtons/inactives/towerspace"+TEXTURE_EXTENSION));
+    }
+    private TowerSpace[] loadTowerLocations(int mapID){
+        //TODO search database for tower locations
+        System.out.println("TOWERSPACES: default");
+        return new TowerSpace[]{
+            towerSpaceByCoordinate(new Coordinate(200,200)),
+            towerSpaceByCoordinate(new Coordinate(400,400)),
+            towerSpaceByCoordinate(new Coordinate(1000,400))
+        };
+    }
 }

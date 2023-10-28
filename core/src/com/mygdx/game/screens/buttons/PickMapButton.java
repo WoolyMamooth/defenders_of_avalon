@@ -8,8 +8,10 @@ import com.mygdx.game.screens.MenuScreen;
 
 public class PickMapButton extends MenuButton {
     int mapID;
+    MenuScreen screen;
     public PickMapButton(MenuScreen screen, Texture activeTexture, Texture inactiveTexture, int position, int mapID) {
-        super(screen, activeTexture, inactiveTexture, position);
+        super(screen.game, activeTexture, inactiveTexture, position);
+        this.screen=screen;
         this.mapID =mapID;
     }
 
@@ -21,9 +23,8 @@ public class PickMapButton extends MenuButton {
     }
 
     private TDMap getMap(int mapID){
-        MapLoader mapLoader=new MapLoader();
-        TDMap map=mapLoader.getMap(mapID);
-        return map;
+        MapLoader mapLoader=new MapLoader(game);
+        return mapLoader.getMap(mapID);
     }
 
 }

@@ -9,7 +9,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.maps.TDMap;
-import com.mygdx.game.units.enemies.DrawableUnit;
+import com.mygdx.game.units.DrawableUnit;
 
 public class GameScreen implements Screen {
     TDGame game;
@@ -51,6 +51,10 @@ public class GameScreen implements Screen {
         for (DrawableUnit enemy:map.getAllEnemyTextures()) {
             game.batch.draw(enemy.texture,enemy.position.x(),enemy.position.y());
         }
+
+        //draw each TowerSpace
+        map.drawAllTowers();
+
         game.batch.end();
 
         if(lostGame){

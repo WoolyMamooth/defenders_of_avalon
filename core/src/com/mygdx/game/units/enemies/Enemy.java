@@ -35,7 +35,7 @@ public class Enemy extends MovableUnit {
             return damageToPlayer;
         }
         Coordinate goal=path.getCoordinate(previousPathCoordinateID +1); //where the enemy will want to go next
-        move(goal, getMovementSpeed());
+        move(goal);
         if(atCoordinate(goal)){ //if reached goal, set a new goal
             previousPathCoordinateID++;
             System.out.println("Enemy "+spawnID+" new goal: "+goal);

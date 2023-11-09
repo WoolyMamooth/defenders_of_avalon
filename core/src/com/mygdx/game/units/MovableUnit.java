@@ -7,8 +7,6 @@ import com.mygdx.game.maps.Coordinate;
 public class MovableUnit extends DrawableUnit{
     /**
      * Adds movement logic to DrawableUnit, used for anything that has a texture and moves.
-     * @param texture
-     * @param position
      */
     float movementSpeed;
     public MovableUnit(Texture texture, Coordinate position,float movementSpeed) {
@@ -16,9 +14,9 @@ public class MovableUnit extends DrawableUnit{
         this.movementSpeed=movementSpeed;
     }
 
-    protected void move(Coordinate goal, float speed){
+    protected void move(Coordinate goal){
         Coordinate movementDirection=goal.subtract(position).normalize(); //get a unit vector pointing to goal
-        position=position.add(movementDirection.multiplyByScalar(speed* Gdx.graphics.getDeltaTime())); //move
+        position=position.add(movementDirection.multiplyByScalar(movementSpeed* Gdx.graphics.getDeltaTime())); //move
         //return position;
     }
 
@@ -32,8 +30,6 @@ public class MovableUnit extends DrawableUnit{
         ) return true;
         return false;
     }
-
-    @Override
     public float getMovementSpeed() {
         return movementSpeed;
     }

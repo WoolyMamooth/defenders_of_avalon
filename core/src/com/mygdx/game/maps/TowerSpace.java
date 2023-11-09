@@ -74,11 +74,15 @@ public class TowerSpace extends Clickable {
         menuVisible=!menuVisible;
     }
     private void build(String towerName){
+        Texture texture=new Texture("towers/towerTextures/"+towerName+TEXTURE_EXTENSION);
+
         switch (towerName){
-            //TODO search database for tower data and spawn them in by name
-            case("None"):
+            case "archer":
+                tower=new Tower(texture,position, towerBuildID,0,0,0);
+                occupied=true;
+                break;
+            case "None":
             default:
-                Texture texture=new Texture("towers/towerTextures/None"+TEXTURE_EXTENSION);
                 tower=new Tower(texture,position, towerBuildID,0,0,0);
                 occupied=true;
                 System.out.println("Warning tower "+ towerBuildID +" is set to default");
@@ -100,6 +104,10 @@ public class TowerSpace extends Clickable {
         if (isActive() && Gdx.input.justTouched()) {
             onClick();
         }
+    }
+
+    public void updateProjectiles(){
+        tower.updateProjectiles();
     }
 
     @Override

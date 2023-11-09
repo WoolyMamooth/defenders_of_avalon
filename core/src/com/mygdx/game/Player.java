@@ -10,7 +10,7 @@ public class Player {
     String equippedHero;
 
     public Player() {
-        unlockedTowers=new String[]{"None","None","None","None"};
+        unlockedTowers=new String[]{"archer","None","None","None"};
         unlockedHeroes=new String[]{"None","None","None"};
 
         loadData();

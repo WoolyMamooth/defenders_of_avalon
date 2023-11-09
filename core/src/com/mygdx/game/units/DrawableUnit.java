@@ -10,15 +10,18 @@ public class DrawableUnit {
     */
     public Texture texture;
     public Coordinate position;
-    float movementSpeed; //speed at which position is changed, used in move function
+    float width;
+    float height;
 
     public DrawableUnit(Texture texture, Coordinate position) {
         this.texture = texture;
         this.position = position;
+        this.width=texture.getWidth();
+        this.height=texture.getHeight();
     }
     //important
     public void draw(SpriteBatch batch){
-        batch.draw(texture, position.x(), position.y(), texture.getWidth(), texture.getHeight());
+        batch.draw(texture, position.x(), position.y(), width, height);
     }
     public Texture getTexture() {
         return texture;
@@ -36,12 +39,24 @@ public class DrawableUnit {
         this.position = position;
     }
 
+    public float getWidth() {
+        return width;
+    }
+
+    public void setWidth(float width) {
+        this.width = width;
+    }
+
+    public float getHeight() {
+        return height;
+    }
+
+    public void setHeight(float height) {
+        this.height = height;
+    }
+
     public void dispose() {
         texture.dispose();
         position=null;
-    }
-
-    public float getMovementSpeed() {
-        return movementSpeed;
     }
 }

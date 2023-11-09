@@ -96,9 +96,15 @@ public class TDMap {
         return false;
     }
 
+    public void updateProjectiles(){
+        for (TowerSpace towerSpace:towerSpaces) {
+            towerSpace.updateProjectiles();
+        }
+    }
+
     public void draw(SpriteBatch batch){
-        drawAllEnemies(batch);
         drawAllTowers(batch);
+        drawAllEnemies(batch);
     }
 
     private void drawAllEnemies(SpriteBatch batch){

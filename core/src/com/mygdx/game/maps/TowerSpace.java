@@ -6,6 +6,7 @@ import static com.mygdx.game.TDGame.player;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.screens.buttons.Clickable;
 import com.mygdx.game.units.towers.Tower;
@@ -14,8 +15,8 @@ public class TowerSpace extends Clickable {
     private class TowerChoiceMenu{
         private class TowerChoiceButton extends Clickable{
             String towerName;
-            public TowerChoiceButton(TDGame game, Coordinate position, Texture activeTexture, Texture inactiveTexture,String towerName) {
-                super(game, position, activeTexture, inactiveTexture);
+            public TowerChoiceButton(Coordinate position, Texture activeTexture, Texture inactiveTexture,String towerName) {
+                super(position, activeTexture, inactiveTexture);
                 this.towerName=towerName;
             }
 
@@ -35,17 +36,17 @@ public class TowerSpace extends Clickable {
 
             this.buildableTowerNames = player.getEquippedTowers(); //we show the equipped towers as options
             for (int i = 0; i < CHOOSABLE_TOWER_NUMBER; i++) {
-                buttons[i]=new TowerChoiceButton(game
-                        ,new Coordinate(position.x()+buttonOffsetX, position.y()+buttonOffsetY)
+                buttons[i]=new TowerChoiceButton(
+                        new Coordinate(position.x()+buttonOffsetX, position.y()+buttonOffsetY)
                         ,new Texture("towers/towerButtons/actives/"+buildableTowerNames[i]+TEXTURE_EXTENSION)
                         ,new Texture("towers/towerButtons/inactives/"+buildableTowerNames[i]+TEXTURE_EXTENSION)
                         ,buildableTowerNames[i]);
                 buttonOffsetY+=buttons[i].getTexture().getHeight(); //increment vertical offset so we get a list of buttons
             }
         }
-        public void draw(){
+        public void draw(SpriteBatch batch){
             for (int i = 0; i < CHOOSABLE_TOWER_NUMBER; i++) {
-                buttons[i].draw();
+                buttons[i].draw(batch);
                 if (buttons[i].isActive() && Gdx.input.justTouched()) {
                     buttons[i].onClick();
                 }
@@ -64,7 +65,7 @@ public class TowerSpace extends Clickable {
     boolean occupied=false; //defines if a tower has been built here or not
     boolean menuVisible=false; //defines if the menu is visible or not, use in onClick and draw
     public TowerSpace(TDGame game, Coordinate position, Texture activeTexture, Texture inactiveTexture) {
-        super(game, position, activeTexture, inactiveTexture);
+        super(position, activeTexture, inactiveTexture);
         this.menu=new TowerChoiceMenu(game,activeTexture.getWidth());
     }
     @Override
@@ -87,14 +88,17 @@ public class TowerSpace extends Clickable {
     }
 
     @Override
-    public void draw() {
+    public void draw(SpriteBatch batch) {
         if(occupied) {
-            game.batch.draw(tower.getTexture(), position.x(), position.y(), this.width, this.height);
+            batch.draw(tower.getTexture(), position.x(), position.y(), this.width, this.height);
         }else{
-            game.batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);
+            batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);
             if (menuVisible) {
-                menu.draw();
+                menu.draw(batch);
             }
+        }
+        if (isActive() && Gdx.input.justTouched()) {
+            onClick();
         }
     }
 

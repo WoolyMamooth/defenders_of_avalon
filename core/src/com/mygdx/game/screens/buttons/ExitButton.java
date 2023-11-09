@@ -6,8 +6,8 @@ import com.mygdx.game.screens.MenuScreen;
 
 public class ExitButton extends MenuButton {
     MenuScreen screen;
-    public ExitButton(MenuScreen screen, Texture activeTexture, Texture inactiveTexture, int position) {
-        super(screen.game, activeTexture, inactiveTexture, position);
+    public ExitButton(Texture activeTexture, Texture inactiveTexture, int position) {
+        super(activeTexture, inactiveTexture, position);
     }
 
     @Override

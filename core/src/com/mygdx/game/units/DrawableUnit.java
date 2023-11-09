@@ -1,6 +1,7 @@
 package com.mygdx.game.units;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.maps.Coordinate;
 
 public class DrawableUnit {
@@ -9,12 +10,16 @@ public class DrawableUnit {
     */
     public Texture texture;
     public Coordinate position;
+    float movementSpeed; //speed at which position is changed, used in move function
 
     public DrawableUnit(Texture texture, Coordinate position) {
         this.texture = texture;
         this.position = position;
     }
-
+    //important
+    public void draw(SpriteBatch batch){
+        batch.draw(texture, position.x(), position.y(), texture.getWidth(), texture.getHeight());
+    }
     public Texture getTexture() {
         return texture;
     }
@@ -34,5 +39,9 @@ public class DrawableUnit {
     public void dispose() {
         texture.dispose();
         position=null;
+    }
+
+    public float getMovementSpeed() {
+        return movementSpeed;
     }
 }

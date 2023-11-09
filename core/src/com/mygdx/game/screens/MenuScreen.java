@@ -29,7 +29,7 @@ public abstract class MenuScreen implements Screen {
         }
 
         protected void renderButton(MenuButton button){
-                button.draw();
+                button.draw(game.batch);
                 if (button.isActive() && Gdx.input.justTouched()) {
                         button.onClick();
                 }

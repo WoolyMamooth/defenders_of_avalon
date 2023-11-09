@@ -39,6 +39,8 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         //clear the screen
         ScreenUtils.clear(1, 1, 1, 1);
+        //temporary for checking coordinates
+        //if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
 
         //update gametime
         gametime+=delta;
@@ -53,22 +55,14 @@ public class GameScreen implements Screen {
         //checks if a new enemy should be spawned and spawns them if they should
         map.trySpawn(delta);
 
-        //temporary for checking coordinates
-        //if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
-
         //drawing begins here
         game.batch.begin();
 
         //draw the background
         game.batch.draw(backgroundTexture,SCREEN_BOT_LEFT.x(),SCREEN_BOT_LEFT.y());
 
-        //draw each enemy
-        for (DrawableUnit enemy:map.getAllEnemyTextures()) {
-            game.batch.draw(enemy.texture,enemy.position.x(),enemy.position.y());
-        }
-
-        //draw each TowerSpace
-        map.drawAllTowers();
+        //draws all enemies and towers
+        map.draw(game.batch);
 
         game.batch.end();
         //drawing ends here

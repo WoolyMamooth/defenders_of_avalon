@@ -2,19 +2,18 @@ package com.mygdx.game.screens.buttons;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.screens.MenuScreen;
 
 public abstract class Clickable {
-    protected TDGame game;
     //
     protected Coordinate position;
     public float  width, height;
     protected Texture activeTexture, inactiveTexture;
 
-    public Clickable(TDGame game, Coordinate position, Texture activeTexture, Texture inactiveTexture) {
-        this.game = game;
+    public Clickable(Coordinate position, Texture activeTexture, Texture inactiveTexture) {
         this.position = position;
         this.width = activeTexture.getWidth() * MenuScreen.MENU_SCALE;
         this.height = activeTexture.getHeight() * MenuScreen.MENU_SCALE;
@@ -31,8 +30,8 @@ public abstract class Clickable {
         return false;
     }
 
-    public void draw() {
-        game.batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);
+    public void draw(SpriteBatch batch) {
+        batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);
     }
     public abstract void onClick();
 

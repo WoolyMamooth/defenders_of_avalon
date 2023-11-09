@@ -50,16 +50,28 @@ public class MapLoader {
     private String[] loadEnemiesToSpawn(int mapID){
         //TODO search database for enemies to spawn by ID
         System.out.println("ENEMIES: default");
-        return new String[]{ //for now we just return a red square
-                "red_square","red_square","red_square","red_square","red_square"
-        };
+        String[] spawns= new String[100];
+        for (int i = 0; i < 100; i++) {
+            if(i%10==0){
+                spawns[i]="ogre";
+            }else {
+                spawns[i]="goblin";
+            }
+        }
+        return spawns;
     }
     private  Float[] loadSpawnDelay(int mapID){
         //TODO search database for spawn delay
         System.out.println("ENEMY DELAYS: default");
-        return new Float[]{
-                5f,5f,5f,5f,5f
-        };
+        Float[] delays= new Float[100];
+        for (int i = 0; i < 100; i++) {
+            if(i%10==0){
+                delays[i]=10f;
+            }else {
+                delays[i] = 1f;
+            }
+        }
+        return delays;
     }
     private TowerSpace towerSpaceByCoordinate(Coordinate coordinate){
         return new TowerSpace(game,coordinate,new Texture("towers/towerButtons/actives/towerspace"+TEXTURE_EXTENSION),new Texture("towers/towerButtons/inactives/towerspace"+TEXTURE_EXTENSION));
@@ -69,8 +81,8 @@ public class MapLoader {
         System.out.println("TOWERSPACES: default");
         //Check loadPath for info on SCREEN_HEIGHT-x issue
         return new TowerSpace[]{
-            towerSpaceByCoordinate(new Coordinate(200,SCREEN_HEIGHT-200)),
-            towerSpaceByCoordinate(new Coordinate(400,SCREEN_HEIGHT-400)),
+            towerSpaceByCoordinate(new Coordinate(200,SCREEN_HEIGHT-300)),
+            towerSpaceByCoordinate(new Coordinate(400,SCREEN_HEIGHT-510)),
             towerSpaceByCoordinate(new Coordinate(1000,SCREEN_HEIGHT-600))
         };
     }

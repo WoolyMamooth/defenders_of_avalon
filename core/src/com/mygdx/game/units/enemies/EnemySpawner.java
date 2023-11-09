@@ -11,11 +11,22 @@ public class EnemySpawner {
         this.spawnLocation=spawnLocation;
     }
     public Enemy spawnEnemy(int spawnID,String name){ // add new enemies here
+        int health=100,armor=0,magicResistance=0,damageToPlayer=10;
+        float movementSpeed=50f;
+        Texture texture =new Texture("enemies/"+name+TEXTURE_EXTENSION);
+
+        //set stats here
         switch(name){
+            case "goblin":
+                health=10;armor=0;magicResistance=0;damageToPlayer=1;movementSpeed=75f;
+                break;
+            case "ogre":
+                health=100;armor=30;magicResistance=30;damageToPlayer=5;movementSpeed=50f;
+                break;
             case "test":
             default:
-                Texture texture =new Texture("enemies/"+name+TEXTURE_EXTENSION);
-                return new Enemy(spawnID,texture,spawnLocation,100,0,0,150f,10);
+                break;
         }
+        return new Enemy(spawnID,texture,spawnLocation,health,armor,magicResistance,movementSpeed,damageToPlayer);
     }
 }

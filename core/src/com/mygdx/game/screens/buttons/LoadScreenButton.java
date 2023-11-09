@@ -8,8 +8,10 @@ import com.mygdx.game.screens.MenuScreen;
 
 public class LoadScreenButton extends MenuButton {
     String screenType;
+    TDGame game;
     public LoadScreenButton(TDGame game, Texture activeTexture, Texture inactiveTexture, int position, String screenType) {
-        super(game, activeTexture, inactiveTexture, position);
+        super(activeTexture, inactiveTexture, position);
+        this.game=game;
         this.screenType=screenType;
     }
 

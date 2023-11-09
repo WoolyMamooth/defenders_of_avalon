@@ -2,6 +2,7 @@ package com.mygdx.game.maps;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.screens.buttons.Clickable;
 import com.mygdx.game.units.DrawableUnit;
 import com.mygdx.game.units.enemies.Enemy;
@@ -72,7 +73,7 @@ public class TDMap {
     */
         List<Enemy> shouldBeDeleted=new ArrayList<>();
         for (Enemy enemy:enemies) {
-            int damage=enemy.move(path); //damage enemy deals to player at end of path, this also moves the enemy
+            int damage=enemy.update(path); //damage enemy deals to player at end of path, this also moves the enemy
             if(damage>0){
                 playerHP-=damage;
                 shouldBeDeleted.add(enemy);
@@ -95,23 +96,20 @@ public class TDMap {
         return false;
     }
 
-    //returns a list of every enemies texture so we can draw them
-    //used in GameScreen.render
-    public List<DrawableUnit> getAllEnemyTextures() {
-        List<DrawableUnit> enemyList=new ArrayList<>();
-        for (Enemy enemy: enemies) {
-            Coordinate enemyPos=enemy.getPosition();
-            enemyList.add(new DrawableUnit(enemy.getTexture(),new Coordinate(enemyPos.x(),enemyPos.y())));
-        }
-        return enemyList;
+    public void draw(SpriteBatch batch){
+        drawAllEnemies(batch);
+        drawAllTowers(batch);
     }
 
-    public void drawAllTowers(){
+    private void drawAllEnemies(SpriteBatch batch){
+        for (Enemy enemy:enemies) {
+            enemy.draw(batch);
+        }
+    }
+
+    private void drawAllTowers(SpriteBatch batch){
         for (TowerSpace towerspace:towerSpaces) {
-            towerspace.draw();
-            if (towerspace.isActive() && Gdx.input.justTouched()) {
-                towerspace.onClick();
-            }
+            towerspace.draw(batch);
         }
     }
 

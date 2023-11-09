@@ -18,8 +18,8 @@ public class MainMenuScreen extends MenuScreen {
     public MainMenuScreen(TDGame game){
         super(game);
         System.out.println("LOADING MainMenuScreen");
-        this.playButton=new LoadScreenButton(this.game, new Texture("buttons/play_active"+TEXTURE_EXTENSION),new Texture("buttons/play"+TEXTURE_EXTENSION),1,"chooseMap");
-        this.exitButton=new ExitButton(this, new Texture("buttons/exit_active"+TEXTURE_EXTENSION),new Texture("buttons/exit"+TEXTURE_EXTENSION),2);
+        this.playButton=new LoadScreenButton(this.game,new Texture("buttons/play_active"+TEXTURE_EXTENSION),new Texture("buttons/play"+TEXTURE_EXTENSION),1,"chooseMap");
+        this.exitButton=new ExitButton(new Texture("buttons/exit_active"+TEXTURE_EXTENSION),new Texture("buttons/exit"+TEXTURE_EXTENSION),2);
     }
 
     @Override

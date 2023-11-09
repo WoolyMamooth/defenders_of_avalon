@@ -7,8 +7,8 @@ import com.mygdx.game.screens.MenuScreen;
 
 public abstract class MenuButton extends Clickable{
     int positionInMenu;
-    public MenuButton(TDGame game, Texture activeTexture, Texture inactiveTexture, int positionInMenu) {
-        super(game,new Coordinate(0,0),activeTexture,inactiveTexture);
+    public MenuButton(Texture activeTexture, Texture inactiveTexture, int positionInMenu) {
+        super(new Coordinate(0,0),activeTexture,inactiveTexture);
         this.positionInMenu = positionInMenu;
         this.position =new Coordinate (TDGame.SCREEN_WIDTH / 2f,TDGame.SCREEN_HEIGHT - ((TDGame.SCREEN_HEIGHT * MenuScreen.MENU_SPACING) * positionInMenu));
     }

@@ -30,6 +30,17 @@ public class Coordinate {
         return new Coordinate(this.coord_x*scalar,this.coord_y*scalar);
     }
 
+    //Here we treat the coordinate as a normalized vector, used for precise movement in Enemy
+    public Coordinate normalize() {
+        float length = (float) Math.sqrt(coord_x * coord_x + coord_y * coord_y);
+        if (length != 0) {
+            return new Coordinate(coord_x / length, coord_y / length);
+        } else {
+            // Handle division by zero or very small values
+            return new Coordinate(0, 0);
+        }
+    }
+
     @Override
     public String toString() {
         return "(" + coord_x + ", " + coord_y + ")";

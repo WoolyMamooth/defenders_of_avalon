@@ -35,15 +35,16 @@ public class Enemy extends DrawableUnit {
 
     // move enemy towards the next coordinate on the path by movementSpeed amount
     public int move(Path path){
-        if(atCoordinate(path.getCoordinate(path.length()-1))){
+        if(atCoordinate(path.getCoordinate(path.length()-1))){ //if reached the end of path
             return damageToPlayer;
         }
-        Coordinate goal=path.getCoordinate(previousPathCoordinateID +1);
-        Coordinate movementDirection=new Coordinate((goal.x()>position.x()?1:-1),(goal.y()> position.y()?1:-1));
-        position=position.add(movementDirection.multiplyByScalar(movementSpeed*Gdx.graphics.getDeltaTime()));
-        if(atCoordinate(goal)){
+        Coordinate goal=path.getCoordinate(previousPathCoordinateID +1); //where the enemy will want to go next
+        Coordinate movementDirection=goal.subtract(position).normalize(); //get a unit vector pointing to goal
+        position=position.add(movementDirection.multiplyByScalar(movementSpeed*Gdx.graphics.getDeltaTime())); //actually move
+
+        if(atCoordinate(goal)){ //if reached goal, set a new goal
             previousPathCoordinateID++;
-            System.out.println(spawnID+" new goal: "+goal);
+            System.out.println("Enemy "+spawnID+" new goal: "+goal);
         }
         return 0;
         //System.out.println(this);

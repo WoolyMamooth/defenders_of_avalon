@@ -15,7 +15,7 @@ public class EnemySpawner {
             case "test":
             default:
                 Texture texture =new Texture("enemies/"+name+TEXTURE_EXTENSION);
-                return new Enemy(spawnID,texture,spawnLocation,100,0,0,200f,100);
+                return new Enemy(spawnID,texture,spawnLocation,100,0,0,150f,10);
         }
     }
 }

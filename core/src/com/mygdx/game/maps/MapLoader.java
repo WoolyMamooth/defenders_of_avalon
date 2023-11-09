@@ -22,15 +22,15 @@ public class MapLoader {
         Texture backgroundTexture= loadBackgroundTexture(mapID); //loads texture for background
         Path path = loadPath(mapID); //loads path that enemies will follow
         String[] enemiesToSpawn=loadEnemiesToSpawn(mapID); //loads enemies that will be spawned
+        Float[] enemiesSpawnDelay=loadSpawnDelay(mapID); //loads the delay between enemy spawns
         TowerSpace[] towerSpaces=loadTowerLocations(mapID); //loads the buildable spaces
-        return new TDMap(mapID,backgroundTexture,path,enemiesToSpawn,towerSpaces);
+        return new TDMap(mapID,backgroundTexture,path,enemiesToSpawn,enemiesSpawnDelay,towerSpaces);
     }
 
     private Texture loadBackgroundTexture(int mapID){
         System.out.println("TEXTURE: map_assets/backgrounds/"+mapID+TEXTURE_EXTENSION);
         return new Texture("map_assets/backgrounds/"+mapID+TEXTURE_EXTENSION);
     }
-
     private Path loadPath(int mapID){
         //TODO search database for path/paths of map by ID
         //for now we just return a path from top left to bottom right
@@ -47,25 +47,31 @@ public class MapLoader {
         System.out.println("PATH:"+path);
         return path;
     }
-
     private String[] loadEnemiesToSpawn(int mapID){
         //TODO search database for enemies to spawn by ID
         System.out.println("ENEMIES: default");
         return new String[]{ //for now we just return a red square
-                "red_square"
+                "red_square","red_square","red_square","red_square","red_square"
         };
     }
-
+    private  Float[] loadSpawnDelay(int mapID){
+        //TODO search database for spawn delay
+        System.out.println("ENEMY DELAYS: default");
+        return new Float[]{
+                5f,5f,5f,5f,5f
+        };
+    }
     private TowerSpace towerSpaceByCoordinate(Coordinate coordinate){
         return new TowerSpace(game,coordinate,new Texture("towers/towerButtons/actives/towerspace"+TEXTURE_EXTENSION),new Texture("towers/towerButtons/inactives/towerspace"+TEXTURE_EXTENSION));
     }
     private TowerSpace[] loadTowerLocations(int mapID){
         //TODO search database for tower locations
         System.out.println("TOWERSPACES: default");
+        //Check loadPath for info on SCREEN_HEIGHT-x issue
         return new TowerSpace[]{
-            towerSpaceByCoordinate(new Coordinate(200,200)),
-            towerSpaceByCoordinate(new Coordinate(400,400)),
-            towerSpaceByCoordinate(new Coordinate(1000,400))
+            towerSpaceByCoordinate(new Coordinate(200,SCREEN_HEIGHT-200)),
+            towerSpaceByCoordinate(new Coordinate(400,SCREEN_HEIGHT-400)),
+            towerSpaceByCoordinate(new Coordinate(1000,SCREEN_HEIGHT-600))
         };
     }
 }

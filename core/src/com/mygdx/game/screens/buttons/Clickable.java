@@ -1,7 +1,6 @@
 package com.mygdx.game.screens.buttons;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.maps.Coordinate;

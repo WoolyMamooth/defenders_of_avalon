@@ -4,8 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 
 public class DrawableUnit {
-    /* This class represents all units that we want to draw on the screen
-        Towers, Enemies and Heroes all inherit from this
+    /** This class represents all units that we want to draw on the screen
+    *    Towers, Enemies and Heroes all inherit from this
     */
     public Texture texture;
     public Coordinate position;

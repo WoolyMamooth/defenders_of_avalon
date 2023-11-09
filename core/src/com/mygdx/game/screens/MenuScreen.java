@@ -30,13 +30,8 @@ public abstract class MenuScreen implements Screen {
 
         protected void renderButton(MenuButton button){
                 button.draw();
-                if (button.isActive() && Gdx.input.isTouched()) {
+                if (button.isActive() && Gdx.input.justTouched()) {
                         button.onClick();
-                        try {
-                                TimeUnit.MILLISECONDS.sleep(300);
-                        } catch (InterruptedException e) {
-                                throw new RuntimeException(e);
-                        }
                 }
         }
 

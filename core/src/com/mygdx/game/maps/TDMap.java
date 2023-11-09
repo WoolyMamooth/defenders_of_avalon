@@ -12,24 +12,25 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 public class TDMap {
-    // TODO
-    // make an array of buildable spaces for towers
     int mapID;
     Texture backgroundTexture;
     Path path; // defines the path enemies take
     String[] enemiesToSpawn; // defines the enemies that will be spawned
     int enemyCounter=0; // keeps track of which enemy should be spawned next
+    Float[] enemiesSpawnDelay; // defines the delay between enemy spawns
+    float timeSinceLastSpawn=0; // keeps track of how much time has passed since we last spawned a new enemy
     List<Enemy> enemies; // keeps track of the enemies on the field
     EnemySpawner spawner; // object that spawns enemies, we set its coords to the first element in path
     TowerSpace[] towerSpaces; // defines the places where the player will be able to build towers
     public static int lastTowerID=0; // keeps track of the id of towers
     private int playerHP=100; //if it reaches 0 we load LostScreen
 
-    public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,TowerSpace[] towerSpaces) {
+    public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces) {
         this.mapID=mapID;
         this.backgroundTexture = backgroundTexture;
         this.path=path;
         this.enemiesToSpawn=enemiesToSpawn;
+        this.enemiesSpawnDelay=enemiesSpawnDelay;
         this.spawner=new EnemySpawner(path.getCoordinate(0));
         this.enemies=new ArrayList<>();
         this.towerSpaces=towerSpaces;
@@ -40,9 +41,20 @@ public class TDMap {
         return backgroundTexture;
     }
 
+    //checks if a new enemy should be spawned and spawns them if they should, returns true if an enemy was spawned
+    public boolean trySpawn(float timeSinceLastFrame){
+        if(enemyCounter>=enemiesToSpawn.length) return false; //return if they have already all been spawned
+        timeSinceLastSpawn+=timeSinceLastFrame;
+        if(timeSinceLastSpawn>=enemiesSpawnDelay[enemyCounter]){
+            timeSinceLastSpawn-=enemiesSpawnDelay[enemyCounter];
+            spawnNextEnemy();
+            return true;
+        }
+        return false;
+    }
     //creates a a new enemy of the type determined by enemiesToSpawn
     //spawn location is path.coordinates[0]
-    public void spawnNextEnemy(){
+    private void spawnNextEnemy(){
         Enemy enemy=spawner.spawnEnemy(enemyCounter,enemiesToSpawn[enemyCounter]);
         enemies.add(enemy);
         enemyCounter++;
@@ -58,29 +70,28 @@ public class TDMap {
         returns true if the player lost
     Used in GameScreen.render
     */
-        List<Integer> shouldBeDeleted=new ArrayList<>();
+        List<Enemy> shouldBeDeleted=new ArrayList<>();
         for (Enemy enemy:enemies) {
-            int damage=enemy.move(path); //damage enemy deals to player at end of path
+            int damage=enemy.move(path); //damage enemy deals to player at end of path, this also moves the enemy
             if(damage>0){
                 playerHP-=damage;
-                shouldBeDeleted.add(enemy.getSpawnID());
-            }
-            if(enemy.getHealth()<=0){
+                shouldBeDeleted.add(enemy);
+            }else if(enemy.getHealth()<=0){
                 enemy.die();
-                shouldBeDeleted.add(enemy.getSpawnID());
+                shouldBeDeleted.add(enemy);
             }
         }
         //we remove the enemy from the list when they reach the end of the path
         //or if their health reached zero
-        for(int enemyID:shouldBeDeleted){
-            enemies.remove(enemyID);
+        for(Enemy enemy:shouldBeDeleted){
+            System.out.println("Enemy "+enemy.getSpawnID()+" has reached the end and will be deleted");
+            enemies.remove(enemy);
         }
         //triggers if player loses the game
         if(playerHP<=0){
-            System.out.println("PLAYER LOST THE GAME, HP="+playerHP);
+            System.out.println("PLAYER LOST THE GAME");
             return true;
         }
-
         return false;
     }
 
@@ -98,13 +109,8 @@ public class TDMap {
     public void drawAllTowers(){
         for (TowerSpace towerspace:towerSpaces) {
             towerspace.draw();
-            if (towerspace.isActive() && Gdx.input.isTouched()) {
+            if (towerspace.isActive() && Gdx.input.justTouched()) {
                 towerspace.onClick();
-                try {
-                    TimeUnit.MILLISECONDS.sleep(300);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
             }
         }
     }

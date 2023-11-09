@@ -16,6 +16,14 @@ public class GameScreen implements Screen {
     TDMap map; //the map that was chosen in the menu
     Texture backgroundTexture; //background of the map
 
+    float gametime=0; //keeps track of how much time has passed since the start of the game
+
+    /**
+     * GameScreen is where we display a map and the player gets to play through it.
+     * @param game
+     * @param map
+     */
+
     public GameScreen(TDGame game, TDMap map){
         this.game=game;
         this.map=map;
@@ -24,13 +32,16 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         this.backgroundTexture = this.map.getBackgroundTexture();
-        map.spawnNextEnemy(); //temporarily here
+        //map.spawnNextEnemy(); //temporarily here
     }
 
     @Override
     public void render(float delta) {
         //clear the screen
         ScreenUtils.clear(1, 1, 1, 1);
+
+        //update gametime
+        gametime+=delta;
 
         //call move method of each enemy
         boolean lostGame=false;
@@ -39,11 +50,15 @@ public class GameScreen implements Screen {
             lostGame=true;
         }
 
+        //checks if a new enemy should be spawned and spawns them if they should
+        map.trySpawn(delta);
+
         //temporary for checking coordinates
-        if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
+        //if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
 
         //drawing begins here
         game.batch.begin();
+
         //draw the background
         game.batch.draw(backgroundTexture,SCREEN_BOT_LEFT.x(),SCREEN_BOT_LEFT.y());
 
@@ -56,11 +71,22 @@ public class GameScreen implements Screen {
         map.drawAllTowers();
 
         game.batch.end();
+        //drawing ends here
 
-        if(lostGame){
+        if(lostGame){ // exit if player lost the game
             this.dispose();
             game.setScreen(new LostScreen(game));
         }
+    }
+
+    //clear memory
+    @Override
+    public void dispose() {
+        game.batch.dispose();
+        game.batch=new SpriteBatch();
+        map.dispose();
+        backgroundTexture.dispose();
+        System.gc();
     }
 
     @Override
@@ -81,14 +107,5 @@ public class GameScreen implements Screen {
     @Override
     public void hide() {
 
-    }
-
-    @Override
-    public void dispose() {
-        game.batch.dispose();
-        game.batch=new SpriteBatch();
-        map.dispose();
-        backgroundTexture.dispose();
-        System.gc();
     }
 }

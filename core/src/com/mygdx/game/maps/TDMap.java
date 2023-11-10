@@ -1,16 +1,12 @@
 package com.mygdx.game.maps;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.mygdx.game.screens.buttons.Clickable;
-import com.mygdx.game.units.DrawableUnit;
 import com.mygdx.game.units.enemies.Enemy;
 import com.mygdx.game.units.enemies.EnemySpawner;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 public class TDMap {
     int mapID;
@@ -61,31 +57,36 @@ public class TDMap {
         enemyCounter++;
     }
 
-    //enemy update function
-    public boolean updateEnemies(){
-    /*
-    1.  calls the move function of every enemy in the enemies list
-    2.  checks for dead enemies
-    3.  if an enemy reached the end of the path their damageToPlayer value
-        is subtracted from playerHP, when playerHP reaches 0 the player loses
-        returns true if the player lost
-    Used in GameScreen.render
-    */
+    public boolean update(float timeSinceLastFrame){
+        updateTowers(timeSinceLastFrame);
+        return updateEnemies();
+    }
+
+    /**
+     * 1.  calls the move function of every enemy in the enemies list
+     * 2.  checks for dead enemies
+     * 3.  if an enemy reached the end of the path their damageToPlayer value
+     *    is subtracted from playerHP, when playerHP reaches 0 the player loses
+     *    returns true if the player lost
+     * Used in GameScreen.render
+     */
+    private boolean updateEnemies(){
         List<Enemy> shouldBeDeleted=new ArrayList<>();
         for (Enemy enemy:enemies) {
             int damage=enemy.update(path); //damage enemy deals to player at end of path, this also moves the enemy
             if(damage>0){
                 playerHP-=damage;
                 shouldBeDeleted.add(enemy);
+                System.out.println("Enemy "+enemy.getSpawnID()+" has reached the end and will be deleted");
             }else if(enemy.getHealth()<=0){
                 enemy.die();
                 shouldBeDeleted.add(enemy);
+                System.out.println("Enemy "+enemy.getSpawnID()+" has died and will be deleted");
             }
         }
         //we remove the enemy from the list when they reach the end of the path
         //or if their health reached zero
         for(Enemy enemy:shouldBeDeleted){
-            System.out.println("Enemy "+enemy.getSpawnID()+" has reached the end and will be deleted");
             enemies.remove(enemy);
         }
         //triggers if player loses the game
@@ -96,9 +97,13 @@ public class TDMap {
         return false;
     }
 
-    public void updateProjectiles(){
-        for (TowerSpace towerSpace:towerSpaces) {
-            towerSpace.updateProjectiles();
+    /**
+     * Moves projectiles
+     * Resets targetting on each tower
+     */
+    private void updateTowers(float delta){
+        for (TowerSpace towerspace:towerSpaces) {
+            towerspace.update(enemies,delta);
         }
     }
 

@@ -11,10 +11,10 @@ public class ProjectileSpawner {
     public ProjectileSpawner(Coordinate spawnLocation) {
         this.spawnLocation=spawnLocation;
     }
-    public Projectile spawnProjectile(String name){
-        float speed=50f;
-        int damage=0;
-        Texture texture =new Texture("enemies/"+name+TEXTURE_EXTENSION);
+    public Projectile spawnProjectile(String name,Enemy target){
+        float speed=200f;
+        int damage=10;
+        Texture texture =new Texture("towers/projectiles/"+name+TEXTURE_EXTENSION);
 
         //set stats here
         switch(name){
@@ -22,6 +22,6 @@ public class ProjectileSpawner {
             default:
                 break;
         }
-        return new Projectile(texture,spawnLocation,speed,damage);
+        return new Projectile(texture,spawnLocation,speed,damage,target);
     }
 }

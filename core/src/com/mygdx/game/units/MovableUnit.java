@@ -15,13 +15,18 @@ public class MovableUnit extends DrawableUnit{
     }
 
     protected void move(Coordinate goal){
+        if(goal==null) {
+            movementSpeed=0;
+            super.dispose();
+            return;
+        }
         Coordinate movementDirection=goal.subtract(position).normalize(); //get a unit vector pointing to goal
         position=position.add(movementDirection.multiplyByScalar(movementSpeed* Gdx.graphics.getDeltaTime())); //move
-        //return position;
     }
 
     //checks if the unit has reached a given coordinate
     protected boolean atCoordinate(Coordinate coordinate){
+        if(coordinate==null || position==null) return true;
         if(
                 position.x()>coordinate.x()-texture.getWidth()/2f &&
                         position.y()>coordinate.y()-texture.getHeight()/2f &&

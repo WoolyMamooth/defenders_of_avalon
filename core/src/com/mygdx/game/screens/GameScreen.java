@@ -47,7 +47,7 @@ public class GameScreen implements Screen {
 
         //call move method of each enemy
         boolean lostGame=false;
-        if(map.updateEnemies()){
+        if(map.update(delta)){
             //updateEnemies returns ture if the playerHP reached 0, therefore they lost
             lostGame=true;
         }

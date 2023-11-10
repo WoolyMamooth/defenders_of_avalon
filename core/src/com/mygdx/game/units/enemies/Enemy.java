@@ -3,21 +3,15 @@ package com.mygdx.game.units.enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.maps.Path;
-import com.mygdx.game.units.MovableUnit;
+import com.mygdx.game.units.DamagableUnit;
 
-public class Enemy extends MovableUnit {
+public class Enemy extends DamagableUnit {
     int spawnID; // keeps track of where in the enemies list this is
-    int health; //amount of damage that can be taken before dying
-    int armor; //reduces physical damage taken
-    int magicResistance; //reduces magical damage taken
     private int previousPathCoordinateID =0; //keeps track of the last position from map.path where this enemy was
     int damageToPlayer;
     public Enemy(int spawnID, Texture texture, Coordinate position, int health, int armor, int magicResistance, float movementSpeed, int damageToPlayer) {
-        super(texture,position,movementSpeed);
+        super(texture,position,movementSpeed, health, armor, magicResistance);
         this.spawnID=spawnID;
-        this.health = health;
-        this.armor = armor;
-        this.magicResistance = magicResistance;
         this.damageToPlayer=damageToPlayer;
     }
 
@@ -43,34 +37,17 @@ public class Enemy extends MovableUnit {
         return 0;
     }
 
-    //triggered when this.health reaches zero
-    public void die(){
-        // die, duh
-    }
-
     @Override
     public String toString() {
         return "Enemy{" +
                 "spawnID=" + spawnID +
                 ", position=" + position +
-                ", health=" + health +
+                ", health=" + getHealth() +
                 '}';
     }
 
     public int getSpawnID() {
         return spawnID;
-    }
-
-    public int getHealth() {
-        return health;
-    }
-
-    public int getArmor() {
-        return armor;
-    }
-
-    public int getMagicResistance() {
-        return magicResistance;
     }
 
 }

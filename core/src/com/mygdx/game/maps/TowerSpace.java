@@ -9,7 +9,10 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.screens.buttons.Clickable;
+import com.mygdx.game.units.enemies.Enemy;
 import com.mygdx.game.units.towers.Tower;
+
+import java.util.List;
 
 public class TowerSpace extends Clickable {
     private class TowerChoiceMenu{
@@ -73,17 +76,23 @@ public class TowerSpace extends Clickable {
         towerBuildID =TDMap.lastTowerID+1;
         menuVisible=!menuVisible;
     }
+
+    /**
+     * The buildable towers are defined in this method
+     * TODO implement gold subtraction for building etc
+     * @param towerName what to build
+     */
     private void build(String towerName){
         Texture texture=new Texture("towers/towerTextures/"+towerName+TEXTURE_EXTENSION);
 
         switch (towerName){
             case "archer":
-                tower=new Tower(texture,position, towerBuildID,0,0,0);
+                tower=new Tower(texture,position, towerBuildID,"arrow",0,0,0,0.5f);
                 occupied=true;
                 break;
             case "None":
             default:
-                tower=new Tower(texture,position, towerBuildID,0,0,0);
+                tower=new Tower(texture,position, towerBuildID,"arrow",0,0,0,1f);
                 occupied=true;
                 System.out.println("Warning tower "+ towerBuildID +" is set to default");
                 break;
@@ -94,7 +103,8 @@ public class TowerSpace extends Clickable {
     @Override
     public void draw(SpriteBatch batch) {
         if(occupied) {
-            batch.draw(tower.getTexture(), position.x(), position.y(), this.width, this.height);
+            //batch.draw(tower.getTexture(), position.x(), position.y(), this.width, this.height);
+            tower.draw(batch);
         }else{
             batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);
             if (menuVisible) {
@@ -106,8 +116,13 @@ public class TowerSpace extends Clickable {
         }
     }
 
-    public void updateProjectiles(){
-        tower.updateProjectiles();
+    /**
+     * Used for setting the targeting of towers
+     * @param enemies
+     */
+    public void update(List<Enemy> enemies,float timeSinceLastFrame){
+        if(tower==null) return;
+        tower.update(enemies,timeSinceLastFrame);
     }
 
     @Override

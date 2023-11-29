@@ -33,7 +33,7 @@ public class TowerSpace extends Clickable {
         float buttonOffsetX,buttonOffsetY=-128; //offset for the buttons relative to TowerSpace position
         // y is a constant of -128 for now, 64 is the height of a button, so we place 1 above and 1 inline with the towerspace
         int CHOOSABLE_TOWER_NUMBER=4; //max number of towers that can be brought to a game. should remain 4 but you never know
-        public TowerChoiceMenu(TDGame game,float buttonOffsetX) {
+        public TowerChoiceMenu(float buttonOffsetX) {
             this.buttonOffsetX=buttonOffsetX;
             if(position.x()>SCREEN_WIDTH/2f) buttonOffsetX *= -2; //flip the menu to left side if on right side of the screen
 
@@ -49,10 +49,7 @@ public class TowerSpace extends Clickable {
         }
         public void draw(SpriteBatch batch){
             for (int i = 0; i < CHOOSABLE_TOWER_NUMBER; i++) {
-                buttons[i].draw(batch);
-                if (buttons[i].isActive() && Gdx.input.justTouched()) {
-                    buttons[i].onClick();
-                }
+                buttons[i].drawCheckClick(batch);
             }
         }
         public void dispose(){
@@ -67,9 +64,9 @@ public class TowerSpace extends Clickable {
     int towerBuildID =0; //ID of the tower that will be built
     boolean occupied=false; //defines if a tower has been built here or not
     boolean menuVisible=false; //defines if the menu is visible or not, use in onClick and draw
-    public TowerSpace(TDGame game, Coordinate position, Texture activeTexture, Texture inactiveTexture) {
+    public TowerSpace(Coordinate position, Texture activeTexture, Texture inactiveTexture) {
         super(position, activeTexture, inactiveTexture);
-        this.menu=new TowerChoiceMenu(game,activeTexture.getWidth());
+        this.menu=new TowerChoiceMenu(activeTexture.getWidth());
     }
     @Override
     public void onClick() {
@@ -103,10 +100,9 @@ public class TowerSpace extends Clickable {
     @Override
     public void draw(SpriteBatch batch) {
         if(occupied) {
-            //batch.draw(tower.getTexture(), position.x(), position.y(), this.width, this.height);
             tower.draw(batch);
         }else{
-            batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);
+            super.draw(batch);
             if (menuVisible) {
                 menu.draw(batch);
             }

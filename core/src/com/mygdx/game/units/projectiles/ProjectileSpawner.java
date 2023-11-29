@@ -11,9 +11,8 @@ public class ProjectileSpawner {
     public ProjectileSpawner(Coordinate spawnLocation) {
         this.spawnLocation=spawnLocation;
     }
-    public Projectile spawnProjectile(String name,Enemy target){
+    public Projectile spawnProjectile(String name,Enemy target, int damage){
         float speed=200f;
-        int damage=10;
         Texture texture =new Texture("towers/projectiles/"+name+TEXTURE_EXTENSION);
 
         //set stats here

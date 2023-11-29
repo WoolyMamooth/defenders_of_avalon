@@ -41,7 +41,7 @@ public class Tower extends DrawableUnit {
      */
     public void attack(){
         System.out.println(this + " attacked "+ target);
-        projectiles.add(projectileSpawner.spawnProjectile(projectileName,target));
+        projectiles.add(projectileSpawner.spawnProjectile(projectileName,target,damage));
     }
     public void update(List<Enemy> enemies,float timeSinceLastFrame){
         updateExistingProjectiles();

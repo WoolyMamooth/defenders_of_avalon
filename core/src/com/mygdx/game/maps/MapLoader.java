@@ -74,7 +74,7 @@ public class MapLoader {
         return delays;
     }
     private TowerSpace towerSpaceByCoordinate(Coordinate coordinate){
-        return new TowerSpace(game,coordinate,new Texture("towers/towerButtons/actives/towerspace"+TEXTURE_EXTENSION),new Texture("towers/towerButtons/inactives/towerspace"+TEXTURE_EXTENSION));
+        return new TowerSpace(coordinate,new Texture("towers/towerButtons/actives/towerspace"+TEXTURE_EXTENSION),new Texture("towers/towerButtons/inactives/towerspace"+TEXTURE_EXTENSION));
     }
     private TowerSpace[] loadTowerLocations(int mapID){
         //TODO search database for tower locations

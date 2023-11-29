@@ -33,6 +33,12 @@ public abstract class Clickable {
     public void draw(SpriteBatch batch) {
         batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);
     }
+    public void drawCheckClick(SpriteBatch batch) {
+        draw(batch);
+        if(isActive() && Gdx.input.justTouched()){
+            onClick();
+        }
+    }
     public abstract void onClick();
 
     public Texture getTexture() {

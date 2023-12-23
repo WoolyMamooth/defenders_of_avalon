@@ -5,10 +5,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 
 public class MovableUnit extends DrawableUnit{
+    float movementSpeed;
+
     /**
      * Adds movement logic to DrawableUnit, used for anything that has a texture and moves.
+     * @param texture
+     * @param position
+     * @param movementSpeed
      */
-    float movementSpeed;
     public MovableUnit(Texture texture, Coordinate position,float movementSpeed) {
         super(texture, position);
         this.movementSpeed=movementSpeed;

@@ -42,7 +42,7 @@ public class Enemy extends DamagableUnit {
         return "Enemy{" +
                 "spawnID=" + spawnID +
                 ", position=" + position +
-                ", health=" + getHealth() +
+                ", health=" + getCurrentHp() +
                 '}';
     }
 

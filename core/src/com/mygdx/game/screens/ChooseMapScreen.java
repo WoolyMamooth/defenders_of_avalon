@@ -1,11 +1,7 @@
 package com.mygdx.game.screens;
 
-import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
-
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.TDGame;
-import com.mygdx.game.maps.TDMap;
 import com.mygdx.game.screens.buttons.*;
 
 public class ChooseMapScreen extends MenuScreen {
@@ -14,9 +10,8 @@ public class ChooseMapScreen extends MenuScreen {
     public ChooseMapScreen(TDGame game){
         super(game);
         System.out.println("LOADING ChooseMapScreen");
-        this.mainMenuButton=new LoadScreenButton(this.game,new Texture("buttons/menu_active"+TEXTURE_EXTENSION),new Texture("buttons/menu"+TEXTURE_EXTENSION),1,"mainMenu");
-        this.pickMapButton=new PickMapButton(this.game, new Texture("buttons/pick_map_active"+TEXTURE_EXTENSION),new Texture("buttons/pick_map"+TEXTURE_EXTENSION),2,0);
-
+        this.mainMenuButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/menu_active"),TDGame.fetchTexture("buttons/menu"),1,"mainMenu");
+        this.pickMapButton=new PickMapButton(this.game,TDGame.fetchTexture("buttons/pick_map_active"),TDGame.fetchTexture("buttons/pick_map"),2,0);
     }
 
     @Override

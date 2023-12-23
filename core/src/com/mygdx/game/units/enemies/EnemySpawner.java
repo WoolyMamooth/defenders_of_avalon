@@ -3,6 +3,7 @@ package com.mygdx.game.units.enemies;
 import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.TDGame;
 import com.mygdx.game.maps.Coordinate;
 
 public class EnemySpawner {
@@ -13,7 +14,7 @@ public class EnemySpawner {
     public Enemy spawnEnemy(int spawnID,String name){ // add new enemies here
         int health=100,armor=0,magicResistance=0,damageToPlayer=10;
         float movementSpeed=50f;
-        Texture texture =new Texture("enemies/"+name+TEXTURE_EXTENSION);
+        Texture texture = TDGame.fetchTexture("enemies/"+name);
 
         //set stats here
         switch(name){

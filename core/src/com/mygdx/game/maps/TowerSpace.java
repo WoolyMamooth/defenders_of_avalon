@@ -41,8 +41,8 @@ public class TowerSpace extends Clickable {
             for (int i = 0; i < CHOOSABLE_TOWER_NUMBER; i++) {
                 buttons[i]=new TowerChoiceButton(
                         new Coordinate(position.x()+buttonOffsetX, position.y()+buttonOffsetY)
-                        ,new Texture("towers/towerButtons/actives/"+buildableTowerNames[i]+TEXTURE_EXTENSION)
-                        ,new Texture("towers/towerButtons/inactives/"+buildableTowerNames[i]+TEXTURE_EXTENSION)
+                        ,TDGame.fetchTexture("towers/towerButtons/actives/" + buildableTowerNames[i])
+                        ,TDGame.fetchTexture("towers/towerButtons/inactives/" + buildableTowerNames[i])
                         ,buildableTowerNames[i]);
                 buttonOffsetY+=buttons[i].getTexture().getHeight(); //increment vertical offset so we get a list of buttons
             }
@@ -80,11 +80,11 @@ public class TowerSpace extends Clickable {
      * @param towerName what to build
      */
     private void build(String towerName){
-        Texture texture=new Texture("towers/towerTextures/"+towerName+TEXTURE_EXTENSION);
+        Texture texture=TDGame.fetchTexture("towers/towerTextures/"+towerName);
 
         switch (towerName){
             case "archer":
-                tower=new Tower(texture,position, towerBuildID,"arrow",0,0,0,0.5f);
+                tower=new Tower(texture,position, towerBuildID,"arrow",10,0,0,0.5f);
                 occupied=true;
                 break;
             case "None":

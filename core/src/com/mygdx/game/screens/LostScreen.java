@@ -12,7 +12,7 @@ public class LostScreen extends MenuScreen{
     LoadScreenButton mainMenuButton;
     public LostScreen(TDGame game) {
         super(game);
-        this.mainMenuButton=new LoadScreenButton(this.game,new Texture("buttons/menu_active"+TEXTURE_EXTENSION),new Texture("buttons/menu"+TEXTURE_EXTENSION),1,"mainMenu");
+        this.mainMenuButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/menu_active"),TDGame.fetchTexture("buttons/menu"),1,"mainMenu");
     }
 
     public void render(float delta) {

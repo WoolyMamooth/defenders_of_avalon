@@ -29,7 +29,7 @@ public class MapLoader {
 
     private Texture loadBackgroundTexture(int mapID){
         System.out.println("TEXTURE: map_assets/backgrounds/"+mapID+TEXTURE_EXTENSION);
-        return new Texture("map_assets/backgrounds/"+mapID+TEXTURE_EXTENSION);
+        return TDGame.fetchTexture("map_assets/backgrounds/"+mapID);
     }
     private Path loadPath(int mapID){
         //TODO search database for path/paths of map by ID
@@ -74,7 +74,7 @@ public class MapLoader {
         return delays;
     }
     private TowerSpace towerSpaceByCoordinate(Coordinate coordinate){
-        return new TowerSpace(coordinate,new Texture("towers/towerButtons/actives/towerspace"+TEXTURE_EXTENSION),new Texture("towers/towerButtons/inactives/towerspace"+TEXTURE_EXTENSION));
+        return new TowerSpace(coordinate,TDGame.fetchTexture("towers/towerButtons/actives/towerspace"),TDGame.fetchTexture("towers/towerButtons/inactives/towerspace"));
     }
     private TowerSpace[] loadTowerLocations(int mapID){
         //TODO search database for tower locations

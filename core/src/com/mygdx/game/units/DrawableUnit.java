@@ -5,21 +5,32 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.maps.Coordinate;
 
 public class DrawableUnit {
-    /** This class represents all units that we want to draw on the screen
-    *    Towers, Enemies and Heroes all inherit from this
-    */
     public Texture texture;
     public Coordinate position;
     float width;
     float height;
 
+    /**
+     * This class represents all units that we want to draw on the screen
+     * Towers, Enemies and Heroes all inherit from this.
+     * @param texture
+     * @param position
+     */
     public DrawableUnit(Texture texture, Coordinate position) {
         this.texture = texture;
         this.position = position;
         this.width=texture.getWidth();
         this.height=texture.getHeight();
     }
-    //important
+
+    public DrawableUnit(Coordinate position){
+        this.position=position;
+    }
+
+    /**
+     * Use this to draw the unit at its position.
+     * @param batch
+     */
     public void draw(SpriteBatch batch){
         batch.draw(texture, position.x(), position.y(), width, height);
     }

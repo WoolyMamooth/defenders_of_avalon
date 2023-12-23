@@ -9,6 +9,10 @@ public class Player {
     String[] equippedTowers;
     String equippedHero;
 
+    /**
+     * Keeps track of all data related to the player. ex.: unlocked towers.
+     * TODO implement saving player data and loading the save
+     */
     public Player() {
         unlockedTowers=new String[]{"archer","None","None","None"};
         unlockedHeroes=new String[]{"None","None","None"};

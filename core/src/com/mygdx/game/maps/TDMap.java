@@ -58,8 +58,9 @@ public class TDMap {
     }
 
     public boolean update(float timeSinceLastFrame){
+        boolean lost=updateEnemies();
         updateTowers(timeSinceLastFrame);
-        return updateEnemies();
+        return lost;
     }
 
     /**
@@ -78,7 +79,7 @@ public class TDMap {
                 playerHP-=damage;
                 shouldBeDeleted.add(enemy);
                 System.out.println("Enemy "+enemy.getSpawnID()+" has reached the end and will be deleted");
-            }else if(enemy.getHealth()<=0){
+            }else if(enemy.getCurrentHp()<=0){
                 enemy.die();
                 shouldBeDeleted.add(enemy);
                 System.out.println("Enemy "+enemy.getSpawnID()+" has died and will be deleted");

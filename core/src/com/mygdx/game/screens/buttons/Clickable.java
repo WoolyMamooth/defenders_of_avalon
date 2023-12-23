@@ -21,7 +21,7 @@ public abstract class Clickable {
         this.inactiveTexture = inactiveTexture;
     }
 
-    public boolean isActive() {
+    protected boolean isActive() {
         if (Gdx.input.getX() < position.x() + this.width && Gdx.input.getX() > position.x() &&
                 TDGame.SCREEN_HEIGHT - Gdx.input.getY() < position.y() + this.height &&
                 TDGame.SCREEN_HEIGHT - Gdx.input.getY() > position.y()) {
@@ -30,9 +30,15 @@ public abstract class Clickable {
         return false;
     }
 
+    /**
+     * Draws the button.
+     */
     public void draw(SpriteBatch batch) {
         batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);
     }
+    /**
+     * Draws the button and also checks if it has been clicked.
+    */
     public void drawCheckClick(SpriteBatch batch) {
         draw(batch);
         if(isActive() && Gdx.input.justTouched()){

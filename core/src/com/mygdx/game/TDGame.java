@@ -1,6 +1,8 @@
 package com.mygdx.game;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.screens.MainMenuScreen;
@@ -29,8 +31,8 @@ public class TDGame extends Game {
 	public void create () {
 		batch=new SpriteBatch();
 
-		SCREEN_HEIGHT=1000;
-		SCREEN_WIDTH=1920;
+		SCREEN_HEIGHT = Gdx.graphics.getHeight();
+		SCREEN_WIDTH = Gdx.graphics.getWidth();
 		SCREEN_CENTER = new Coordinate(SCREEN_WIDTH/2f,SCREEN_HEIGHT/2f);
 		SCREEN_TOP_LEFT = new Coordinate(0f,SCREEN_HEIGHT*1f);
 		SCREEN_TOP_RIGHT = new Coordinate(SCREEN_WIDTH*1f,SCREEN_HEIGHT*1f);
@@ -44,5 +46,13 @@ public class TDGame extends Game {
 
 		//for quicker testing so we don't have to go through the menu:
 		//this.setScreen(new GameScreen(this,new TDMap(0)));
+	}
+
+	/**
+	 * Returns a texture based on the path and filename.
+	 * @param path /path/to/file (no file extension)
+	 */
+	public static Texture fetchTexture(String path){
+		return new Texture(path+TEXTURE_EXTENSION);
 	}
 }

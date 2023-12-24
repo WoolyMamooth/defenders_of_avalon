@@ -7,13 +7,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.TDGame;
+import com.mygdx.game.maps.IngameMenu;
 import com.mygdx.game.maps.TDMap;
 
 public class GameScreen implements Screen {
     TDGame game;
     TDMap map; //the map that was chosen in the menu
     Texture backgroundTexture; //background of the map
-
+    IngameMenu menu; // contains pause button, player HP etc
+    boolean paused=false;
     float gametime=0; //keeps track of how much time has passed since the start of the game
 
     /**
@@ -25,6 +27,7 @@ public class GameScreen implements Screen {
     public GameScreen(TDGame game, TDMap map){
         this.game=game;
         this.map=map;
+        this.menu=new IngameMenu(this);
     }
 
     @Override
@@ -36,37 +39,44 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         //clear the screen
         ScreenUtils.clear(1, 1, 1, 1);
-        //temporary for checking coordinates
-        //if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
+        int gameState = 0;
 
-        //update gametime
-        gametime+=delta;
+        //if the game is paused then we skip updating the map
+        if(!paused) {
+            //temporary for checking coordinates:
+            //if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
 
-        //call move method of each enemy
-        boolean lostGame=false;
-        if(map.update(delta)){
-            //updateEnemies returns ture if the playerHP reached 0, therefore they lost
-            lostGame=true;
+            //update gametime
+            gametime += delta;
+
+            //update the map
+            gameState = map.update(delta);
+
+            //checks if a new enemy should be spawned and spawns them if they should
+            map.trySpawn(delta);
+
         }
-
-        //checks if a new enemy should be spawned and spawns them if they should
-        map.trySpawn(delta);
-
         //drawing begins here
         game.batch.begin();
 
         //draw the background
-        game.batch.draw(backgroundTexture,SCREEN_BOT_LEFT.x(),SCREEN_BOT_LEFT.y());
+        game.batch.draw(backgroundTexture, SCREEN_BOT_LEFT.x(), SCREEN_BOT_LEFT.y());
 
         //draws all enemies and towers
         map.draw(game.batch);
 
+        //draw ingame menu
+        menu.draw(game.batch);
+
         game.batch.end();
         //drawing ends here
 
-        if(lostGame){ // exit if player lost the game
+        if (gameState==1) { // exit if player lost the game
             this.dispose();
             game.setScreen(new LostScreen(game));
+        }else if(gameState==2){ // player won the game
+            this.dispose();
+            game.setScreen(new MainMenuScreen(game));
         }
     }
 
@@ -80,6 +90,13 @@ public class GameScreen implements Screen {
         System.gc();
     }
 
+    /**
+     * @return [0]=playerHP, [1]=playerGold
+     */
+    public int[] getPlayerData(){
+        return new int[]{map.getPlayerHP(), map.getPlayerGold()};
+    }
+
     @Override
     public void resize(int width, int height) {
 
@@ -87,7 +104,7 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        paused=!paused;
     }
 
     @Override

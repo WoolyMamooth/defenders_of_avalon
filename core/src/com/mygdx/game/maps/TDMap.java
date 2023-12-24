@@ -20,7 +20,8 @@ public class TDMap {
     EnemySpawner spawner; // object that spawns enemies, we set its coords to the first element in path
     TowerSpace[] towerSpaces; // defines the places where the player will be able to build towers
     public static int lastTowerID=0; // keeps track of the id of towers
-    private int playerHP=100; //if it reaches 0 we load LostScreen
+    private int playerHP=100; // if it reaches 0 we load LostScreen
+    private int playerGold=100; // used to build towers
 
     public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces) {
         this.mapID=mapID;
@@ -37,30 +38,47 @@ public class TDMap {
     public Texture getBackgroundTexture() {
         return backgroundTexture;
     }
-
-    //checks if a new enemy should be spawned and spawns them if they should, returns true if an enemy was spawned
+    /**
+     * Checks if a new enemy should be spawned and spawns them if they should, returns true if an enemy was spawned
+     */
     public boolean trySpawn(float timeSinceLastFrame){
         if(enemyCounter>=enemiesToSpawn.length) return false; //return if they have already all been spawned
         timeSinceLastSpawn+=timeSinceLastFrame;
         if(timeSinceLastSpawn>=enemiesSpawnDelay[enemyCounter]){
-            timeSinceLastSpawn-=enemiesSpawnDelay[enemyCounter];
+            timeSinceLastSpawn=0;
             spawnNextEnemy();
             return true;
         }
         return false;
     }
-    //creates a a new enemy of the type determined by enemiesToSpawn
-    //spawn location is path.coordinates[0]
+    /**
+     * Creates a new enemy of the type determined by enemiesToSpawn
+     * spawn location is path.coordinates[0]
+     */
     private void spawnNextEnemy(){
         Enemy enemy=spawner.spawnEnemy(enemyCounter,enemiesToSpawn[enemyCounter]);
         enemies.add(enemy);
         enemyCounter++;
     }
 
-    public boolean update(float timeSinceLastFrame){
-        boolean lost=updateEnemies();
+    /**
+     * Updates both enemies and towers in this order.
+     * @param timeSinceLastFrame
+     * @return 0 normally, 1 if player lost, 2 if player won.
+     */
+    public int update(float timeSinceLastFrame){
+        updateEnemies();
         updateTowers(timeSinceLastFrame);
-        return lost;
+
+        //triggers if player loses the game
+        if(playerHP<=0){
+            System.out.println("PLAYER LOST THE GAME");
+            return 1;
+        }else if(enemyCounter>=enemiesToSpawn.length && enemies.isEmpty()){
+            System.out.println("PLAYER WON THE GAME");
+            return 2;
+        }
+        return 0;
     }
 
     /**
@@ -71,7 +89,7 @@ public class TDMap {
      *    returns true if the player lost
      * Used in GameScreen.render
      */
-    private boolean updateEnemies(){
+    private void updateEnemies(){
         List<Enemy> shouldBeDeleted=new ArrayList<>();
         for (Enemy enemy:enemies) {
             int damage=enemy.update(path); //damage enemy deals to player at end of path, this also moves the enemy
@@ -90,12 +108,6 @@ public class TDMap {
         for(Enemy enemy:shouldBeDeleted){
             enemies.remove(enemy);
         }
-        //triggers if player loses the game
-        if(playerHP<=0){
-            System.out.println("PLAYER LOST THE GAME");
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -112,20 +124,32 @@ public class TDMap {
         drawAllTowers(batch);
         drawAllEnemies(batch);
     }
-
     private void drawAllEnemies(SpriteBatch batch){
         for (Enemy enemy:enemies) {
             enemy.draw(batch);
         }
     }
-
     private void drawAllTowers(SpriteBatch batch){
         for (TowerSpace towerspace:towerSpaces) {
             towerspace.draw(batch);
         }
     }
+    public int getPlayerHP() {
+        return playerHP;
+    }
+    public void setPlayerHP(int playerHP) {
+        this.playerHP = playerHP;
+    }
+    public int getPlayerGold() {
+        return playerGold;
+    }
+    public void setPlayerGold(int playerGold) {
+        this.playerGold = playerGold;
+    }
 
-    //frees up the memory
+    /**
+     * Frees up the memory.
+     */
     public void dispose(){
         backgroundTexture.dispose();
         path=null;

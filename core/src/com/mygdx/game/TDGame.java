@@ -50,7 +50,7 @@ public class TDGame extends Game {
 
 	/**
 	 * Returns a texture based on the path and filename.
-	 * @param path /path/to/file (no file extension)
+	 * @param path "path/to/file" (no file extension)
 	 */
 	public static Texture fetchTexture(String path){
 		return new Texture(path+TEXTURE_EXTENSION);

@@ -88,6 +88,7 @@ public class DamagableUnit extends MovableUnit{
             this.position=position.add(offset);
         }
         public void update(Coordinate position, float maxHp, float currentHp){
+            if(currentHp<0) currentHp=0;
             float hpPercent=currentHp/maxHp;
             this.currentWidth=width*hpPercent;
             this.position=position.add(offset);

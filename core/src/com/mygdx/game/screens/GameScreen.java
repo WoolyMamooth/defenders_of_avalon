@@ -3,6 +3,7 @@ package com.mygdx.game.screens;
 import static com.mygdx.game.TDGame.*;
 
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
@@ -38,8 +39,8 @@ public class GameScreen implements Screen {
     @Override
     public void render(float delta) {
         //clear the screen
-        ScreenUtils.clear(1, 1, 1, 1);
-        int gameState = 0;
+        ScreenUtils.clear(0, 0, 0, 0);
+        int gameState = 0;//1 if player lost, 2 if player won, 0 otherwise
 
         //if the game is paused then we skip updating the map
         if(!paused) {
@@ -58,7 +59,6 @@ public class GameScreen implements Screen {
         }
         //drawing begins here
         game.batch.begin();
-
         //draw the background
         game.batch.draw(backgroundTexture, SCREEN_BOT_LEFT.x(), SCREEN_BOT_LEFT.y());
 

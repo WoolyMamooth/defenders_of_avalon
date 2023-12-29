@@ -2,14 +2,12 @@ package com.mygdx.game.maps;
 
 import static com.mygdx.game.TDGame.SCREEN_HEIGHT;
 import static com.mygdx.game.TDGame.SCREEN_WIDTH;
+import static com.mygdx.game.TDGame.place;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.screens.GameScreen;
 import com.mygdx.game.screens.buttons.Clickable;
@@ -25,8 +23,8 @@ public class IngameMenu {
      */
     public IngameMenu(GameScreen screen){
         this.screen=screen;
-        this.playerData=new PlayerDataContainer();
-        this.pauseButton=new PauseButton(new Coordinate(SCREEN_WIDTH,SCREEN_HEIGHT), TDGame.fetchTexture("buttons/resume_game"),TDGame.fetchTexture("buttons/pause_game"));
+        this.playerData=new PlayerDataContainer(place(0,SCREEN_HEIGHT));
+        this.pauseButton=new PauseButton(place(SCREEN_WIDTH,SCREEN_HEIGHT), TDGame.fetchTexture("buttons/resume_game"),TDGame.fetchTexture("buttons/pause_game"));
     }
     public void draw(SpriteBatch batch){
         playerData.draw(batch);
@@ -37,10 +35,15 @@ public class IngameMenu {
         int playerGold;
         Coordinate position;
         BitmapFont font=new BitmapFont();
+
+        public PlayerDataContainer(Coordinate position) {
+            this.position=position;
+        }
+
         public void draw(SpriteBatch batch) {
             updateData();
-            font.draw(batch,"HP: "+playerHP,20,SCREEN_HEIGHT-20);
-            font.draw(batch,"Gold: "+playerGold,20,SCREEN_HEIGHT-40);
+            font.draw(batch,"HP: "+playerHP, position.x()+20, position.y()-20);
+            font.draw(batch,"Gold: "+playerGold,position.x()+20, position.y()-40);
         }
         private void updateData(){
             int[] playerData = screen.getPlayerData();
@@ -53,7 +56,8 @@ public class IngameMenu {
         boolean gamePaused=false;
         public PauseButton(Coordinate position, Texture activeTexture, Texture inactiveTexture) {
             super(position, activeTexture, inactiveTexture);
-            this.position=position.subtract(new Coordinate(inactiveTexture.getWidth()+10,inactiveTexture.getHeight()+10));
+            Coordinate offset=new Coordinate(inactiveTexture.getWidth()+10,inactiveTexture.getHeight()+10);
+            this.position=position.subtract(offset);
         }
         @Override
         public void drawCheckClick(SpriteBatch batch){

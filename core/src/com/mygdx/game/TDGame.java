@@ -17,6 +17,7 @@ public class TDGame extends Game {
 	public static Coordinate SCREEN_TOP_RIGHT;
 	public static Coordinate SCREEN_BOT_LEFT;
 	public static Coordinate SCREEN_BOT_RIGHT;
+	public static float widthOffset=0f;
 
 	//call batch.draw to draw on the screen efficiently
 	public SpriteBatch batch;
@@ -31,13 +32,29 @@ public class TDGame extends Game {
 	public void create () {
 		batch=new SpriteBatch();
 
-		SCREEN_HEIGHT = Gdx.graphics.getHeight();
-		SCREEN_WIDTH = Gdx.graphics.getWidth();
-		SCREEN_CENTER = new Coordinate(SCREEN_WIDTH/2f,SCREEN_HEIGHT/2f);
-		SCREEN_TOP_LEFT = new Coordinate(0f,SCREEN_HEIGHT*1f);
-		SCREEN_TOP_RIGHT = new Coordinate(SCREEN_WIDTH*1f,SCREEN_HEIGHT*1f);
-		SCREEN_BOT_LEFT = new Coordinate(0f,0f);
-		SCREEN_BOT_RIGHT = new Coordinate(SCREEN_WIDTH*1f,0f);
+		int deviceHeight = Gdx.graphics.getHeight();
+		int deviceWidth = Gdx.graphics.getWidth();
+
+		SCREEN_HEIGHT = deviceHeight;//1000;
+		SCREEN_WIDTH = 1920;
+
+		if(deviceWidth>SCREEN_WIDTH){
+			widthOffset=deviceWidth-SCREEN_WIDTH;
+			widthOffset/=2;
+			//SCREEN_WIDTH+=widthOffset;
+		}
+
+		SCREEN_CENTER = place(SCREEN_WIDTH/2f,SCREEN_HEIGHT/2f);
+		SCREEN_TOP_LEFT = place(0f,SCREEN_HEIGHT*1f);
+		SCREEN_TOP_RIGHT = place(SCREEN_WIDTH*1f,SCREEN_HEIGHT*1f);
+		SCREEN_BOT_LEFT = place(0f,0f);
+		SCREEN_BOT_RIGHT = place(SCREEN_WIDTH*1f,0f);
+
+		System.out.println(
+				"SCREEN DATA:\ndeviceH: "+deviceHeight+" deviceW: "+deviceWidth+
+				"\nSCREEN_H: "+SCREEN_HEIGHT+" SCREEN_W: "+SCREEN_WIDTH+
+				"\nwidthOffset: "+widthOffset+
+				"\nBOT_L: "+SCREEN_BOT_LEFT);
 
 		System.out.println("PLAYER LOADED: "+player);
 
@@ -54,5 +71,12 @@ public class TDGame extends Game {
 	 */
 	public static Texture fetchTexture(String path){
 		return new Texture(path+TEXTURE_EXTENSION);
+	}
+
+	/**
+	 * Returns a Coordinate which is correctly placed relative to screen size.
+	 */
+	public static Coordinate place(float x,float y){
+		return new Coordinate(x+widthOffset, y);
 	}
 }

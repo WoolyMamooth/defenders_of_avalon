@@ -4,6 +4,7 @@ import static com.mygdx.game.TDGame.SCREEN_BOT_RIGHT;
 import static com.mygdx.game.TDGame.SCREEN_HEIGHT;
 import static com.mygdx.game.TDGame.SCREEN_TOP_LEFT;
 import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
+import static com.mygdx.game.TDGame.place;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.TDGame;
@@ -38,11 +39,11 @@ public class MapLoader {
         //so we subtract the y coordinate so it's not flipped
         Path path=new Path(new Coordinate[]{
                 new Coordinate(SCREEN_TOP_LEFT.x(), SCREEN_TOP_LEFT.y()),
-                new Coordinate(543, SCREEN_HEIGHT-497),
-                new Coordinate(1122, SCREEN_HEIGHT-658),
-                new Coordinate(1691, SCREEN_HEIGHT-820),
-                new Coordinate(1919, SCREEN_HEIGHT-839),
-                new Coordinate(SCREEN_BOT_RIGHT.x(), SCREEN_BOT_RIGHT.y())
+                place(543, SCREEN_HEIGHT-497),
+                place(1122, SCREEN_HEIGHT-658),
+                place(1691, SCREEN_HEIGHT-820),
+                place(1919, SCREEN_HEIGHT-839),
+                place(SCREEN_BOT_RIGHT.x(), SCREEN_BOT_RIGHT.y())
         });
         System.out.println("PATH:"+path);
         return path;
@@ -81,9 +82,9 @@ public class MapLoader {
         System.out.println("TOWERSPACES: default");
         //Check loadPath for info on SCREEN_HEIGHT-x issue
         return new TowerSpace[]{
-            towerSpaceByCoordinate(new Coordinate(200,SCREEN_HEIGHT-300)),
-            towerSpaceByCoordinate(new Coordinate(400,SCREEN_HEIGHT-510)),
-            towerSpaceByCoordinate(new Coordinate(1000,SCREEN_HEIGHT-600))
+            towerSpaceByCoordinate(place(100,SCREEN_HEIGHT-300)),
+            towerSpaceByCoordinate(place(300,SCREEN_HEIGHT-510)),
+            towerSpaceByCoordinate(place(900,SCREEN_HEIGHT-600))
         };
     }
 }

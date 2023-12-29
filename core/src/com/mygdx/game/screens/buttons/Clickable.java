@@ -32,6 +32,7 @@ public abstract class Clickable {
 
     /**
      * Draws the button.
+     * If you want to check if it has been clicked use drawCheckClick() instead;
      */
     public void draw(SpriteBatch batch) {
         batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);

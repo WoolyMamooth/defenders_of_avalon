@@ -1,25 +1,30 @@
 package com.mygdx.game.screens;
 
-import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
+import static com.mygdx.game.TDGame.place;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.TDGame;
-import com.mygdx.game.screens.buttons.MenuButton;
+import com.mygdx.game.maps.Coordinate;
+import com.mygdx.game.screens.buttons.Clickable;
 import com.mygdx.game.screens.buttons.ExitButton;
 import com.mygdx.game.screens.buttons.LoadScreenButton;
 
-import java.util.concurrent.TimeUnit;
-
 public class MainMenuScreen extends MenuScreen {
 
-    MenuButton playButton,exitButton;
+    Clickable playButton,exitButton;
     public MainMenuScreen(TDGame game){
         super(game);
         System.out.println("LOADING MainMenuScreen");
-        this.playButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/play_active"),TDGame.fetchTexture("buttons/play"),1,"chooseMap");
-        this.exitButton=new ExitButton(TDGame.fetchTexture("buttons/exit_active"),TDGame.fetchTexture("buttons/exit"),2);
+        Coordinate pos=centerButton(1);
+        this.playButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/play_active"),
+                TDGame.fetchTexture("buttons/play"),
+                place(pos.x(), pos.y()),
+                "chooseMap");
+
+        pos=centerButton(2);
+        this.exitButton=new ExitButton(TDGame.fetchTexture("buttons/exit_active"),
+                TDGame.fetchTexture("buttons/exit"),
+                place(pos.x(), pos.y()));
     }
 
     @Override

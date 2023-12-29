@@ -2,15 +2,16 @@ package com.mygdx.game.screens.buttons;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.TDGame;
+import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.screens.ChooseMapScreen;
 import com.mygdx.game.screens.MainMenuScreen;
 import com.mygdx.game.screens.MenuScreen;
 
-public class LoadScreenButton extends MenuButton {
+public class LoadScreenButton extends Clickable {
     String screenType;
     TDGame game;
-    public LoadScreenButton(TDGame game, Texture activeTexture, Texture inactiveTexture, int position, String screenType) {
-        super(activeTexture, inactiveTexture, position);
+    public LoadScreenButton(TDGame game, Texture activeTexture, Texture inactiveTexture, Coordinate position, String screenType) {
+        super(position, activeTexture, inactiveTexture);
         this.game=game;
         this.screenType=screenType;
     }

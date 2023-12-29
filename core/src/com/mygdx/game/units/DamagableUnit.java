@@ -99,7 +99,6 @@ public class DamagableUnit extends MovableUnit{
             batch.setColor(Color.RED);
             batch.draw(texture, position.x(), position.y(), currentWidth, height); //current hp in red
             batch.setColor(Color.WHITE);
-
         }
         @Override
         public void dispose() {

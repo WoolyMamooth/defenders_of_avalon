@@ -1,16 +1,15 @@
 package com.mygdx.game.screens;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.TDGame;
-import com.mygdx.game.screens.buttons.MenuButton;
-
-import java.util.concurrent.TimeUnit;
+import com.mygdx.game.maps.Coordinate;
+import com.mygdx.game.screens.buttons.Clickable;
 
 public abstract class MenuScreen implements Screen {
         public static float MENU_SCALE=1f;
         public static float MENU_SPACING=0.1f;
+
         public TDGame game;
         public MenuScreen(TDGame game){
             this.game=game;
@@ -28,8 +27,21 @@ public abstract class MenuScreen implements Screen {
             game.batch.end();
         }
 
-        protected void renderButton(MenuButton button){
+        protected void renderButton(Clickable button){
                 button.drawCheckClick(game.batch);
+        }
+
+        /**
+         * Returns a centered coordinate using the following logic:
+         * x = TDGame.SCREEN_WIDTH / 2f
+         * y = TDGame.SCREEN_HEIGHT - (TDGame.SCREEN_HEIGHT * MenuScreen.MENU_SPACING) * positionInMenu)
+         * Intended for use on buttons in a menu. Positions should start from 1.
+         * @param positionInMenu
+         * @return
+         */
+        public Coordinate centerButton(int positionInMenu){
+            Coordinate coord=new Coordinate(TDGame.SCREEN_WIDTH / 2f,TDGame.SCREEN_HEIGHT - (TDGame.SCREEN_HEIGHT * MENU_SPACING)*positionInMenu);
+            return coord;
         }
 
         @Override

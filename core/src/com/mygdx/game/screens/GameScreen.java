@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
     public GameScreen(TDGame game, TDMap map){
         this.game=game;
         this.map=map;
-        this.menu=new IngameMenu(this);
+        this.menu=new IngameMenu(this.game, this);
     }
 
     @Override
@@ -106,6 +106,9 @@ public class GameScreen implements Screen {
     public void pause() {
         paused=!paused;
     }
+    public boolean isPaused(){
+        return paused;
+    }
 
     @Override
     public void resume() {
@@ -114,6 +117,6 @@ public class GameScreen implements Screen {
 
     @Override
     public void hide() {
-
+        dispose();
     }
 }

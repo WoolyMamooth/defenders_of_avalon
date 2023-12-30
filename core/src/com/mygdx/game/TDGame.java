@@ -3,7 +3,9 @@ package com.mygdx.game;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.screens.MainMenuScreen;
 
@@ -78,5 +80,16 @@ public class TDGame extends Game {
 	 */
 	public static Coordinate place(float x,float y){
 		return new Coordinate(x+widthOffset, y);
+	}
+
+	/**
+	 * Returns a RobotoRegular font with the given size. Use .setColor() on it to change color.
+	 * @param size
+	 */
+	public static BitmapFont fetchFont(int size){
+		FreeTypeFontGenerator generator=new FreeTypeFontGenerator(Gdx.files.internal("fonts/roboto/RobotoRegular.ttf"));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter=new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.size=size;
+		return generator.generateFont(parameter);
 	}
 }

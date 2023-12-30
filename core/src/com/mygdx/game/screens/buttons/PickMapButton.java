@@ -19,7 +19,7 @@ public class PickMapButton extends Clickable {
     @Override
     public void onClick() {
         System.out.println("PICK_MAP BUTTON CLICKED");
-        game.setScreen(new GameScreen(game, getMap(this.mapID)));
+        game.setScreen(new GameScreen(game, getMap(this.mapID),mapID));
         dispose();
     }
 

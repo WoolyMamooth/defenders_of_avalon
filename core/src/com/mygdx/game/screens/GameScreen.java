@@ -9,11 +9,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.maps.IngameMenu;
+import com.mygdx.game.maps.MapLoader;
 import com.mygdx.game.maps.TDMap;
 
 public class GameScreen implements Screen {
     TDGame game;
     TDMap map; //the map that was chosen in the menu
+    int mapID;
     Texture backgroundTexture; //background of the map
     IngameMenu menu; // contains pause button, player HP etc
     boolean paused=false;
@@ -25,9 +27,10 @@ public class GameScreen implements Screen {
      * @param map
      */
 
-    public GameScreen(TDGame game, TDMap map){
+    public GameScreen(TDGame game, TDMap map, int mapID){
         this.game=game;
         this.map=map;
+        this.mapID=mapID;
         this.menu=new IngameMenu(this.game, this);
     }
 
@@ -67,7 +70,9 @@ public class GameScreen implements Screen {
 
         //draw ingame menu
         menu.draw(game.batch);
-
+        if (menu.menuButtonPressed){
+            gameState=3;
+        }
         game.batch.end();
         //drawing ends here
 
@@ -75,6 +80,9 @@ public class GameScreen implements Screen {
             this.dispose();
             game.setScreen(new LostScreen(game));
         }else if(gameState==2){ // player won the game
+            this.dispose();
+            game.setScreen(new MainMenuScreen(game));
+        }else if(gameState==3){ // player exited to menu
             this.dispose();
             game.setScreen(new MainMenuScreen(game));
         }
@@ -95,6 +103,12 @@ public class GameScreen implements Screen {
      */
     public int[] getPlayerData(){
         return new int[]{map.getPlayerHP(), map.getPlayerGold()};
+    }
+    public void reloadMap(){
+        MapLoader mapLoader=new MapLoader(game);
+        map.dispose();
+        map=mapLoader.getMap(mapID);
+        backgroundTexture=map.getBackgroundTexture();
     }
 
     @Override

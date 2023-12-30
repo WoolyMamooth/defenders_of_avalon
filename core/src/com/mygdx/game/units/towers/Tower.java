@@ -1,7 +1,9 @@
 package com.mygdx.game.units.towers;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.units.DrawableUnit;
 import com.mygdx.game.units.enemies.Enemy;
@@ -90,6 +92,30 @@ public class Tower extends DrawableUnit {
         for (Projectile projectile:projectiles) {
             projectile.draw(batch);
         }
+    }
+
+    public int getTowerSpawnID() {
+        return towerSpawnID;
+    }
+
+    public float getAttackDelay() {
+        return attackDelay;
+    }
+
+    public float getRange() {
+        return range;
+    }
+
+    public int getDamage() {
+        return damage;
+    }
+
+    public int getCost() {
+        return cost;
+    }
+
+    public int getUpgradeCost() {
+        return upgradeCost;
     }
 
     @Override

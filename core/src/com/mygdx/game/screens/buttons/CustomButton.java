@@ -53,6 +53,7 @@ public abstract class CustomButton extends Clickable{
             font.setColor(backgroundColor);
             font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY);
         }
+        batch.setColor(Color.WHITE);
     }
     @Override
     public void dispose() {

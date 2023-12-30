@@ -60,6 +60,11 @@ public class IngameMenu {
         playerData.draw(batch); //hp and gold
         pauseButton.drawCheckClick(batch); //pause button
     }
+    public void dispose() {
+        pauseButton.dispose();
+        pauseMenu.dispose();
+    }
+
     private class PlayerDataContainer{
         int playerHP;
         int playerGold;
@@ -137,6 +142,10 @@ public class IngameMenu {
 
             retryButton.drawCheckClick(batch);
             menuButton.drawCheckClick(batch);
+        }
+        public void dispose(){
+            retryButton.dispose();
+            menuButton.dispose();
         }
         private class RetryButton extends Clickable{
             /**

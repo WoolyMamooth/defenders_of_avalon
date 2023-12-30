@@ -95,6 +95,7 @@ public class GameScreen implements Screen {
         game.batch=new SpriteBatch();
         map.dispose();
         backgroundTexture.dispose();
+        menu.dispose();
         System.gc();
     }
 

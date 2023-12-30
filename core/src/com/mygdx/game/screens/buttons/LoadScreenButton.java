@@ -7,7 +7,7 @@ import com.mygdx.game.screens.ChooseMapScreen;
 import com.mygdx.game.screens.MainMenuScreen;
 import com.mygdx.game.screens.MenuScreen;
 
-public class LoadScreenButton extends Clickable {
+public class LoadScreenButton extends Button {
     String screenType;
     TDGame game;
     public LoadScreenButton(TDGame game, Texture activeTexture, Texture inactiveTexture, Coordinate position, String screenType) {

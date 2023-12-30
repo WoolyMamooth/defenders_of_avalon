@@ -11,16 +11,10 @@ public abstract class Clickable {
     //
     protected Coordinate position;
     public float  width, height;
-    protected Texture activeTexture, inactiveTexture;
 
-    public Clickable(Coordinate position, Texture activeTexture, Texture inactiveTexture) {
+    public Clickable(Coordinate position){
         this.position = position;
-        this.width = activeTexture.getWidth() * MenuScreen.MENU_SCALE;
-        this.height = activeTexture.getHeight() * MenuScreen.MENU_SCALE;
-        this.activeTexture = activeTexture;
-        this.inactiveTexture = inactiveTexture;
     }
-
     protected boolean isActive() {
         if (Gdx.input.getX() < position.x() + this.width && Gdx.input.getX() > position.x() &&
                 TDGame.SCREEN_HEIGHT - Gdx.input.getY() < position.y() + this.height &&
@@ -31,14 +25,12 @@ public abstract class Clickable {
     }
 
     /**
-     * Draws the button.
+     * Draws the clickable.
      * If you want to check if it has been clicked use drawCheckClick() instead;
      */
-    public void draw(SpriteBatch batch) {
-        batch.draw((isActive() ? activeTexture : inactiveTexture), position.x(), position.y(), this.width, this.height);
-    }
+    public abstract void draw(SpriteBatch batch);
     /**
-     * Draws the button and also checks if it has been clicked.
+     * Draws the clickable and also checks if it has been clicked.
     */
     public void drawCheckClick(SpriteBatch batch) {
         draw(batch);
@@ -47,19 +39,7 @@ public abstract class Clickable {
         }
     }
     public abstract void onClick();
-
-    public Texture getTexture() {
-        if (this.isActive()) {
-            return this.activeTexture;
-        }
-        return this.inactiveTexture;
-    }
-
-    public void dispose(){
-        activeTexture.dispose();
-        inactiveTexture.dispose();
-    }
-
+    public abstract void dispose();
     public Coordinate getPosition() {
         return position;
     }

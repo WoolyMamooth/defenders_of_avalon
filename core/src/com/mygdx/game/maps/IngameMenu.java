@@ -15,7 +15,9 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.screens.GameScreen;
+import com.mygdx.game.screens.buttons.Button;
 import com.mygdx.game.screens.buttons.Clickable;
+import com.mygdx.game.screens.buttons.CustomButton;
 
 public class IngameMenu {
     TDGame game;
@@ -96,7 +98,7 @@ public class IngameMenu {
             playerGold=playerData[1];
         }
     }
-    private class PauseButton extends Clickable{
+    private class PauseButton extends Button {
         /**
          * When clicked the screen.pause() will be called.
          * @param position
@@ -123,16 +125,17 @@ public class IngameMenu {
     private class PauseMenu{
         RetryButton retryButton;
         ExitGameButton menuButton;
+        float buttonWidth=128,buttonHeight=64;
+        int fontSize=35;
 
         /**
          * Includes a full screen background and button that should appear while the game is paused.
          */
         public PauseMenu() {
-            Texture sample=fetchTexture("buttons/pick_map_active");
-            float centerOffset=-sample.getWidth()/2f;
+            float centerOffset=-64;
 
-            retryButton=new RetryButton(SCREEN_CENTER.add(new Coordinate(centerOffset,100)),sample,fetchTexture("buttons/pick_map"));
-            menuButton=new ExitGameButton(SCREEN_CENTER.add(new Coordinate(centerOffset,-50)),fetchTexture("buttons/menu_active"),fetchTexture("buttons/menu"));
+            retryButton=new RetryButton(SCREEN_CENTER.add(new Coordinate(centerOffset,100)));
+            menuButton=new ExitGameButton(SCREEN_CENTER.add(new Coordinate(centerOffset,-50)));
         }
 
         public void draw(SpriteBatch batch){
@@ -147,12 +150,12 @@ public class IngameMenu {
             retryButton.dispose();
             menuButton.dispose();
         }
-        private class RetryButton extends Clickable{
+        private class RetryButton extends CustomButton {
             /**
             * When clicked screen.reloadMap() will be called.
             */
-            public RetryButton(Coordinate position, Texture activeTexture, Texture inactiveTexture) {
-                super(position, activeTexture, inactiveTexture);
+            public RetryButton(Coordinate position) {
+                super(position,"Restart",fontSize,Color.WHITE,Color.BLACK,buttonWidth,buttonHeight);
             }
             @Override
             public void onClick() {
@@ -160,15 +163,13 @@ public class IngameMenu {
                 screen.pause();
             }
         }
-        private class ExitGameButton extends Clickable{
+        private class ExitGameButton extends CustomButton{
             /**
              * When clicked the GameScreen will load a new MainMenu screen.
              * @param position
-             * @param activeTexture
-             * @param inactiveTexture
              */
-            public ExitGameButton(Coordinate position, Texture activeTexture, Texture inactiveTexture) {
-                super(position, activeTexture, inactiveTexture);
+            public ExitGameButton(Coordinate position) {
+                super(position,"Menu",fontSize,Color.WHITE,Color.BLACK,buttonWidth,buttonHeight);
             }
             @Override
             public void onClick() {

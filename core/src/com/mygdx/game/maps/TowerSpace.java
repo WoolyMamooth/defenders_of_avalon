@@ -5,27 +5,27 @@ import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
 import static com.mygdx.game.TDGame.player;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.TDGame;
+import com.mygdx.game.screens.buttons.Button;
 import com.mygdx.game.screens.buttons.Clickable;
+import com.mygdx.game.screens.buttons.CustomButton;
 import com.mygdx.game.units.enemies.Enemy;
 import com.mygdx.game.units.towers.Tower;
 
 import java.util.List;
 
-public class TowerSpace extends Clickable {
+public class TowerSpace extends Button {
     private class TowerChoiceMenu{
-        private class TowerChoiceButton extends Clickable{
-            String towerName;
-            public TowerChoiceButton(Coordinate position, Texture activeTexture, Texture inactiveTexture,String towerName) {
-                super(position, activeTexture, inactiveTexture);
-                this.towerName=towerName;
+        private class TowerChoiceButton extends CustomButton {
+            public TowerChoiceButton(Coordinate position,String towerName) {
+                super(position,towerName,35, Color.BLACK,Color.WHITE,128,64);
             }
-
             @Override
             public void onClick() {
-                build(towerName);
+                build(this.text);
             }
         }
         String[] buildableTowerNames; //show a menu of these when the TowerSpace is clicked and build the one that is chosen
@@ -40,11 +40,8 @@ public class TowerSpace extends Clickable {
             this.buildableTowerNames = player.getEquippedTowers(); //we show the equipped towers as options
             for (int i = 0; i < CHOOSABLE_TOWER_NUMBER; i++) {
                 buttons[i]=new TowerChoiceButton(
-                        new Coordinate(position.x()+buttonOffsetX, position.y()+buttonOffsetY)
-                        ,TDGame.fetchTexture("towers/towerButtons/actives/" + buildableTowerNames[i])
-                        ,TDGame.fetchTexture("towers/towerButtons/inactives/" + buildableTowerNames[i])
-                        ,buildableTowerNames[i]);
-                buttonOffsetY+=buttons[i].getTexture().getHeight(); //increment vertical offset so we get a list of buttons
+                        new Coordinate(position.x()+buttonOffsetX, position.y()+buttonOffsetY),buildableTowerNames[i]);
+                buttonOffsetY+=buttons[i].height; //increment vertical offset so we get a list of buttons
             }
         }
         public void draw(SpriteBatch batch){

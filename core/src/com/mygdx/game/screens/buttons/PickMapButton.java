@@ -7,7 +7,7 @@ import com.mygdx.game.maps.MapLoader;
 import com.mygdx.game.maps.TDMap;
 import com.mygdx.game.screens.GameScreen;
 
-public class PickMapButton extends Clickable {
+public class PickMapButton extends Button {
     int mapID;
     TDGame game;
     public PickMapButton(TDGame game, Texture activeTexture, Texture inactiveTexture, Coordinate position, int mapID) {

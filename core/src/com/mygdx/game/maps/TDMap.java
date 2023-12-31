@@ -20,8 +20,8 @@ public class TDMap {
     EnemySpawner spawner; // object that spawns enemies, we set its coords to the first element in path
     TowerSpace[] towerSpaces; // defines the places where the player will be able to build towers
     public static int lastTowerID=0; // keeps track of the id of towers
-    private int playerHP=100; // if it reaches 0 we load LostScreen
-    private int playerGold=100; // used to build towers
+    private int playerHP; // if it reaches 0 we load LostScreen
+    public static int playerGold; // used to build towers
 
     public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces) {
         this.mapID=mapID;
@@ -32,6 +32,9 @@ public class TDMap {
         this.spawner=new EnemySpawner(path.getCoordinate(0));
         this.enemies=new ArrayList<>();
         this.towerSpaces=towerSpaces;
+
+        playerHP=100;
+        playerGold=100;
     }
 
     //returns the background texture, used in GameScreen.show
@@ -140,11 +143,24 @@ public class TDMap {
     public void setPlayerHP(int playerHP) {
         this.playerHP = playerHP;
     }
-    public int getPlayerGold() {
+    public static int getPlayerGold() {
         return playerGold;
     }
-    public void setPlayerGold(int playerGold) {
-        this.playerGold = playerGold;
+
+    /**
+     * Use this method when you try to make the player spend gold.
+     * Subtracts the given gold amount from the players gold, if it isn't enough
+     * it returns false.
+     */
+    public static boolean attemptGoldSpend(int cost){
+        System.out.println("Player is attempting to spend "+cost+" gold out of "+playerGold);
+        if(cost>playerGold) {
+            System.out.println("Not enough");
+            return false;
+        }
+        System.out.println("Is enough");
+        playerGold-=cost;
+        return true;
     }
 
     /**

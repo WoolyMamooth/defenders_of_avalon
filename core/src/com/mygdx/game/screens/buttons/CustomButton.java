@@ -13,8 +13,8 @@ public abstract class CustomButton extends Clickable{
     protected String text;
     Texture background;
     BitmapFont font;
-    Color backgroundColor;
-    Color textColor;
+    protected Color backgroundColor;
+    protected Color textColor;
     float textOffsetX,textOffsetY;
 
     /**

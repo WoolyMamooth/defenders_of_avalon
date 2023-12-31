@@ -12,6 +12,7 @@ import com.mygdx.game.units.projectiles.ProjectileSpawner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Tower extends DrawableUnit {
     ProjectileSpawner projectileSpawner;
@@ -23,21 +24,18 @@ public class Tower extends DrawableUnit {
     float attackDelay; //defines how much time should pass between attacks
     float range; //defines how far the tower will target
     int damage;
-    int cost;
-    int upgradeCost;
+    public TowerUpgrade[] upgrades;
 
-    public Tower(Texture texture, Coordinate position,int towerSpawnID,String projectileName, int damage, int cost, int upgradeCost,float attackDelay) {
+    public Tower(Texture texture, Coordinate position,int towerSpawnID,String projectileName, int damage,float attackDelay,TowerUpgrade[] upgrades) {
         super(texture, position);
         this.towerSpawnID=towerSpawnID;
         this.projectileName=projectileName;
         this.damage = damage;
-        this.cost = cost;
-        this.upgradeCost = upgradeCost;
-        this.projectileSpawner=new ProjectileSpawner(new Coordinate(position.x()+this.getWidth()/2, position.y()+this.getHeight()/2));
+        this.projectileSpawner=new ProjectileSpawner(new Coordinate(position.x()+this.getWidth()/2f, position.y()+this.getHeight()/2f));
         this.range=200;
         this.attackDelay=attackDelay;
+        this.upgrades=upgrades;
     }
-
     /**
      * Sends a projectile to the target Enemy
      */
@@ -58,7 +56,6 @@ public class Tower extends DrawableUnit {
             timeSinceLastAttack=0;
         }
     }
-
     private void updateExistingProjectiles(){
         if(projectiles==null) return;
         List<Projectile> shouldBeDeleted=new ArrayList<>();
@@ -74,7 +71,6 @@ public class Tower extends DrawableUnit {
             projectiles.remove(projectile);
         }
     }
-
     private Enemy getTarget(List<Enemy> enemies){
         if(enemies.isEmpty()) return null;
         for (Enemy enemy:enemies) {
@@ -84,7 +80,6 @@ public class Tower extends DrawableUnit {
         }
         return null;
     }
-
     @Override
     public void draw(SpriteBatch batch){
         super.draw(batch);
@@ -94,30 +89,69 @@ public class Tower extends DrawableUnit {
         }
     }
 
+    /**
+     * Increases the level of the specified stat by one.
+     */
+    public void upgrade(String stat){
+        for(TowerUpgrade u:this.upgrades){
+            if(Objects.equals(u.stat, stat)){
+                u.levelUp();
+                applyUpgrade(u);
+            }
+        }
+    }
+
+    /**
+     * Returns the cost of the upgrade if it can be upgraded, 0 otherwise.
+     * @param stat
+     * @return
+     */
+    public int costOfUpgrade(String stat){
+        //find the upgrade we need to level up
+        for(TowerUpgrade u:this.upgrades){
+            if(Objects.equals(u.stat, stat)){
+                if(!u.isMaxed()){ //if it wasn't maxed yet
+                    return u.getCost();
+                }
+                break;
+            }
+        }
+        return 0;
+    }
+
+    /**
+     * This increases the stat of the tower, all possible upgrades have to be defined here!
+     */
+    private void applyUpgrade(TowerUpgrade u){
+        switch (u.stat){
+            case "range":
+                this.range+=u.getIncrease();
+                break;
+            case "damage":
+                this.damage+=u.getIncrease();
+                break;
+            case "atkSpeed":
+                //10 attackspeed = -0.1f delay between attacks
+                this.attackDelay-=u.getIncrease()/100f;
+                break;
+
+            default:
+                System.out.println("Upgrade "+u.stat+" doesn't exist for "+toString());
+                break;
+        }
+    }
     public int getTowerSpawnID() {
         return towerSpawnID;
     }
-
     public float getAttackDelay() {
         return attackDelay;
     }
-
     public float getRange() {
         return range;
     }
-
     public int getDamage() {
         return damage;
     }
-
-    public int getCost() {
-        return cost;
-    }
-
-    public int getUpgradeCost() {
-        return upgradeCost;
-    }
-
     @Override
     public String toString() {
         return "Tower{" +

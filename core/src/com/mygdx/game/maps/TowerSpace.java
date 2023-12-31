@@ -3,6 +3,7 @@ package com.mygdx.game.maps;
 import static com.mygdx.game.TDGame.SCREEN_WIDTH;
 import static com.mygdx.game.TDGame.fetchTexture;
 import static com.mygdx.game.TDGame.player;
+import static com.mygdx.game.maps.TDMap.attemptGoldSpend;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -15,6 +16,7 @@ import com.mygdx.game.screens.buttons.Button;
 import com.mygdx.game.screens.buttons.CustomButton;
 import com.mygdx.game.units.enemies.Enemy;
 import com.mygdx.game.units.towers.Tower;
+import com.mygdx.game.units.towers.TowerUpgrade;
 
 import java.util.List;
 
@@ -70,25 +72,35 @@ public class TowerSpace extends Button {
     }
     private class TowerUpgradeMenu extends TowerMenu{
         private class TowerUpradeButton extends CustomButton{
-            public TowerUpradeButton(Coordinate position, String upgradeName) {
-                super(position, upgradeName,buttonFontsize,Color.WHITE, Color.BLACK,buttonWidth,buttonHeight);
+            TowerUpgrade u;
+            public TowerUpradeButton(Coordinate position, TowerUpgrade upgrade) {
+                super(position, upgrade.getIncrease()+" "+upgrade.stat+":"+upgrade.getLevel()+"/"+upgrade.getMaxLevel()+" - "+ upgrade.getCost(),
+                        buttonFontsize,Color.WHITE, Color.BLACK,buttonWidth,buttonHeight);
+                this.u =upgrade;
             }
             @Override
             public void onClick() {
-                upgrade(this.text);
+                System.out.println("Upgrade button clicked: "+ u.stat+" to level "+(u.getLevel()+1));
+                if(!u.isMaxed()) {
+                    upgrade(u.stat);
+                    if (u.isMaxed()) {
+                        this.backgroundColor = Color.RED;
+                        this.text = u.stat + ":" + u.getLevel() + "/" + u.getMaxLevel();
+                    }else this.text = u.getIncrease() + " " + u.stat + ":" + u.getLevel() + "/" + u.getMaxLevel() + " - " + u.getCost();
+                }
             }
         }
         /**
          * Handles the upgrading of the tower on different paths.
          * @param buttonOffsetX
          */
-        public TowerUpgradeMenu(float buttonOffsetX,String[] upgradeNames) {
+        public TowerUpgradeMenu(float buttonOffsetX,TowerUpgrade[] upgrades) {
             super(buttonOffsetX);
             buttonOffsetY=64;
             this.amountOfButtons=3; //maximum number of upgrades a tower can have
             buttons=new TowerUpradeButton[amountOfButtons];
             for (int i = 0; i < amountOfButtons; i++) {
-                buttons[i]=new TowerUpradeButton(new Coordinate(position.x()+this.buttonOffsetX, position.y()+this.buttonOffsetY),upgradeNames[i]);
+                buttons[i]=new TowerUpradeButton(new Coordinate(position.x()+this.buttonOffsetX, position.y()+this.buttonOffsetY),upgrades[i]);
                 buttonOffsetY-=buttons[i].height; //increment vertical offset so we get a list of buttons
             }
         }
@@ -120,15 +132,21 @@ public class TowerSpace extends Button {
      */
     private void build(String towerName){
         Texture texture=TDGame.fetchTexture("towers/towerTextures/"+towerName);
-
+        TowerUpgrade[] upgrades;
         switch (towerName){
             case "archer":
-                tower=new Tower(texture,position, towerBuildID,"arrow",10,0,0,0.5f);
+                upgrades=new TowerUpgrade[]{
+                        new TowerUpgrade("range",3,10,10,1.25f),
+                        new TowerUpgrade("atkSpeed",3,10,20,1.5f),
+                        new TowerUpgrade("damage",3,25,5,2f)
+                };
+                tower=new Tower(texture,position, towerBuildID,"arrow",10,0.5f,upgrades);
                 occupied=true;
                 break;
             case "None":
             default:
-                tower=new Tower(texture,position, towerBuildID,"arrow",0,0,0,1f);
+                upgrades = new TowerUpgrade[]{};
+                tower=new Tower(texture,position, towerBuildID,"arrow",0,1f,upgrades);
                 occupied=true;
                 System.out.println("Warning tower "+ towerBuildID +" is set to default");
                 break;
@@ -136,11 +154,15 @@ public class TowerSpace extends Button {
         TDMap.lastTowerID++; //increment tower IDs to help keep track of them
         activeTexture=fetchTexture("white_square");
         menuVisible=false;
-        //TODO implement upgrades
-        this.menu=new TowerUpgradeMenu(tower.getTexture().getWidth(),new String[]{"upgrade1","upgrade2","upgrade3","upgrade4"}); //change the menu
+
+        this.menu=new TowerUpgradeMenu(tower.getTexture().getWidth(),upgrades); //change the menu
     }
     private void upgrade(String upgradeName){
-        //TODO
+        System.out.println("Upgrading");
+        int cost=tower.costOfUpgrade(upgradeName);
+        if(attemptGoldSpend(cost)){
+            tower.upgrade(upgradeName);
+        }
         menuVisible=false;
     }
     @Override

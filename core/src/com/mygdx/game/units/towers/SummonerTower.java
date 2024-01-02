@@ -37,16 +37,27 @@ public class SummonerTower extends Tower{
     public void update(List<Enemy> enemies, float timeSinceLastFrame) {
         updateExistingSummons(enemies,timeSinceLastFrame);
 
-        timeSinceLastAttack += timeSinceLastFrame;
-        if(summons.size()<maxSummons && timeSinceLastAttack>attackDelay){
+        if(summons.size()<maxSummons){
+            timeSinceLastAttack += timeSinceLastFrame;
+        }
+        if(timeSinceLastAttack>attackDelay){
             attack();
             timeSinceLastAttack=0;
         }
     }
     private void updateExistingSummons(List<Enemy> enemies, float timeSinceLastFrame){
         List<Enemy> targets=getPossibleTargets(enemies);
+        List<Summon> shouldBeDeleted=new ArrayList<>();
+
         for (Summon summon:summons) {
             summon.update(targets,timeSinceLastFrame);
+            if(summon.getCurrentHp()<=0){
+                summon.die();
+                shouldBeDeleted.add(summon);
+            }
+        }
+        for (Summon summon:shouldBeDeleted) {
+            summons.remove(summon);
         }
     }
     /**

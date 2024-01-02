@@ -30,11 +30,11 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
      * @param searchRange
      */
     public AlliedUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,int damage,float attackDelay, float searchRange) {
-        super(texture, position, movementSpeed, maxHp, armor, magicResistance);
+        super(texture, position, movementSpeed, maxHp, armor, magicResistance,true);
         this.spawnPosition=position;
         this.damage=damage;
         this.attackDelay=attackDelay;
-        this.attackRange=texture.getWidth()*3f;
+        this.attackRange=texture.getWidth()/2f;
         this.searchRange=searchRange;
     }
 
@@ -49,30 +49,52 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
      * @param timeSinceLastFrame
      */
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
-        target=getTarget(enemies,attackRange);
-        if(target!=null) {
-            //if we found a target attack it if possible
-            timeSinceLastAttack += timeSinceLastFrame;
-            if (timeSinceLastAttack >= attackDelay) {
-                attack();
-                timeSinceLastAttack = 0;
+        if(target==null){
+            target = getTarget(enemies, attackRange);
+            if(target==null){
+                target = getTarget(enemies, searchRange, spawnPosition);
+                if (target == null) return;
+                target.setInCombat(true);
+                move(target.getPosition());
+                return;
             }
-        }else {
-            target=getTarget(enemies,searchRange);
-            if(target==null) return;
-            move(target.textureCenterPosition());
+        }else if(target.getCurrentHp()>0) {
+            tryAttack(timeSinceLastFrame);
+            target.setInCombat(true);
+            target.setTarget(this);
+        }else{
+            target=null;
         }
     }
-    private Enemy getTarget(List<Enemy> enemies,float range){
+    protected void tryAttack(float timeSinceLastFrame){
+        timeSinceLastAttack += timeSinceLastFrame;
+        if (timeSinceLastAttack >= attackDelay) {
+            attack();
+            timeSinceLastAttack = 0;
+        }
+    }
+    protected Enemy getTarget(List<Enemy> enemies,float range){
         if(enemies==null || enemies.isEmpty()) return null;
         for (Enemy enemy:enemies) {
-            if(textureCenterPosition().distanceFrom(enemy.textureCenterPosition()) <= range){
+            if(position.distanceFrom(enemy.getPosition()) <= range){
                 return enemy;
             }
         }
         return null;
     }
-
+    private Enemy getTarget(List<Enemy> enemies, float range,Coordinate searchCenter){
+        if(enemies==null || enemies.isEmpty()) return null;
+        for (Enemy enemy:enemies) {
+            if(searchCenter.distanceFrom(enemy.getPosition()) <= range){
+                return enemy;
+            }
+        }
+        return null;
+    }
+    public void die(){
+        target.setTarget(null);
+        target.setInCombat(false);
+    }
     @Override
     public String toString() {
         return "AlliedUnit{" +

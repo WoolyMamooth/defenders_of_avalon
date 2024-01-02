@@ -70,7 +70,7 @@ public class TDMap {
      * @return 0 normally, 1 if player lost, 2 if player won.
      */
     public int update(float timeSinceLastFrame){
-        updateEnemies();
+        updateEnemies(timeSinceLastFrame);
         updateTowers(timeSinceLastFrame);
 
         //triggers if player loses the game
@@ -92,10 +92,10 @@ public class TDMap {
      *    returns true if the player lost
      * Used in GameScreen.render
      */
-    private void updateEnemies(){
+    private void updateEnemies(float timeSinceLastFrame){
         List<Enemy> shouldBeDeleted=new ArrayList<>();
         for (Enemy enemy:enemies) {
-            int damage=enemy.update(path); //damage enemy deals to player at end of path, this also moves the enemy
+            int damage=enemy.update(path,timeSinceLastFrame); //damage enemy deals to player at end of path, this also moves the enemy
             if(damage>0){
                 playerHP-=damage;
                 shouldBeDeleted.add(enemy);

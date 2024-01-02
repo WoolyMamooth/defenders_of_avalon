@@ -24,14 +24,20 @@ public class DamagableUnit extends MovableUnit{
      * @param armor
      * @param magicResistance
      */
-    public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance) {
+    public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,boolean isAlly) {
         super(texture, position, movementSpeed);
         this.maxHp = maxHp;
         this.currentHp = maxHp;
         this.armor = armor;
         this.magicResistance = magicResistance;
 
-        this.hpBar=new HPBar(position,height,width);
+        Color hpBarColor;
+        if(isAlly) hpBarColor=Color.CYAN;
+        else hpBarColor=Color.RED;
+        this.hpBar=new HPBar(position,height,width,hpBarColor);
+    }
+    public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance) {
+        this(texture,position,movementSpeed,maxHp,armor,magicResistance,false);
     }
 
     public void takeDamage(int damage) {
@@ -62,13 +68,16 @@ public class DamagableUnit extends MovableUnit{
 
     @Override
     public void draw(SpriteBatch batch){
-        hpBar.update(position, maxHp, currentHp);
-        hpBar.draw(batch);
+        if(currentHp<maxHp) {
+            hpBar.update(position, maxHp, currentHp);
+            hpBar.draw(batch);
+        }
         super.draw(batch);
     }
 
     private class HPBar extends DrawableUnit{
         Coordinate offset; // the amount by which the hpbar is drawn above the parent unit
+        Color color;
         float currentWidth; // current status, should equal the hp percentage of the unit
 
         /**
@@ -78,7 +87,7 @@ public class DamagableUnit extends MovableUnit{
          * @param parentHeight height of parent units texture
          * @param parentWidth width of parent units texture
          */
-        public HPBar(Coordinate parentPosition, float parentHeight,float parentWidth){
+        public HPBar(Coordinate parentPosition, float parentHeight,float parentWidth,Color color){
             super(parentPosition);
             this.texture=TDGame.fetchTexture("white_square");
             this.width=parentWidth;
@@ -86,6 +95,10 @@ public class DamagableUnit extends MovableUnit{
             this.height=HPBAR_HEIGHT;
             this.offset=new Coordinate(0,parentHeight+HPBAR_HEIGHT);
             this.position=position.add(offset);
+            this.color=color;
+        }
+        public HPBar(Coordinate parentPosition, float parentHeight,float parentWidth){
+            this(parentPosition,parentHeight,parentWidth,Color.RED);
         }
         public void update(Coordinate position, float maxHp, float currentHp){
             if(currentHp<0) currentHp=0;
@@ -96,7 +109,7 @@ public class DamagableUnit extends MovableUnit{
         @Override
         public void draw(SpriteBatch batch){
             batch.draw(texture, position.x(), position.y(), width, height); //max hp in white
-            batch.setColor(Color.RED);
+            batch.setColor(color);
             batch.draw(texture, position.x(), position.y(), currentWidth, height); //current hp in red
             batch.setColor(Color.WHITE);
         }

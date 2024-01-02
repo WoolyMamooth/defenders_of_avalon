@@ -27,36 +27,6 @@ public class Summon extends AlliedUnit{
      * @param timeSinceLastFrame
      */
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
-        target=getTarget(enemies,attackRange);
-        if(target!=null) {
-            //if we found a target attack it if possible
-            timeSinceLastAttack += timeSinceLastFrame;
-            if (timeSinceLastAttack >= attackDelay) {
-                attack();
-                timeSinceLastAttack = 0;
-            }
-        }else {
-            target=getTarget(enemies,searchRange,spawnPosition); //find an enemy in the towers range to move towards
-            if(target==null) return;
-            move(target.textureCenterPosition());
-        }
-    }
-    private Enemy getTarget(List<Enemy> enemies,float range){
-        if(enemies==null || enemies.isEmpty()) return null;
-        for (Enemy enemy:enemies) {
-            if(textureCenterPosition().distanceFrom(enemy.textureCenterPosition()) <= range){
-                return enemy;
-            }
-        }
-        return null;
-    }
-    private Enemy getTarget(List<Enemy> enemies, float range,Coordinate searchCenter){
-        if(enemies==null || enemies.isEmpty()) return null;
-        for (Enemy enemy:enemies) {
-            if(searchCenter.distanceFrom(enemy.textureCenterPosition()) <= range){
-                return enemy;
-            }
-        }
-        return null;
+        super.update(enemies,timeSinceLastFrame);
     }
 }

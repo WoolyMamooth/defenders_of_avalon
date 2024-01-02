@@ -52,11 +52,11 @@ public class SummonerTower extends Tower{
         for (Summon summon:summons) {
             summon.update(targets,timeSinceLastFrame);
             if(summon.getCurrentHp()<=0){
-                summon.die();
                 shouldBeDeleted.add(summon);
             }
         }
         for (Summon summon:shouldBeDeleted) {
+            summon.die();
             summons.remove(summon);
         }
     }
@@ -80,6 +80,9 @@ public class SummonerTower extends Tower{
         switch (u.stat){
             case "minions":
                 this.maxSummons+=u.getIncrease();
+                break;
+            case "heal":
+                //TODO summons heal while not in combat
                 break;
             default:
                 super.applyUpgrade(u);

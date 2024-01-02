@@ -26,6 +26,10 @@ public class Enemy extends DamagableUnit implements Attacker {
     public void attack(){
         //attack a summon or hero
         target.takeDamage(10);
+        if(target.getCurrentHp()<=0){
+            target=null;
+            inCombat=false;
+        }
     }
     protected void tryAttack(float timeSinceLastFrame){
         timeSinceLastAttack += timeSinceLastFrame;

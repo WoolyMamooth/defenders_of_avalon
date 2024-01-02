@@ -49,21 +49,19 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
      * @param timeSinceLastFrame
      */
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
-        if(target==null){
-            target = getTarget(enemies, attackRange);
-            if(target==null){
-                target = getTarget(enemies, searchRange, spawnPosition);
-                if (target == null) return;
-                target.setInCombat(true);
-                move(target.getPosition());
-                return;
-            }
-        }else if(target.getCurrentHp()>0) {
+        if(target!=null && inRange(target) && target.getCurrentHp()>0) {
             tryAttack(timeSinceLastFrame);
             target.setInCombat(true);
             target.setTarget(this);
         }else{
-            target=null;
+            target = getTarget(enemies, attackRange,position);
+            if(target==null){
+                target = getTarget(enemies, searchRange, spawnPosition);
+                if (target == null) return;
+                target.setInCombat(true);
+                target.setTarget(this);
+                move(target.getPosition());
+            }
         }
     }
     protected void tryAttack(float timeSinceLastFrame){
@@ -73,16 +71,7 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
             timeSinceLastAttack = 0;
         }
     }
-    protected Enemy getTarget(List<Enemy> enemies,float range){
-        if(enemies==null || enemies.isEmpty()) return null;
-        for (Enemy enemy:enemies) {
-            if(position.distanceFrom(enemy.getPosition()) <= range){
-                return enemy;
-            }
-        }
-        return null;
-    }
-    private Enemy getTarget(List<Enemy> enemies, float range,Coordinate searchCenter){
+    protected Enemy getTarget(List<Enemy> enemies, float range,Coordinate searchCenter){
         if(enemies==null || enemies.isEmpty()) return null;
         for (Enemy enemy:enemies) {
             if(searchCenter.distanceFrom(enemy.getPosition()) <= range){
@@ -91,9 +80,14 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
         }
         return null;
     }
+    private boolean inRange(DamagableUnit other){
+        return position.distanceFrom(other.position)<=attackRange;
+    }
     public void die(){
-        target.setTarget(null);
-        target.setInCombat(false);
+        if(target!=null) {
+            target.setTarget(null);
+            target.setInCombat(false);
+        }
     }
     @Override
     public String toString() {

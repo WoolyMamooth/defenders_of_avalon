@@ -146,7 +146,7 @@ public class TowerSpace extends Button {
                 break;
             case "barracks":
                 upgrades=new TowerUpgrade[]{
-                        new TowerUpgrade("minions",3,1,100,1f)
+                        new TowerUpgrade("minions",3,1,10,1f)
                 };
                 tower=new SummonerTower(texture,position,towerBuildID,"guard",5f,1,upgrades);
                 break;

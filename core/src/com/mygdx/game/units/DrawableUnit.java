@@ -46,6 +46,13 @@ public class DrawableUnit {
         return position;
     }
 
+    /**
+     * @return a coordinate which is visually in the middle of the texture.
+     */
+    public Coordinate textureCenterPosition(){
+        return getPosition().add(new Coordinate(texture.getWidth()/2f, texture.getHeight()/2f));
+    }
+
     public void setPosition(Coordinate position) {
         this.position = position;
     }

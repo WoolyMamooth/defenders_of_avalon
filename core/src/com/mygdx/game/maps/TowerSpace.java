@@ -15,6 +15,8 @@ import com.mygdx.game.TDGame;
 import com.mygdx.game.screens.buttons.Button;
 import com.mygdx.game.screens.buttons.CustomButton;
 import com.mygdx.game.units.enemies.Enemy;
+import com.mygdx.game.units.towers.RangedTower;
+import com.mygdx.game.units.towers.SummonerTower;
 import com.mygdx.game.units.towers.Tower;
 import com.mygdx.game.units.towers.TowerUpgrade;
 
@@ -97,7 +99,7 @@ public class TowerSpace extends Button {
         public TowerUpgradeMenu(float buttonOffsetX,TowerUpgrade[] upgrades) {
             super(buttonOffsetX);
             buttonOffsetY=64;
-            this.amountOfButtons=3; //maximum number of upgrades a tower can have
+            this.amountOfButtons=upgrades.length; //maximum number of upgrades a tower can have
             buttons=new TowerUpradeButton[amountOfButtons];
             for (int i = 0; i < amountOfButtons; i++) {
                 buttons[i]=new TowerUpradeButton(new Coordinate(position.x()+this.buttonOffsetX, position.y()+this.buttonOffsetY),upgrades[i]);
@@ -140,17 +142,22 @@ public class TowerSpace extends Button {
                         new TowerUpgrade("atkSpeed",3,10,20,1.5f),
                         new TowerUpgrade("damage",3,25,5,2f)
                 };
-                tower=new Tower(texture,position, towerBuildID,"arrow",10,0.5f,upgrades);
-                occupied=true;
+                tower=new RangedTower(texture,position, towerBuildID,"arrow",10,0.5f,upgrades);
+                break;
+            case "barracks":
+                upgrades=new TowerUpgrade[]{
+                        new TowerUpgrade("minions",3,1,100,1f)
+                };
+                tower=new SummonerTower(texture,position,towerBuildID,"guard",5f,1,upgrades);
                 break;
             case "None":
             default:
                 upgrades = new TowerUpgrade[]{};
-                tower=new Tower(texture,position, towerBuildID,"arrow",0,1f,upgrades);
-                occupied=true;
+                tower=new RangedTower(texture,position, towerBuildID,"arrow",0,1f,upgrades);
                 System.out.println("Warning tower "+ towerBuildID +" is set to default");
                 break;
         }
+        occupied=true;
         TDMap.lastTowerID++; //increment tower IDs to help keep track of them
         activeTexture=fetchTexture("white_square");
         menuVisible=false;

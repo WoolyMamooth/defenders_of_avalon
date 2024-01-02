@@ -5,11 +5,11 @@ import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.maps.Coordinate;
+import com.mygdx.game.units.Spawner;
 
-public class EnemySpawner {
-    Coordinate spawnLocation;
+public class EnemySpawner extends Spawner {
     public EnemySpawner(Coordinate spawnLocation) {
-        this.spawnLocation=spawnLocation;
+        super(spawnLocation);
     }
     public Enemy spawnEnemy(int spawnID,String name){ // add new enemies here
         int health=100,armor=0,magicResistance=0,damageToPlayer=10;
@@ -19,10 +19,10 @@ public class EnemySpawner {
         //set stats here
         switch(name){
             case "goblin":
-                health=30;armor=0;magicResistance=0;damageToPlayer=1;movementSpeed=75f;
+                health=30;armor=0;magicResistance=0;damageToPlayer=1;movementSpeed=50f;
                 break;
             case "ogre":
-                health=80;armor=30;magicResistance=30;damageToPlayer=5;movementSpeed=50f;
+                health=80;armor=30;magicResistance=30;damageToPlayer=5;movementSpeed=25f;
                 break;
             case "test":
             default:

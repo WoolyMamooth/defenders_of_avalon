@@ -1,0 +1,87 @@
+package com.mygdx.game.units.towers;
+
+import com.badlogic.gdx.graphics.Texture;
+import com.mygdx.game.maps.Coordinate;
+import com.mygdx.game.units.Attacker;
+import com.mygdx.game.units.DamagableUnit;
+import com.mygdx.game.units.enemies.Enemy;
+
+import java.util.List;
+
+public abstract class AlliedUnit extends DamagableUnit implements Attacker {
+    Enemy target=null;
+    Coordinate spawnPosition;
+    float timeSinceLastAttack=0;
+    float attackDelay; //defines how much time should pass between attacks
+    float attackRange; //defines how far the tower will target
+    float searchRange;
+    int damage;
+    /**
+     * Allied units are units which are on the players side such as Summons and Heroes.
+     *
+     * @param texture
+     * @param position
+     * @param movementSpeed
+     * @param maxHp
+     * @param armor
+     * @param magicResistance
+     * @param damage
+     * @param attackDelay
+     * @param searchRange
+     */
+    public AlliedUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,int damage,float attackDelay, float searchRange) {
+        super(texture, position, movementSpeed, maxHp, armor, magicResistance);
+        this.spawnPosition=position;
+        this.damage=damage;
+        this.attackDelay=attackDelay;
+        this.attackRange=texture.getWidth()*3f;
+        this.searchRange=searchRange;
+    }
+
+    @Override
+    public void attack() {
+        target.takeDamage(damage);
+    }
+
+    /**
+     * If there is an enemy in range, try to attack, else search for another and move towards it.
+     * @param enemies
+     * @param timeSinceLastFrame
+     */
+    public void update(List<Enemy> enemies, float timeSinceLastFrame){
+        target=getTarget(enemies,attackRange);
+        if(target!=null) {
+            //if we found a target attack it if possible
+            timeSinceLastAttack += timeSinceLastFrame;
+            if (timeSinceLastAttack >= attackDelay) {
+                attack();
+                timeSinceLastAttack = 0;
+            }
+        }else {
+            target=getTarget(enemies,searchRange);
+            if(target==null) return;
+            move(target.textureCenterPosition());
+        }
+    }
+    private Enemy getTarget(List<Enemy> enemies,float range){
+        if(enemies==null || enemies.isEmpty()) return null;
+        for (Enemy enemy:enemies) {
+            if(textureCenterPosition().distanceFrom(enemy.textureCenterPosition()) <= range){
+                return enemy;
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "AlliedUnit{" +
+                "texture=" + texture +
+                ", position=" + position +
+                ", attackDelay=" + attackDelay +
+                ", attackRange=" + attackRange +
+                ", searchRange=" + searchRange +
+                ", damage=" + damage +
+                '}';
+    }
+}

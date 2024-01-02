@@ -3,9 +3,10 @@ package com.mygdx.game.units.enemies;
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.maps.Path;
+import com.mygdx.game.units.Attacker;
 import com.mygdx.game.units.DamagableUnit;
 
-public class Enemy extends DamagableUnit {
+public class Enemy extends DamagableUnit implements Attacker {
     int spawnID; // keeps track of where in the enemies list this is
     private int previousPathCoordinateID =0; //keeps track of the last position from map.path where this enemy was
     int damageToPlayer;
@@ -16,6 +17,7 @@ public class Enemy extends DamagableUnit {
     }
 
     //TODO
+    @Override
     public void attack(){
         //attack a summon or hero
     }
@@ -32,7 +34,7 @@ public class Enemy extends DamagableUnit {
         move(goal);
         if(atCoordinate(goal)){ //if reached goal, set a new goal
             previousPathCoordinateID++;
-            System.out.println("Enemy "+spawnID+" new goal: "+goal);
+            //System.out.println("Enemy "+spawnID+" new goal: "+goal);
         }
         return 0;
     }

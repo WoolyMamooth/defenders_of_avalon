@@ -14,7 +14,7 @@ public class Player {
      * TODO implement saving player data and loading the save
      */
     public Player() {
-        unlockedTowers=new String[]{"archer","None","None","None"};
+        unlockedTowers=new String[]{"archer","barracks","None","None"};
         unlockedHeroes=new String[]{"None","None","None"};
 
         loadData();

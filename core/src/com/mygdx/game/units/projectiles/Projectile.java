@@ -19,7 +19,7 @@ public class Projectile extends MovableUnit {
     //move towards the goal and return true if reached
     public boolean update(){
         if(target.getPosition()==null) return true; //the enemy is already dead so the projectile achieved its goal
-        Coordinate goal=target.getPosition().add(new Coordinate(target.getWidth()/2f, target.getHeight()/2f));
+        Coordinate goal=target.textureCenterPosition();
         move(goal);
         if(atCoordinate(goal)){
             dealDamage();

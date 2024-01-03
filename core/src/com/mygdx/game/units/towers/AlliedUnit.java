@@ -43,33 +43,30 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
     public void attack() {
         target.takeDamage(damage,damageType);
     }
-
+    protected void tryAttack(float timeSinceLastFrame){
+        timeSinceLastAttack += timeSinceLastFrame;
+        if (timeSinceLastAttack >= attackDelay) {
+            attack();
+            timeSinceLastAttack = 0;
+        }
+    }
     /**
      * If there is an enemy in range, try to attack, else search for another and move towards it.
      * @param enemies
      * @param timeSinceLastFrame
      */
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
-        if(target!=null && inRange(target) && target.getCurrentHp()>0) {
+        if(target!=null && inRange(target,attackRange) && target.getCurrentHp()>0) {
             tryAttack(timeSinceLastFrame);
-            target.setInCombat(true);
             target.setTarget(this);
         }else{
             target = getTarget(enemies, attackRange,position);
             if(target==null){
                 target = getTarget(enemies, searchRange, spawnPosition);
                 if (target == null) return;
-                target.setInCombat(true);
                 target.setTarget(this);
                 move(target.getPosition());
             }
-        }
-    }
-    protected void tryAttack(float timeSinceLastFrame){
-        timeSinceLastAttack += timeSinceLastFrame;
-        if (timeSinceLastAttack >= attackDelay) {
-            attack();
-            timeSinceLastAttack = 0;
         }
     }
     protected Enemy getTarget(List<Enemy> enemies, float range,Coordinate searchCenter){
@@ -81,13 +78,9 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
         }
         return null;
     }
-    private boolean inRange(DamagableUnit other){
-        return position.distanceFrom(other.position)<=attackRange;
-    }
     public void die(){
         if(target!=null) {
             target.setTarget(null);
-            target.setInCombat(false);
         }
     }
     @Override

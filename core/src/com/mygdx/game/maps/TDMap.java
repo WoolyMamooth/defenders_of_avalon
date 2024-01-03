@@ -101,6 +101,8 @@ public class TDMap {
                 shouldBeDeleted.add(enemy);
                 System.out.println("Enemy "+enemy.getSpawnID()+" has reached the end and will be deleted");
             }else if(enemy.getCurrentHp()<=0){
+                playerGold+=enemy.getGoldDropped(); //get gold from enemies
+                System.out.println(enemy.getGoldDropped()+" gold");
                 enemy.die();
                 shouldBeDeleted.add(enemy);
                 System.out.println("Enemy "+enemy.getSpawnID()+" has died and will be deleted");

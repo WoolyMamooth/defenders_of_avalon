@@ -19,9 +19,7 @@ public class SummonSpawner extends Spawner {
     }
 
     /**
-     * TODO
-     * @param summonName
-     * @return
+     * Returns a Summon based on the given name.
      */
     public Summon spawnSummon(String summonName){
         Texture texture=fetchTexture("towers/summons/"+summonName);

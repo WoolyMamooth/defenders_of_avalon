@@ -81,7 +81,9 @@ public class DamagableUnit extends MovableUnit{
     public void takeDamage(int damage){
         takeDamage(damage,"pure");
     }
-
+    protected boolean inRange(DamagableUnit other,float range){
+        return position.distanceFrom(other.position)<=range;
+    }
     //triggered when health reaches zero
     public void die(){
         // die, duh

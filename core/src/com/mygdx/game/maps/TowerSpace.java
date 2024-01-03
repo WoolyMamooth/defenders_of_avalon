@@ -137,12 +137,14 @@ public class TowerSpace extends Button {
         TowerUpgrade[] upgrades=new TowerUpgrade[]{};
         switch (towerName){
             case "archer":
-                upgrades=new TowerUpgrade[]{
-                        new TowerUpgrade("range",3,10,10,1.25f),
-                        new TowerUpgrade("atkSpeed",3,10,20,1.5f),
-                        new TowerUpgrade("damage",3,25,5,2f)
-                };
-                tower=new RangedTower(texture,position, towerBuildID,"arrow",10,0.5f,upgrades,"physical");
+                if(attemptGoldSpend(70)) {
+                    upgrades = new TowerUpgrade[]{
+                            new TowerUpgrade("range", 3, 10, 10, 1.25f),
+                            new TowerUpgrade("atkSpeed", 3, 10, 20, 1.5f),
+                            new TowerUpgrade("damage", 3, 25, 5, 2f)
+                    };
+                    tower = new RangedTower(texture, position, towerBuildID, "arrow", 10, 0.5f, upgrades, "physical");
+                }else return;
                 break;
             case "barracks":
                 upgrades=new TowerUpgrade[]{

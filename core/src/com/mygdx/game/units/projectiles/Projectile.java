@@ -10,6 +10,7 @@ public class Projectile extends MovableUnit {
     int damage;
     String damageType;
     Enemy target;
+    Coordinate targetLocation;
 
     public Projectile(Texture texture, Coordinate position, float movementSpeed, int damage,String damageType, Enemy target) {
         super(texture, position, movementSpeed);
@@ -20,13 +21,25 @@ public class Projectile extends MovableUnit {
 
     //move towards the goal and return true if reached
     public boolean update(){
-        if(target.getPosition()==null) return true; //the enemy is already dead so the projectile achieved its goal
-        Coordinate goal=target.textureCenterPosition();
+        Coordinate goal;
+        boolean targetDead=false;
+        if(target.getPosition()==null) {
+            goal=targetLocation;
+            targetDead=true;
+            //the enemy is already dead so the projectile achieved its goal
+        }else{
+            goal=target.textureCenterPosition();
+            targetLocation=goal;
+        }
         move(goal);
         if(atCoordinate(goal)){
-            dealDamage();
-            return true;
-            //hit the target
+            if(targetDead){
+                return true;
+            }else {
+                dealDamage();
+                return true;
+                //hit the target
+            }
         }
         return false;
     }

@@ -14,18 +14,22 @@ public class Enemy extends DamagableUnit implements Attacker {
     AlliedUnit target;
     float timeSinceLastAttack=0;
     float attackDelay=2f; //defines how much time should pass between attacks
+    int damage;
+    String damageType;
     protected boolean inCombat=false;
-    public Enemy(int spawnID, Texture texture, Coordinate position, int health, int armor, int magicResistance, float movementSpeed, int damageToPlayer) {
+    public Enemy(int spawnID, Texture texture, Coordinate position, int health, int armor, int magicResistance, float movementSpeed, int damageToPlayer, int damage,String damageType) {
         super(texture,position,movementSpeed, health, armor, magicResistance);
         this.spawnID=spawnID;
         this.damageToPlayer=damageToPlayer;
+        this.damage=damage;
+        this.damageType=damageType;
     }
 
     //TODO
     @Override
     public void attack(){
         //attack a summon or hero
-        target.takeDamage(10);
+        target.takeDamage(damage,damageType);
         if(target.getCurrentHp()<=0){
             target=null;
             inCombat=false;

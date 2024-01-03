@@ -134,7 +134,7 @@ public class TowerSpace extends Button {
      */
     private void build(String towerName){
         Texture texture=TDGame.fetchTexture("towers/towerTextures/"+towerName);
-        TowerUpgrade[] upgrades;
+        TowerUpgrade[] upgrades=new TowerUpgrade[]{};
         switch (towerName){
             case "archer":
                 upgrades=new TowerUpgrade[]{
@@ -142,18 +142,18 @@ public class TowerSpace extends Button {
                         new TowerUpgrade("atkSpeed",3,10,20,1.5f),
                         new TowerUpgrade("damage",3,25,5,2f)
                 };
-                tower=new RangedTower(texture,position, towerBuildID,"arrow",10,0.5f,upgrades);
+                tower=new RangedTower(texture,position, towerBuildID,"arrow",10,0.5f,upgrades,"physical");
                 break;
             case "barracks":
                 upgrades=new TowerUpgrade[]{
-                        new TowerUpgrade("minions",3,1,10,1f)
+                        new TowerUpgrade("summons",3,1,100,1.1f),
+                        new TowerUpgrade("armor",3,1,25,1.5f)
                 };
                 tower=new SummonerTower(texture,position,towerBuildID,"guard",5f,1,upgrades);
                 break;
             case "None":
             default:
-                upgrades = new TowerUpgrade[]{};
-                tower=new RangedTower(texture,position, towerBuildID,"arrow",0,1f,upgrades);
+                build("archer");
                 System.out.println("Warning tower "+ towerBuildID +" is set to default");
                 break;
         }

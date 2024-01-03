@@ -19,8 +19,8 @@ public class Summon extends AlliedUnit{
      * @param damage
      * @param attackDelay
      */
-    public Summon(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance, int damage, float attackDelay, float searchRange) {
-        super(texture, position, movementSpeed, maxHp, armor, magicResistance, damage, attackDelay, searchRange);
+    public Summon(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance, int damage, float attackDelay, float searchRange, String damageType) {
+        super(texture, position, movementSpeed, maxHp, armor, magicResistance, damage, attackDelay, searchRange, damageType);
     }
     /**
      * @param enemies should be the list of enemies in the towers range.

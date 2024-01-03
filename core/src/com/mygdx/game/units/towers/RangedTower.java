@@ -16,19 +16,21 @@ public class RangedTower extends Tower{
     String projectileName;
     Enemy target=null;
     int damage;
-    public RangedTower(Texture texture, Coordinate position, int towerSpawnID, String projectileName, int damage, float attackDelay, TowerUpgrade[] upgrades) {
+    String damageType;
+    public RangedTower(Texture texture, Coordinate position, int towerSpawnID, String projectileName, int damage, float attackDelay, TowerUpgrade[] upgrades, String damageType) {
         super(texture, position, towerSpawnID, attackDelay, upgrades);
         this.projectileName=projectileName;
         this.damage = damage;
+        this.damageType=damageType;
         this.projectileSpawner=new ProjectileSpawner(textureCenterPosition());
     }
     /**
-     * Sends a projectile to the target Enemy
+     * Sends a projectile to the target Enemy.
      */
     @Override
     public void attack(){
         //System.out.println(this + " attacked "+ target);
-        projectiles.add(projectileSpawner.spawnProjectile(projectileName,target,damage));
+        projectiles.add(projectileSpawner.spawnProjectile(projectileName,target,damage,damageType));
     }
     public void update(List<Enemy> enemies,float timeSinceLastFrame){
         updateExistingProjectiles();

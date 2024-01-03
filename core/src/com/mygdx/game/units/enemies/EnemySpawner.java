@@ -1,7 +1,5 @@
 package com.mygdx.game.units.enemies;
 
-import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.TDGame;
 import com.mygdx.game.maps.Coordinate;
@@ -12,22 +10,34 @@ public class EnemySpawner extends Spawner {
         super(spawnLocation);
     }
     public Enemy spawnEnemy(int spawnID,String name){ // add new enemies here
-        int health=100,armor=0,magicResistance=0,damageToPlayer=10;
+        int health=100,armor=0,magicResistance=0,damageToPlayer=10,damage=0;
+        String damageType="ph";
         float movementSpeed=50f;
+
         Texture texture = TDGame.fetchTexture("enemies/"+name);
 
         //set stats here
         switch(name){
             case "goblin":
-                health=30;armor=0;magicResistance=0;damageToPlayer=1;movementSpeed=50f;
+                health=20;armor=0;magicResistance=0;damageToPlayer=1;movementSpeed=50f;damage=10;
                 break;
+
+            case "skeleton": //TODO
+            case "necromancer":
+            case "dragon":
+            case "giant":
+            case "soldier":
+
             case "ogre":
-                health=80;armor=30;magicResistance=30;damageToPlayer=5;movementSpeed=25f;
+                health=70;armor=2;magicResistance=3;damageToPlayer=3;movementSpeed=25f;damage=20;
+                break;
+            case "troll":
+                health=100;armor=5;magicResistance=3;damageToPlayer=5;movementSpeed=25f;damage=20;
                 break;
             case "test":
             default:
                 break;
         }
-        return new Enemy(spawnID,texture,spawnLocation,health,armor,magicResistance,movementSpeed,damageToPlayer);
+        return new Enemy(spawnID,texture,spawnLocation,health,armor,magicResistance,movementSpeed,damageToPlayer,damage,damageType);
     }
 }

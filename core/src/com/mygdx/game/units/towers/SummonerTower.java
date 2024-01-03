@@ -78,8 +78,20 @@ public class SummonerTower extends Tower{
     @Override
     protected void applyUpgrade(TowerUpgrade u){
         switch (u.stat){
-            case "minions":
+            case "summons":
                 this.maxSummons+=u.getIncrease();
+                break;
+            case "armor":
+                spawner.armorUpgrade+=u.getIncrease();
+                break;
+            case "magic resistance":
+                spawner.magicResistanceUpgrade+=u.getIncrease();
+                break;
+            case "HP":
+                spawner.maxHpUpgrade+=u.getIncrease();
+                break;
+            case "damage":
+                spawner.damageUpgrade+=u.getIncrease();
                 break;
             case "heal":
                 //TODO summons heal while not in combat

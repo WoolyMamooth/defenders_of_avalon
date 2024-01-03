@@ -16,6 +16,7 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
     float attackRange; //defines how far the tower will target
     float searchRange;
     int damage;
+    String damageType;
     /**
      * Allied units are units which are on the players side such as Summons and Heroes.
      *
@@ -29,18 +30,18 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
      * @param attackDelay
      * @param searchRange
      */
-    public AlliedUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,int damage,float attackDelay, float searchRange) {
+    public AlliedUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,int damage,float attackDelay, float searchRange,String damageType) {
         super(texture, position, movementSpeed, maxHp, armor, magicResistance,true);
         this.spawnPosition=position;
         this.damage=damage;
         this.attackDelay=attackDelay;
         this.attackRange=texture.getWidth()/2f;
         this.searchRange=searchRange;
+        this.damageType=damageType;
     }
-
     @Override
     public void attack() {
-        target.takeDamage(damage);
+        target.takeDamage(damage,damageType);
     }
 
     /**

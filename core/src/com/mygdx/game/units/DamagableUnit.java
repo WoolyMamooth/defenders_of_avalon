@@ -8,10 +8,13 @@ import com.mygdx.game.maps.Coordinate;
 
 public class DamagableUnit extends MovableUnit{
     public static final float HPBAR_HEIGHT=5; // height of the HP bar above the unit
+    public static final int MAX_ARMOR=20; //1 armor = 5% physical damage reduction
+    public static final int MAX_MAGIC_RESISTANCE=20;
     int currentHp;
     int maxHp; // amount of damage that can be taken before dying
     int armor; //reduces physical damage taken
     int magicResistance; //reduces magical damage taken
+    boolean damageImmune=false;
     HPBar hpBar;
 
     /**
@@ -38,11 +41,45 @@ public class DamagableUnit extends MovableUnit{
     }
     public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance) {
         this(texture,position,movementSpeed,maxHp,armor,magicResistance,false);
+        if(this.armor>MAX_ARMOR) this.armor=MAX_ARMOR; //100% damage resistance would cause issues
+        if(this.magicResistance>MAX_MAGIC_RESISTANCE) this.magicResistance=MAX_MAGIC_RESISTANCE;
     }
 
-    public void takeDamage(int damage) {
-        //TODO
-        this.currentHp -=damage;
+    /**
+     * The unit takes damage. Incoming damage is reduced by resistances in the following way:
+     * - every point of armor the unit has reduces physical damage taken by 5%
+     * - every point of magicResistance the unit has reduces magical damage taken by 5%
+     * - pure damage ignores all resistances
+     * - if the units damageImmune parameter is true it takes no damage
+     * @param damage
+     * @param damageType
+     */
+    public void takeDamage(int damage,String damageType) {
+        if(!damageImmune) {
+            switch (damageType) {
+                case "ph":
+                case "phy":
+                case "physical":
+                    currentHp -= damage * (1 - (armor / 20f));
+                    break;
+                case "m":
+                case "magic":
+                case "magical":
+                    currentHp -= damage * (1 - magicResistance / 20f);
+                    break;
+                case "pure":
+                default:
+                    this.currentHp -= damage;
+            }
+        }
+    }
+
+    /**
+     * The unit takes pure damage.
+     * @param damage
+     */
+    public void takeDamage(int damage){
+        takeDamage(damage,"pure");
     }
 
     //triggered when health reaches zero

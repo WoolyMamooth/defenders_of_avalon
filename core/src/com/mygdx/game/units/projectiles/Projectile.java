@@ -8,12 +8,14 @@ import com.mygdx.game.units.enemies.Enemy;
 public class Projectile extends MovableUnit {
     boolean direction; //0 means left 1 means right
     int damage;
+    String damageType;
     Enemy target;
 
-    public Projectile(Texture texture, Coordinate position, float movementSpeed, int damage, Enemy target) {
+    public Projectile(Texture texture, Coordinate position, float movementSpeed, int damage,String damageType, Enemy target) {
         super(texture, position, movementSpeed);
         this.damage=damage;
         this.target=target;
+        this.damageType=damageType;
     }
 
     //move towards the goal and return true if reached
@@ -29,6 +31,6 @@ public class Projectile extends MovableUnit {
         return false;
     }
     private void dealDamage(){
-        target.takeDamage(damage);
+        target.takeDamage(damage,damageType);
     }
 }

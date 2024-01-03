@@ -10,10 +10,10 @@ public class ProjectileSpawner extends Spawner {
     public ProjectileSpawner(Coordinate spawnLocation) {
         super(spawnLocation);
     }
-    public Projectile spawnProjectile(String name, Enemy target, int damage){
+    public Projectile spawnProjectile(String name, Enemy target, int damage,String damageType){
         float speed=200f;
         Texture texture = TDGame.fetchTexture("towers/projectiles/"+name);
 
-        return new Projectile(texture,spawnLocation,speed,damage,target);
+        return new Projectile(texture,spawnLocation,speed,damage,damageType,target);
     }
 }

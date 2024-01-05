@@ -9,6 +9,7 @@ public class DrawableUnit {
     public Coordinate position;
     float width;
     float height;
+    protected boolean facingLeft=false; //false=facing right, true=facing left
 
     /**
      * This class represents all units that we want to draw on the screen
@@ -32,7 +33,11 @@ public class DrawableUnit {
      * @param batch
      */
     public void draw(SpriteBatch batch){
-        batch.draw(texture, position.x(), position.y(), width, height);
+        if (facingLeft){
+            batch.draw(texture,position.x()+width,position.y(),-width,height);
+        }else {
+            batch.draw(texture, position.x(), position.y(), width, height);
+        }
     }
     public Texture getTexture() {
         return texture;
@@ -72,7 +77,9 @@ public class DrawableUnit {
     public void setHeight(float height) {
         this.height = height;
     }
-
+    protected void turnAround(){
+        facingLeft =!facingLeft;
+    }
     public void dispose() {
         texture.dispose();
         position=null;

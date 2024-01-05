@@ -57,6 +57,11 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
      */
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
         if(target!=null && inRange(target,attackRange) && target.getCurrentHp()>0) {
+
+            //turn around if needed
+            if(!facingLeft && target.textureCenterPosition().x()<textureCenterPosition().x()) turnAround();
+            if(facingLeft && target.textureCenterPosition().x()>textureCenterPosition().x()) turnAround();
+
             tryAttack(timeSinceLastFrame);
             target.setTarget(this);
         }else{

@@ -24,6 +24,11 @@ public class MovableUnit extends DrawableUnit{
             super.dispose();
             return;
         }
+
+        //turn the unit around if needed
+        if(!facingLeft && goal.x()<position.x()) turnAround();
+        if(facingLeft && goal.x()> position.x()) turnAround();
+
         Coordinate movementDirection=goal.subtract(position).normalize(); //get a unit vector pointing to goal
         position=position.add(movementDirection.multiplyByScalar(movementSpeed* Gdx.graphics.getDeltaTime())); //move
     }

@@ -66,7 +66,12 @@ public class Enemy extends DamagableUnit implements Attacker {
             timeSinceLastAttack=0;
         }else {
             //if in range of target, attack
-            if(inRange(target,attackRange)) tryAttack(timeSinceLastFrame);
+            if(inRange(target,attackRange)){
+                //turn around if needed
+                if(!facingLeft && target.textureCenterPosition().x()<textureCenterPosition().x()) turnAround();
+                if(facingLeft && target.textureCenterPosition().x()>textureCenterPosition().x()) turnAround();
+                tryAttack(timeSinceLastFrame);
+            }
             else{
                 //otherwise try and move towards target
                 move(target.getPosition());

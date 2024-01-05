@@ -17,7 +17,7 @@ public class SummonerTower extends Tower{
         super(texture, position, towerSpawnID, summonDelay, upgrades);
         this.maxSummons=maxSummons;
         this.summonName=summonName;
-        spawner=new SummonSpawner(textureCenterPosition(),range);
+        spawner=new SummonSpawner(position,range);
     }
     /**
      * Spawns a summon. TODO add offset their spawn location based on how many there are

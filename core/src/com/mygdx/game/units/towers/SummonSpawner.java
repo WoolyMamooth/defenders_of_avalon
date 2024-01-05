@@ -1,6 +1,7 @@
 package com.mygdx.game.units.towers;
 
 import static com.mygdx.game.TDGame.fetchTexture;
+import static com.mygdx.game.TDGame.random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
@@ -47,6 +48,10 @@ public class SummonSpawner extends Spawner {
             default:
                 return spawnSummon("guard");
         }
-        return new Summon(texture,spawnLocation,movementSpeed,maxHp,armor,magicResistance,damage,attackDelay, towersRange,damageType);
+        float randomOffsetMax=towersRange/3f;
+        float x=random.nextFloat(-randomOffsetMax,randomOffsetMax);
+        float y=random.nextFloat(-randomOffsetMax,randomOffsetMax);
+
+        return new Summon(texture,spawnLocation.add(new Coordinate(x,y)),movementSpeed,maxHp,armor,magicResistance,damage,attackDelay, towersRange,damageType);
     }
 }

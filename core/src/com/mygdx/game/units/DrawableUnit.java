@@ -7,8 +7,8 @@ import com.mygdx.game.maps.Coordinate;
 public class DrawableUnit {
     public Texture texture;
     public Coordinate position;
-    float width;
-    float height;
+    protected float width;
+    protected float height;
     protected boolean facingLeft=false; //false=facing right, true=facing left
 
     /**

@@ -9,6 +9,8 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.screens.MainMenuScreen;
 
+import java.util.Random;
+
 public class TDGame extends Game {
 
 	//these are coordinates for easy setup of maps
@@ -29,6 +31,7 @@ public class TDGame extends Game {
 
 	//the player variable stores all data of the player that will be saved
 	public static final Player player=new Player();
+	public static Random random=new Random();
 	
 	@Override
 	public void create () {

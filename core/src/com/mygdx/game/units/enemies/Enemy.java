@@ -1,5 +1,7 @@
 package com.mygdx.game.units.enemies;
 
+import static com.mygdx.game.TDGame.random;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.maps.Path;
@@ -10,6 +12,7 @@ import com.mygdx.game.units.towers.AlliedUnit;
 public class Enemy extends DamagableUnit implements Attacker {
     int spawnID; // keeps track of where in the enemies list this is
     private int previousPathCoordinateID =1; //keeps track of the last position from map.path where this enemy was
+    private Coordinate pathOffset;
     int damageToPlayer;
     int goldDropped;
     AlliedUnit target;
@@ -29,6 +32,12 @@ public class Enemy extends DamagableUnit implements Attacker {
         this.damageType=damageType;
         this.attackRange=attackRange/2f;
         this.goldDropped=goldDropped;
+
+        float maxOffset=height/2f;
+        float offsetY=random.nextFloat(-maxOffset,maxOffset);
+        pathOffset=new Coordinate(0,offsetY);
+
+        this.position=this.position.add(pathOffset);
     }
 
     //TODO
@@ -49,7 +58,7 @@ public class Enemy extends DamagableUnit implements Attacker {
     }
     /**
     * Moves enemy towards the next coordinate on the path by movementSpeed amount
-    * and check for if it reached the end of the path. Returns the damage dealt to the player if the end of path is reached, 0 otherwise;
+    * and check for if it reached the end of the path. Returns the damage dealt to the player if the end of path is reached, 0 otherwise.
     */
     public int update(Path path,float timeSinceLastFrame){
         if (atCoordinate(path.getCoordinate(path.length() - 1))) { //if reached the end of path
@@ -58,7 +67,7 @@ public class Enemy extends DamagableUnit implements Attacker {
 
         if(target==null) { //if it not is attacking a Summon, move
             Coordinate goal = path.getCoordinate(previousPathCoordinateID); //where the enemy will want to go next
-            move(goal);
+            move(goal.add(pathOffset));
             if (atCoordinate(goal)) { //if reached goal, set a new goal
                 previousPathCoordinateID++;
                 //System.out.println("Enemy "+spawnID+" new goal: "+goal);

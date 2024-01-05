@@ -1,5 +1,7 @@
 package com.mygdx.game.units.towers;
 
+import static com.mygdx.game.TDGame.random;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.units.Attacker;
@@ -38,6 +40,9 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
         this.attackRange=texture.getWidth()/2f;
         this.searchRange=searchRange;
         this.damageType=damageType;
+        if(random.nextBoolean()){
+            turnAround();
+        }
     }
     @Override
     public void attack() {

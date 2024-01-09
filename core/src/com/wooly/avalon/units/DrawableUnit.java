@@ -55,7 +55,7 @@ public class DrawableUnit {
      * @return a coordinate which is visually in the middle of the texture.
      */
     public Coordinate textureCenterPosition(){
-        return getPosition().add(new Coordinate(texture.getWidth()/2f, texture.getHeight()/2f));
+        return position.add(new Coordinate(texture.getWidth()/2f, texture.getHeight()/2f));
     }
 
     public void setPosition(Coordinate position) {
@@ -82,6 +82,6 @@ public class DrawableUnit {
     }
     public void dispose() {
         texture.dispose();
-        position=null;
+        position=new Coordinate(-100,-100); //just shove them offscreen for a frame to be sure, returning null here caused some nullpointer exceptions
     }
 }

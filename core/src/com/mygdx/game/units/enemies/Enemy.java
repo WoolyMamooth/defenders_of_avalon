@@ -33,8 +33,7 @@ public class Enemy extends DamagableUnit implements Attacker {
         this.attackRange=attackRange/2f;
         this.goldDropped=goldDropped;
 
-        float maxOffset=height/2f;
-        float offsetY=random.nextFloat(-maxOffset,maxOffset);
+        float offsetY=random.nextFloat()*(height)-height/2f;
         pathOffset=new Coordinate(0,offsetY);
 
         this.position=this.position.add(pathOffset);

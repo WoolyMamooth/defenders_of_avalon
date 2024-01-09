@@ -88,6 +88,12 @@ public class Enemy extends DamagableUnit implements Attacker {
         }
         return 0;
     }
+    public void die(){
+        if(target!=null) {
+            target.setTarget(null);
+        }
+        super.die();
+    }
 
     @Override
     public String toString() {

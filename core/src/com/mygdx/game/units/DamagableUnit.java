@@ -10,11 +10,11 @@ public class DamagableUnit extends MovableUnit{
     public static final float HPBAR_HEIGHT=5; // height of the HP bar above the unit
     public static final int MAX_ARMOR=20; //1 armor = 5% physical damage reduction
     public static final int MAX_MAGIC_RESISTANCE=20;
-    int currentHp;
-    int maxHp; // amount of damage that can be taken before dying
-    int armor; //reduces physical damage taken
-    int magicResistance; //reduces magical damage taken
-    boolean damageImmune=false;
+    protected int currentHp;
+    protected int maxHp; // amount of damage that can be taken before dying
+    protected int armor; //reduces physical damage taken
+    protected int magicResistance; //reduces magical damage taken
+    protected boolean damageImmune=false;
     HPBar hpBar;
 
     /**
@@ -113,7 +113,9 @@ public class DamagableUnit extends MovableUnit{
         }
         super.draw(batch);
     }
-
+    public boolean isDead(){
+        return currentHp<=0;
+    }
     private class HPBar extends DrawableUnit{
         Coordinate offset; // the amount by which the hpbar is drawn above the parent unit
         Color color;

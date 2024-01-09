@@ -11,12 +11,12 @@ import com.mygdx.game.units.enemies.Enemy;
 import java.util.List;
 
 public abstract class AlliedUnit extends DamagableUnit implements Attacker {
-    Enemy target=null;
-    Coordinate spawnPosition;
+    protected Enemy target=null;
+    protected Coordinate searchCenterPosition;
     float timeSinceLastAttack=0;
     float attackDelay; //defines how much time should pass between attacks
-    float attackRange; //defines how far the tower will target
-    float searchRange;
+    float attackRange; //defines how far the unit will be able to hit
+    protected float searchRange; //defines how far the unit will go for new targets
     int damage;
     String damageType;
     /**
@@ -34,15 +34,12 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
      */
     public AlliedUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,int damage,float attackDelay, float searchRange,String damageType) {
         super(texture, position, movementSpeed, maxHp, armor, magicResistance,true);
-        this.spawnPosition=position;
+        this.searchCenterPosition=position;
         this.damage=damage;
         this.attackDelay=attackDelay;
         this.attackRange=texture.getWidth()/2f;
         this.searchRange=searchRange;
         this.damageType=damageType;
-        if(random.nextBoolean()){
-            turnAround();
-        }
     }
     @Override
     public void attack() {
@@ -61,22 +58,32 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
      * @param timeSinceLastFrame
      */
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
-        if(target!=null && inRange(target,attackRange) && target.getCurrentHp()>0) {
-
+        if(target!=null){//if we have a target
             //turn around if needed
-            if(!facingLeft && target.textureCenterPosition().x()<textureCenterPosition().x()) turnAround();
-            if(facingLeft && target.textureCenterPosition().x()>textureCenterPosition().x()) turnAround();
+            if (!facingLeft && target.textureCenterPosition().x() < textureCenterPosition().x())
+                turnAround();
+            if (facingLeft && target.textureCenterPosition().x() > textureCenterPosition().x())
+                turnAround();
 
-            tryAttack(timeSinceLastFrame);
-            target.setTarget(this);
-        }else{
-            target = getTarget(enemies, attackRange,position);
-            if(target==null){
-                target = getTarget(enemies, searchRange, spawnPosition);
-                if (target == null) return;
-                target.setTarget(this);
-                move(target.getPosition());
+            if(inRange(target,attackRange)) { //if they are in range
+                if (target.getCurrentHp() > 0) { //and aren't dead yet
+                    tryAttack(timeSinceLastFrame); //attack if we can
+                    //target.setTarget(this);
+                }
+            }else{ //if not in attack range
+                move(target.getPosition()); //move towards them since they are far
             }
+
+        }else{//if we dont have a target
+            //search attack range for target
+            target = getTarget(enemies, attackRange,position);
+            if(target==null){ //if there is noone in attack range
+                //search searchrange for target
+                target = getTarget(enemies, searchRange, searchCenterPosition);
+                if (target == null) return; //still nothing then just stand still
+                move(target.getPosition()); //move towards them since they are far
+            }
+            target.setTarget(this); //if we found one, set their target to this
         }
     }
     protected Enemy getTarget(List<Enemy> enemies, float range,Coordinate searchCenter){
@@ -88,10 +95,14 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
         }
         return null;
     }
+    public void setTarget(Enemy target){
+        this.target=target;
+    }
     public void die(){
         if(target!=null) {
             target.setTarget(null);
         }
+        super.die();
     }
     @Override
     public String toString() {

@@ -4,6 +4,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.mygdx.game.units.enemies.Enemy;
 import com.mygdx.game.units.enemies.EnemySpawner;
+import com.mygdx.game.units.heroes.ArthurPendragon;
+import com.mygdx.game.units.heroes.Hero;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +24,7 @@ public class TDMap {
     public static int lastTowerID=0; // keeps track of the id of towers
     private int playerHP; // if it reaches 0 we load LostScreen
     public static int playerGold; // used to build towers
+    Hero hero; //the hero the player has selected
 
     public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces) {
         this.mapID=mapID;
@@ -35,6 +38,9 @@ public class TDMap {
 
         playerHP=100;
         playerGold=100;
+
+        //TODO load hero
+        hero=new ArthurPendragon(path.getCoordinate(path.length()-3));
     }
 
     //returns the background texture, used in GameScreen.show
@@ -72,7 +78,7 @@ public class TDMap {
     public int update(float timeSinceLastFrame){
         updateEnemies(timeSinceLastFrame);
         updateTowers(timeSinceLastFrame);
-
+        hero.update(enemies,timeSinceLastFrame);
         //triggers if player loses the game
         if(playerHP<=0){
             System.out.println("PLAYER LOST THE GAME");
@@ -128,6 +134,7 @@ public class TDMap {
     public void draw(SpriteBatch batch){
         drawAllTowers(batch);
         drawAllEnemies(batch);
+        hero.draw(batch);
     }
     private void drawAllEnemies(SpriteBatch batch){
         for (Enemy enemy:enemies) {

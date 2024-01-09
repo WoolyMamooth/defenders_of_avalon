@@ -1,5 +1,7 @@
 package com.mygdx.game.units.towers;
 
+import static com.mygdx.game.TDGame.random;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 import com.mygdx.game.units.enemies.Enemy;
@@ -19,8 +21,12 @@ public class Summon extends AlliedUnit{
      * @param damage
      * @param attackDelay
      */
-    public Summon(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance, int damage, float attackDelay, float searchRange, String damageType) {
+    public Summon(Texture texture, Coordinate position, Coordinate spawnOffset,float movementSpeed, int maxHp, int armor, int magicResistance, int damage, float attackDelay, float searchRange, String damageType) {
         super(texture, position, movementSpeed, maxHp, armor, magicResistance, damage, attackDelay, searchRange, damageType);
+        this.position=this.position.add(spawnOffset); //we add a random offset so they don't just spawn on each other
+        if(random.nextBoolean()){
+            turnAround();
+        }
     }
     /**
      * @param enemies should be the list of enemies in the towers range.

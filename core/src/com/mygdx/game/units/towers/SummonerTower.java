@@ -69,7 +69,7 @@ public class SummonerTower extends Tower{
         if(enemies.isEmpty()) return null;
         List<Enemy> inRange=new ArrayList<>();
         for (Enemy enemy:enemies) {
-            if(textureCenterPosition().distanceFrom(enemy.textureCenterPosition()) <= range){
+            if(position.distanceFrom(enemy.position) <= range){
                 inRange.add(enemy);
             }
         }

@@ -52,6 +52,6 @@ public class SummonSpawner extends Spawner {
         float x=random.nextFloat(-randomOffsetMax,randomOffsetMax);
         float y=random.nextFloat(-randomOffsetMax,randomOffsetMax);
 
-        return new Summon(texture,spawnLocation.add(new Coordinate(x,y)),movementSpeed,maxHp,armor,magicResistance,damage,attackDelay, towersRange,damageType);
+        return new Summon(texture,spawnLocation,new Coordinate(x,y),movementSpeed,maxHp,armor,magicResistance,damage,attackDelay, towersRange,damageType);
     }
 }

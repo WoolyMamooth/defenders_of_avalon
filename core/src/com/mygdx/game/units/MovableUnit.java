@@ -37,10 +37,10 @@ public class MovableUnit extends DrawableUnit{
     protected boolean atCoordinate(Coordinate coordinate){
         if(coordinate==null || position==null) return true;
         if(
-                position.x()>coordinate.x()-texture.getWidth()/2f &&
-                        position.y()>coordinate.y()-texture.getHeight()/2f &&
-                        position.x()<coordinate.x()+texture.getWidth()/2f &&
-                        position.y()<coordinate.y()+texture.getHeight()/2f
+                position.x()>coordinate.x()-width/2f &&
+                        position.y()>coordinate.y()-height/2f &&
+                        position.x()<coordinate.x()+width/2f &&
+                        position.y()<coordinate.y()+height/2f
         ) return true;
         return false;
     }

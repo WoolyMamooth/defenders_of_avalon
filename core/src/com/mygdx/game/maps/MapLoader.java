@@ -1,13 +1,17 @@
 package com.mygdx.game.maps;
 
 import static com.mygdx.game.TDGame.SCREEN_BOT_RIGHT;
+import static com.mygdx.game.TDGame.SCREEN_CENTER;
 import static com.mygdx.game.TDGame.SCREEN_HEIGHT;
 import static com.mygdx.game.TDGame.SCREEN_TOP_LEFT;
 import static com.mygdx.game.TDGame.TEXTURE_EXTENSION;
 import static com.mygdx.game.TDGame.place;
+import static com.mygdx.game.TDGame.player;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.TDGame;
+import com.mygdx.game.units.heroes.ArthurPendragon;
+import com.mygdx.game.units.heroes.Hero;
 
 public class MapLoader {
     //responsible for loading in the map data
@@ -25,7 +29,21 @@ public class MapLoader {
         String[] enemiesToSpawn=loadEnemiesToSpawn(mapID); //loads enemies that will be spawned
         Float[] enemiesSpawnDelay=loadSpawnDelay(mapID); //loads the delay between enemy spawns
         TowerSpace[] towerSpaces=loadTowerLocations(mapID); //loads the buildable spaces
-        return new TDMap(mapID,backgroundTexture,path,enemiesToSpawn,enemiesSpawnDelay,towerSpaces);
+        if(player.getEquippedHero()=="None") {
+            return new TDMap(mapID, backgroundTexture, path, enemiesToSpawn, enemiesSpawnDelay, towerSpaces);
+        }else{
+            Hero hero=loadHero(player.getEquippedHero());
+            return new TDMap(mapID, backgroundTexture, path, enemiesToSpawn, enemiesSpawnDelay, towerSpaces,hero);
+        }
+    }
+
+    private Hero loadHero(String heroName) {
+        //TODO
+        switch (heroName){
+            case "Arthur":
+            default:
+                return new ArthurPendragon(SCREEN_CENTER);
+        }
     }
 
     private Texture loadBackgroundTexture(int mapID){

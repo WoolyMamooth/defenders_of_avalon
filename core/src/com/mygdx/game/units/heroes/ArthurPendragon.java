@@ -2,7 +2,6 @@ package com.mygdx.game.units.heroes;
 
 import static com.mygdx.game.TDGame.fetchTexture;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.maps.Coordinate;
 
 public class ArthurPendragon extends Hero{

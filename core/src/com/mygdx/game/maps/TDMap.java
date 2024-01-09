@@ -25,6 +25,7 @@ public class TDMap {
     private int playerHP; // if it reaches 0 we load LostScreen
     public static int playerGold; // used to build towers
     Hero hero; //the hero the player has selected
+    boolean hasHero; //the player may choose not to bring a hero to a fight
 
     public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces) {
         this.mapID=mapID;
@@ -38,9 +39,11 @@ public class TDMap {
 
         playerHP=100;
         playerGold=100;
-
-        //TODO load hero
-        hero=new ArthurPendragon(path.getCoordinate(path.length()-3));
+    }
+    public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces, Hero hero){
+        this(mapID, backgroundTexture, path, enemiesToSpawn,enemiesSpawnDelay,towerSpaces);
+        this.hero=hero;
+        this.hasHero=true;
     }
 
     //returns the background texture, used in GameScreen.show
@@ -71,14 +74,14 @@ public class TDMap {
     }
 
     /**
-     * Updates both enemies and towers in this order.
+     * Updates enemies, towers and heroes in this order.
      * @param timeSinceLastFrame
      * @return 0 normally, 1 if player lost, 2 if player won.
      */
     public int update(float timeSinceLastFrame){
         updateEnemies(timeSinceLastFrame);
         updateTowers(timeSinceLastFrame);
-        hero.update(enemies,timeSinceLastFrame);
+        if(hasHero) hero.update(enemies,timeSinceLastFrame);
         //triggers if player loses the game
         if(playerHP<=0){
             System.out.println("PLAYER LOST THE GAME");
@@ -89,7 +92,6 @@ public class TDMap {
         }
         return 0;
     }
-
     /**
      * 1.  calls the move function of every enemy in the enemies list
      * 2.  checks for dead enemies
@@ -120,7 +122,6 @@ public class TDMap {
             enemies.remove(enemy);
         }
     }
-
     /**
      * Moves projectiles
      * Resets targetting on each tower
@@ -130,11 +131,10 @@ public class TDMap {
             towerspace.update(enemies,delta);
         }
     }
-
     public void draw(SpriteBatch batch){
         drawAllTowers(batch);
         drawAllEnemies(batch);
-        hero.draw(batch);
+        if(hasHero) hero.draw(batch);
     }
     private void drawAllEnemies(SpriteBatch batch){
         for (Enemy enemy:enemies) {

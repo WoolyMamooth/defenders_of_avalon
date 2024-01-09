@@ -1,5 +1,5 @@
 android {
-    namespace "com.mygdx.game"
+    namespace "com.wooly.com.wooly.avalon"
     buildToolsVersion "34.0.0"
     compileSdkVersion 34
     sourceSets {
@@ -20,7 +20,7 @@ android {
         }
     }
     defaultConfig {
-        applicationId "com.mygdx.game"
+        applicationId "com.wooly.com.wooly.avalon"
         minSdkVersion 14
         targetSdkVersion 34
         versionCode 1
@@ -89,7 +89,7 @@ tasks.register('run', Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.mygdx.game/com.mygdx.game.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.wooly.com.wooly.avalon/com.wooly.com.wooly.avalon.AndroidLauncher'
 }
 
 eclipse.project.name = appName + "-android"

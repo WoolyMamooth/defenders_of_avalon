@@ -82,6 +82,7 @@ public class DrawableUnit {
     }
     public void dispose() {
         texture.dispose();
-        position=new Coordinate(-100,-100); //just shove them offscreen for a frame to be sure, returning null here caused some nullpointer exceptions
+        position=null;
+        //position=new Coordinate(-100,-100); //just shove them offscreen for a frame to be sure, returning null here caused some nullpointer exceptions
     }
 }

@@ -4,11 +4,12 @@ import static com.wooly.avalon.TDGame.random;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.units.AlliedUnit;
 import com.wooly.avalon.units.enemies.Enemy;
 
 import java.util.List;
 
-public class Summon extends AlliedUnit{
+public class Summon extends AlliedUnit {
     /**
      * Allied units are units which are on the players side such as Summons and Heroes.
      *

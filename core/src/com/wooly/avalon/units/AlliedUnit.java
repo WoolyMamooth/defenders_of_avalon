@@ -1,4 +1,4 @@
-package com.wooly.avalon.units.towers;
+package com.wooly.avalon.units;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.wooly.avalon.maps.Coordinate;
@@ -56,17 +56,25 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
      * @param timeSinceLastFrame
      */
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
+        updateBuffs(timeSinceLastFrame);
         if(target!=null){//if we have a target
-            //turn around if needed
-            if (!facingLeft && target.textureCenterPosition().x() < textureCenterPosition().x())
-                turnAround();
-            if (facingLeft && target.textureCenterPosition().x() > textureCenterPosition().x())
-                turnAround();
+            try{
+                //turn around if needed
+                if (!facingLeft && target.textureCenterPosition().x() < textureCenterPosition().x())
+                    turnAround();
+                if (facingLeft && target.textureCenterPosition().x() > textureCenterPosition().x())
+                    turnAround();
+            }catch (NullPointerException n){
+                //caused by target.position being set to null when they die, this doesn't actually cause
+                //problems because it fixes itself in the next loop
+            }
 
             if(inRange(target,attackRange)) { //if they are in range
                 if (target.getCurrentHp() > 0) { //and aren't dead yet
                     tryAttack(timeSinceLastFrame); //attack if we can
                     //target.setTarget(this);
+                }else{
+                    target=null;
                 }
             }else{ //if not in attack range
                 move(target.getPosition()); //move towards them since they are far
@@ -81,7 +89,7 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
                 if (target == null) return; //still nothing then just stand still
                 move(target.getPosition()); //move towards them since they are far
             }
-            target.setTarget(this); //if we found one, set their target to this
+            if(!target.inCombat())target.setTarget(this); //if we found one, set their target to this
         }
     }
     protected Enemy getTarget(List<Enemy> enemies, float range,Coordinate searchCenter){
@@ -96,11 +104,32 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
     public void setTarget(Enemy target){
         this.target=target;
     }
+
+    @Override
+    protected void applyBuff(UnitBuff buff, boolean removeMode) {
+        int modifier=buff.getModifier();
+        if(removeMode) modifier*=-1;
+        switch (buff.stat){
+            case "damage":
+                damage+=modifier;
+                break;
+            case "attackSpeed":
+            case "attackDelay":
+                attackDelay-=modifier;
+                break;
+            default:
+                super.applyBuff(buff, removeMode);
+        }
+    }
+
     public void die(){
         if(target!=null) {
             target.setTarget(null);
         }
         super.die();
+    }
+    public void setSearchCenterPosition(Coordinate searchCenterPosition) {
+        this.searchCenterPosition = searchCenterPosition;
     }
     @Override
     public String toString() {

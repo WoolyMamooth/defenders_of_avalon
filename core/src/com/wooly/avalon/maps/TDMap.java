@@ -81,7 +81,7 @@ public class TDMap {
         updateEnemies(timeSinceLastFrame);
         updateTowers(timeSinceLastFrame);
         if(hasHero) hero.update(enemies,timeSinceLastFrame);
-        //triggers if player loses the com.wooly.avalon
+        //triggers if player loses the game
         if(playerHP<=0){
             System.out.println("PLAYER LOST THE GAME");
             return 1;

@@ -1,7 +1,9 @@
 package com.wooly.avalon.units.heroes;
 
+import static com.wooly.avalon.TDGame.SCREEN_BOT_RIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
 import static com.wooly.avalon.TDGame.fetchTexture;
+import static com.wooly.avalon.TDGame.place;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -13,7 +15,7 @@ import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.screens.buttons.Button;
 import com.wooly.avalon.screens.buttons.CustomButton;
 import com.wooly.avalon.units.enemies.Enemy;
-import com.wooly.avalon.units.towers.AlliedUnit;
+import com.wooly.avalon.units.AlliedUnit;
 
 import java.util.List;
 
@@ -23,6 +25,9 @@ public abstract class Hero extends AlliedUnit {
     boolean moving=false;
     Coordinate goal;
     ShapeRenderer rangeOutline;
+    HeroAbility[] abilities;
+    HeroAbilityMenu menu;
+
     /**
      *
      *
@@ -80,6 +85,7 @@ public abstract class Hero extends AlliedUnit {
         if(!isDead()) {
             super.draw(batch);
             button.drawCheckClick(batch);
+            menu.draw(batch);
             if (selected) {
                 batch.end();
                 drawRange();
@@ -111,6 +117,7 @@ public abstract class Hero extends AlliedUnit {
         }
     }
     protected class HeroSelectorButton extends Button {
+        private boolean onHero=true;
         /**
          * Used for selecting the hero, floats on top of them and is only visible when clicked.
          * @param position
@@ -118,14 +125,21 @@ public abstract class Hero extends AlliedUnit {
         public HeroSelectorButton(Coordinate position) {
             super(position, fetchTexture("white_square"), fetchTexture("white_square"));
         }
+        public HeroSelectorButton(Coordinate position,Texture texture) {
+            super(position, fetchTexture("white_square"), texture);
+            onHero=false;
+        }
         public void update(Coordinate position){
             this.position=position;
         }
         @Override
         public void draw(SpriteBatch batch) {
-            if(isActive()){
-                batch.setColor(1,1,1,0.2f);
-                batch.draw(activeTexture,position.x(),position.y(),width,height);
+            if(!onHero) {
+                batch.draw(inactiveTexture,position.x(),position.y(),width,height);
+            }
+            if (isActive()) {
+                batch.setColor(1, 1, 1, 0.2f);
+                batch.draw(activeTexture, position.x(), position.y(), width, height);
                 batch.setColor(Color.WHITE);
             }
         }
@@ -135,31 +149,50 @@ public abstract class Hero extends AlliedUnit {
         }
     }
     protected class HeroAbilityMenu{
-        protected class HeroAbilityButton extends CustomButton {
+        protected class HeroAbilityButton extends Button {
             HeroAbility ability;
             /**
-             * Used to activate the abilities of the hero.
-             *
+             * Used for activating the abilities of heroes.
              * @param position
-             * @param text
-             * @param fontsize
-             * @param textColor
-             * @param backgroundColor
-             * @param width
-             * @param height
+             * @param ability
              */
-            public HeroAbilityButton(Coordinate position, String text, int fontsize, Color textColor, Color backgroundColor, float width, float height) {
-                super(position, text, fontsize, textColor, backgroundColor, width, height);
+            public HeroAbilityButton(Coordinate position,HeroAbility ability) {
+                super(position, fetchTexture("white_square"), ability.icon);
+                this.ability=ability;
             }
             @Override
             public void onClick() {
-                //TODO activate the ability
+                ability.activate();
             }
         }
+        HeroSelectorButton selectorButton;
         HeroAbilityButton[] abilityButtons;
+
+        /**
+         * Contains buttons for every ability the hero has plus the left-most button can be used to select the hero
+         * as if the hero itself was been clicked.
+         * @param abilities
+         */
         public HeroAbilityMenu(HeroAbility[] abilities){
             int abilityNum=abilities.length;
+            int iconWidth=abilities[0].icon.getWidth();
             abilityButtons=new HeroAbilityButton[abilityNum];
+
+            Coordinate buttonPosition=SCREEN_BOT_RIGHT.subtract(new Coordinate(iconWidth*(abilityNum+1)+10,-10));
+
+            selectorButton=new HeroSelectorButton(buttonPosition,texture);
+            buttonPosition=buttonPosition.add(new Coordinate(iconWidth,0));
+
+            for (int i = 0; i < abilityNum; i++) {
+                abilityButtons[i]=new HeroAbilityButton(buttonPosition,abilities[i]);
+                buttonPosition=buttonPosition.add(new Coordinate(iconWidth,0));
+            }
+        }
+        public void draw(SpriteBatch batch){
+            selectorButton.drawCheckClick(batch);
+            for (HeroAbilityButton button:abilityButtons) {
+                button.drawCheckClick(batch);
+            }
         }
     }
 }

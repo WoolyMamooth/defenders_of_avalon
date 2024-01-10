@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class DamagableUnit extends MovableUnit{
     public static final float HPBAR_HEIGHT=5; // height of the HP bar above the unit
     public static final int MAX_ARMOR=20; //1 armor = 5% physical damage reduction
@@ -16,7 +19,7 @@ public class DamagableUnit extends MovableUnit{
     protected int magicResistance; //reduces magical damage taken
     protected boolean damageImmune=false;
     HPBar hpBar;
-
+    List<UnitBuff> buffs;
     /**
      * Extends on Movable units with health and resistances.
      * Anything that can be hit should inherit from this.
@@ -33,18 +36,19 @@ public class DamagableUnit extends MovableUnit{
         this.currentHp = maxHp;
         this.armor = armor;
         this.magicResistance = magicResistance;
+        if(this.armor>MAX_ARMOR) this.armor=MAX_ARMOR; //100% damage resistance would cause issues
+        if(this.magicResistance>MAX_MAGIC_RESISTANCE) this.magicResistance=MAX_MAGIC_RESISTANCE;
 
         Color hpBarColor;
         if(isAlly) hpBarColor=Color.CYAN;
         else hpBarColor=Color.RED;
         this.hpBar=new HPBar(position,height,width,hpBarColor);
+
+        buffs=new ArrayList<>();
     }
     public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance) {
         this(texture,position,movementSpeed,maxHp,armor,magicResistance,false);
-        if(this.armor>MAX_ARMOR) this.armor=MAX_ARMOR; //100% damage resistance would cause issues
-        if(this.magicResistance>MAX_MAGIC_RESISTANCE) this.magicResistance=MAX_MAGIC_RESISTANCE;
     }
-
     /**
      * The unit takes damage. Incoming damage is reduced by resistances in the following way:
      * - every point of armor the unit has reduces physical damage taken by 5%
@@ -73,7 +77,6 @@ public class DamagableUnit extends MovableUnit{
             }
         }
     }
-
     /**
      * The unit takes pure damage.
      * @param damage
@@ -84,27 +87,78 @@ public class DamagableUnit extends MovableUnit{
     protected boolean inRange(DamagableUnit other,float range){
         return position.distanceFrom(other.position)<=range;
     }
-    //triggered when health reaches zero
+
+    /**
+     * Updates the timers of the buffs.
+     * @param timeSinceLastFrame
+     */
+    public void updateBuffs(float timeSinceLastFrame){
+        List<UnitBuff> shouldBeRemoved=new ArrayList<>();
+        for (UnitBuff buff:buffs) {
+            if (buff.update(timeSinceLastFrame)){
+                shouldBeRemoved.add(buff);
+            }
+        }
+        for (UnitBuff buff:shouldBeRemoved) {
+            removeBuff(buff);
+        }
+    }
+    public void addBuff(UnitBuff buff){
+        this.buffs.add(buff);
+        applyBuff(buff,false);
+    }
+    public void removeBuff(UnitBuff buff){
+        applyBuff(buff,true);
+        this.buffs.remove(buff);
+    }
+
+    /**
+     * Applies the stat modifier of the buff to the stats of the unit.
+     * All possible buff must be defined here or in an override.
+     * @param buff
+     * @param removeMode if true the modifier will instead be subtracted.
+     */
+    protected void applyBuff(UnitBuff buff,boolean removeMode){
+        int modifier=buff.getModifier();
+        if(removeMode) modifier*=-1;
+        switch (buff.stat){
+            case "armor":
+                armor+=modifier;
+                if(armor>MAX_ARMOR) armor=MAX_ARMOR; //100% damage resistance would cause issues
+                break;
+            case "magicResistance":
+                magicResistance+=modifier;
+                if(magicResistance>MAX_MAGIC_RESISTANCE) magicResistance=MAX_MAGIC_RESISTANCE;
+                break;
+            case "movementSpeed":
+                movementSpeed+=modifier;
+                break;
+            case "damageImmunity":
+                damageImmune=!removeMode;
+                break;
+            default:
+                System.out.println("WARNING no buff for stat "+buff.stat);
+        }
+    }
+    /**
+     * triggered when health reaches zero
+     */
     public void die(){
         // die, duh
         //TODO might need some more work
         movementSpeed=0;
         hpBar.dispose();
-        super.dispose();
+        dispose();
     }
-
     public int getCurrentHp() {
         return currentHp;
     }
-
     public int getArmor() {
         return armor;
     }
-
     public int getMagicResistance() {
         return magicResistance;
     }
-
     @Override
     public void draw(SpriteBatch batch){
         if(currentHp<maxHp) {
@@ -113,6 +167,9 @@ public class DamagableUnit extends MovableUnit{
         }
         super.draw(batch);
     }
+    /**
+     * @return true if HP is zero or less.
+     */
     public boolean isDead(){
         return currentHp<=0;
     }

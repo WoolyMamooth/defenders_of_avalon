@@ -7,7 +7,7 @@ import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.maps.Path;
 import com.wooly.avalon.units.Attacker;
 import com.wooly.avalon.units.DamagableUnit;
-import com.wooly.avalon.units.towers.AlliedUnit;
+import com.wooly.avalon.units.AlliedUnit;
 
 public class Enemy extends DamagableUnit implements Attacker {
     int spawnID; // keeps track of where in the enemies list this is

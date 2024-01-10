@@ -8,7 +8,7 @@ import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.units.Spawner;
 
 public class SummonSpawner extends Spawner {
-    private float towersRange;
+    private float searchRange;
     public int maxHpUpgrade=0;
     public int armorUpgrade=0;
     public int magicResistanceUpgrade=0;
@@ -16,13 +16,17 @@ public class SummonSpawner extends Spawner {
 
     public SummonSpawner(Coordinate spawnLocation, float searchRange) {
         super(spawnLocation);
-        this.towersRange =searchRange;
+        this.searchRange =searchRange;
     }
 
     /**
      * Returns a Summon based on the given name.
      */
     public Summon spawnSummon(String summonName){
+        return spawnSummon(summonName,spawnLocation);
+    }
+
+    public Summon spawnSummon(String summonName, Coordinate position) {
         Texture texture=fetchTexture("towers/summons/"+summonName);
         //TODO add offset to spawn location
 
@@ -48,10 +52,10 @@ public class SummonSpawner extends Spawner {
             default:
                 return spawnSummon("guard");
         }
-        float randomOffsetMax=towersRange/3f;
+        float randomOffsetMax= searchRange/3f;
         float x=random.nextFloat(-randomOffsetMax,randomOffsetMax);
         float y=random.nextFloat(-randomOffsetMax,randomOffsetMax);
 
-        return new Summon(texture,spawnLocation,new Coordinate(x,y),movementSpeed,maxHp,armor,magicResistance,damage,attackDelay, towersRange,damageType);
+        return new Summon(texture,position,new Coordinate(x,y),movementSpeed,maxHp,armor,magicResistance,damage,attackDelay, searchRange,damageType);
     }
 }

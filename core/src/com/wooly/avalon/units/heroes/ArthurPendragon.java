@@ -27,7 +27,8 @@ public class ArthurPendragon extends Hero{
 
         abilities=new HeroAbility[]{
             new SummonGuards(),
-            new BuffGuards()
+            new BuffGuards(),
+            new HealSelf()
         };
 
         menu=new HeroAbilityMenu(abilities);
@@ -72,9 +73,19 @@ public class ArthurPendragon extends Hero{
         @Override
         public void activate() {
             for (int i = 0; i < MAX_SUMMON_NUMBER; i++) {
+                if(summons[i]==null) continue;
                 summons[i].addBuff(new UnitBuff("armor",20,10));
-                summons[i].addBuff(new UnitBuff("damage",1000,10));
+                summons[i].addBuff(new UnitBuff("healing",1,10));
             }
+        }
+    }
+    private class HealSelf extends HeroAbility{
+        public HealSelf() {
+            super("HealSelf", false,fetchTexture("enemies/red_square"));
+        }
+        @Override
+        public void activate() {
+            heal(100);
         }
     }
 }

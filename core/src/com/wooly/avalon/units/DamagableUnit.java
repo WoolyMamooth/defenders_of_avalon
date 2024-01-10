@@ -18,6 +18,9 @@ public class DamagableUnit extends MovableUnit{
     protected int armor; //reduces physical damage taken
     protected int magicResistance; //reduces magical damage taken
     protected boolean damageImmune=false;
+    public int healingAmount=0; //amount of health that will be recovered per tick
+    protected float timeSinceLastHeal=0f;
+    protected static float HEALING_TICK_INTERVAL=1f;
     HPBar hpBar;
     List<UnitBuff> buffs;
     /**
@@ -29,6 +32,7 @@ public class DamagableUnit extends MovableUnit{
      * @param maxHp
      * @param armor
      * @param magicResistance
+     * @param isAlly
      */
     public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,boolean isAlly) {
         super(texture, position, movementSpeed);
@@ -46,8 +50,34 @@ public class DamagableUnit extends MovableUnit{
 
         buffs=new ArrayList<>();
     }
+
+    /**
+     * By default makes non Ally units.
+     * @param texture
+     * @param position
+     * @param movementSpeed
+     * @param maxHp
+     * @param armor
+     * @param magicResistance
+     */
     public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance) {
         this(texture,position,movementSpeed,maxHp,armor,magicResistance,false);
+    }
+
+    /**
+     * You can specify a base healing amount that the unit will heal per sec
+     * @param texture
+     * @param position
+     * @param movementSpeed
+     * @param maxHp
+     * @param armor
+     * @param magicResistance
+     * @param isAlly
+     * @param baseHealing
+     */
+    public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,boolean isAlly, int baseHealing) {
+        this(texture,position,movementSpeed,maxHp,armor,magicResistance,isAlly);
+        healingAmount+=baseHealing;
     }
     /**
      * The unit takes damage. Incoming damage is reduced by resistances in the following way:
@@ -93,6 +123,7 @@ public class DamagableUnit extends MovableUnit{
      * @param timeSinceLastFrame
      */
     public void updateBuffs(float timeSinceLastFrame){
+        //update the buffs and remove the ones that have expired
         List<UnitBuff> shouldBeRemoved=new ArrayList<>();
         for (UnitBuff buff:buffs) {
             if (buff.update(timeSinceLastFrame)){
@@ -102,6 +133,23 @@ public class DamagableUnit extends MovableUnit{
         for (UnitBuff buff:shouldBeRemoved) {
             removeBuff(buff);
         }
+
+        //handle healing the unit if applicable
+        if(healingAmount>0){
+            timeSinceLastHeal+=timeSinceLastFrame;
+            if (timeSinceLastHeal>=HEALING_TICK_INTERVAL){
+                heal(healingAmount);
+                timeSinceLastHeal=0;
+            }
+        }
+    }
+    /**
+     * Heals the unit by the given amount up to its maxHp;
+     * @param amount
+     */
+    public void heal(int amount){
+        currentHp+=amount;
+        if (currentHp>maxHp) currentHp=maxHp;
     }
     public void addBuff(UnitBuff buff){
         this.buffs.add(buff);
@@ -135,6 +183,9 @@ public class DamagableUnit extends MovableUnit{
                 break;
             case "damageImmunity":
                 damageImmune=!removeMode;
+                break;
+            case "healing":
+                healingAmount+=modifier;
                 break;
             default:
                 System.out.println("WARNING no buff for stat "+buff.stat);

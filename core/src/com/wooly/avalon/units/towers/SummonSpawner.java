@@ -13,6 +13,7 @@ public class SummonSpawner extends Spawner {
     public int armorUpgrade=0;
     public int magicResistanceUpgrade=0;
     public int damageUpgrade=0;
+    public int healingUpgrade=0;
 
     public SummonSpawner(Coordinate spawnLocation, float searchRange) {
         super(spawnLocation);
@@ -53,9 +54,18 @@ public class SummonSpawner extends Spawner {
                 return spawnSummon("guard");
         }
         float randomOffsetMax= searchRange/3f;
-        float x=random.nextFloat(-randomOffsetMax,randomOffsetMax);
+        float x=random.nextFloat()*(randomOffsetMax*2)-randomOffsetMax;
+        float y=random.nextFloat()*(randomOffsetMax*2)-randomOffsetMax;
+        /*
         float y=random.nextFloat(-randomOffsetMax,randomOffsetMax);
+        Apparently the line above crashes the game, but only on android.
+        A 12 year old StackOverflow post says "nextFloat doesn't take an argument", which I find highly unlikely,
+        since it runs fine on desktop, but changing it did fix the problem so whatever.
+        https://stackoverflow.com/questions/6078157/random-nextfloat-is-not-applicable-for-floats
+        */
 
-        return new Summon(texture,position,new Coordinate(x,y),movementSpeed,maxHp,armor,magicResistance,damage,attackDelay, searchRange,damageType);
+        Summon summon= new Summon(texture,position,new Coordinate(x,y),movementSpeed,maxHp,armor,magicResistance,damage,attackDelay, searchRange,damageType);
+        summon.healingAmount+=healingUpgrade;
+        return summon;
     }
 }

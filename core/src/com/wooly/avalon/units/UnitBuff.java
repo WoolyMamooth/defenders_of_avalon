@@ -8,6 +8,7 @@ public class UnitBuff {
 
     /**
      * Provides a way to temporarily increase or decrease the stats of units.
+     * TODO add visual indicators
      * @param stat what stat should be affected
      * @param modifier how much should it be changed
      * @param duration for how long
@@ -25,10 +26,7 @@ public class UnitBuff {
      */
     public boolean update(float timeSinceLastFrame){
         timeSinceActivation+=timeSinceLastFrame;
-        if(timeSinceActivation>=duration){
-            return true;
-        }
-        return false;
+        return timeSinceActivation >= duration;
     }
     public int getModifier(){
         return this.modifier;

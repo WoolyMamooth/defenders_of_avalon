@@ -7,6 +7,12 @@ public abstract class HeroAbility {
     public boolean isPassive;
     public Texture icon;
     //TODO add cooldowns, description
+
+    /**
+     * Any ability of a hero, implement them as private classes in the given heroes class.
+     */
+    public HeroAbility(){
+    }
     public HeroAbility(String name,boolean isPassive,Texture icon) {
         this.name=name;
         this.isPassive = isPassive;

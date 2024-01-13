@@ -12,6 +12,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.wooly.avalon.TDGame;
 import com.wooly.avalon.units.heroes.ArthurPendragon;
 import com.wooly.avalon.units.heroes.Hero;
+import com.wooly.avalon.units.heroes.Mordred;
 
 public class MapLoader {
     //responsible for loading in the map data
@@ -38,11 +39,14 @@ public class MapLoader {
     }
 
     private Hero loadHero(String heroName) {
+        Coordinate spawnPos=SCREEN_CENTER;
         //TODO
         switch (heroName){
+            case "Mordred":
+                return new Mordred(spawnPos);
             case "Arthur":
             default:
-                return new ArthurPendragon(SCREEN_CENTER);
+                return new ArthurPendragon(spawnPos);
         }
     }
 

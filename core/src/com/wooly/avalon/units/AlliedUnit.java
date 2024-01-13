@@ -12,11 +12,11 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
     protected Enemy target=null;
     protected Coordinate searchCenterPosition;
     float timeSinceLastAttack=0;
-    float attackDelay; //defines how much time should pass between attacks
-    float attackRange; //defines how far the unit will be able to hit
+    protected float attackDelay; //defines how much time should pass between attacks
+    protected float attackRange; //defines how far the unit will be able to hit
     protected float searchRange; //defines how far the unit will go for new targets
-    int damage;
-    String damageType;
+    protected int damage;
+    protected String damageType;
     /**
      * Allied units are units which are on the players side such as Summons and Heroes.
      *
@@ -45,9 +45,10 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
     }
     protected void tryAttack(float timeSinceLastFrame){
         timeSinceLastAttack += timeSinceLastFrame;
-        if (timeSinceLastAttack >= attackDelay) {
+        if (timeSinceLastAttack >= Math.max(attackDelay,0.1)) {
             attack();
             timeSinceLastAttack = 0;
+            if(!target.inCombat()) target.setTarget(this);
         }
     }
     /**
@@ -72,7 +73,6 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
             if(inRange(target,attackRange)) { //if they are in range
                 if (target.getCurrentHp() > 0) { //and aren't dead yet
                     tryAttack(timeSinceLastFrame); //attack if we can
-                    //target.setTarget(this);
                 }else{
                     target=null;
                 }
@@ -108,14 +108,15 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
     @Override
     protected void applyBuff(UnitBuff buff, boolean removeMode) {
         int modifier=buff.getModifier();
-        if(removeMode) modifier*=-1;
+        if(removeMode) modifier*=-1f;
         switch (buff.stat){
             case "damage":
                 damage+=modifier;
                 break;
             case "attackSpeed":
             case "attackDelay":
-                attackDelay-=modifier;
+                //10 aspeed is -0.1f attack delay
+                attackDelay-=modifier/100f;
                 break;
             default:
                 super.applyBuff(buff, removeMode);

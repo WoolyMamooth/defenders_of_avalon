@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.wooly.avalon.maps.Coordinate;
 
 public class MovableUnit extends DrawableUnit{
-    float movementSpeed;
+    protected float movementSpeed;
 
     /**
      * Adds movement logic to DrawableUnit, used for anything that has a texture and moves.

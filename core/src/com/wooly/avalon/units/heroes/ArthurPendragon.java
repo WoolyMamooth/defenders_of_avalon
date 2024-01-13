@@ -57,18 +57,19 @@ public class ArthurPendragon extends Hero{
     }
     private class SummonGuards extends HeroAbility{
         public SummonGuards() {
-            super("SummonGuards", false,fetchTexture("enemies/red_square"));
+            super("SummonGuards",fetchTexture("enemies/red_square"),30);
         }
         @Override
         public void activate() {
             for (int i = 0; i < MAX_SUMMON_NUMBER; i++) {
                 summons[i]=spawner.spawnSummon("guard",position);
             }
+            super.activate();
         }
     }
     private class BuffGuards extends HeroAbility{
         public BuffGuards() {
-            super("BuffGuards", false, fetchTexture("enemies/red_square"));
+            super("BuffGuards", fetchTexture("enemies/red_square"),15);
         }
         @Override
         public void activate() {
@@ -77,15 +78,17 @@ public class ArthurPendragon extends Hero{
                 summons[i].addBuff(new UnitBuff("armor",20,10));
                 summons[i].addBuff(new UnitBuff("healing",1,10));
             }
+            super.activate();
         }
     }
     private class HealSelf extends HeroAbility{
         public HealSelf() {
-            super("HealSelf", false,fetchTexture("enemies/red_square"));
+            super("HealSelf",fetchTexture("enemies/red_square"),40);
         }
         @Override
         public void activate() {
             heal(100);
+            super.activate();
         }
     }
 }

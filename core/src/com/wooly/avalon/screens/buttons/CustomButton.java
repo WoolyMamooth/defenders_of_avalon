@@ -6,19 +6,21 @@ import static com.wooly.avalon.TDGame.fetchTexture;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.maps.Coordinate;
 
 public abstract class CustomButton extends Clickable{
     protected String text;
-    Texture background;
-    BitmapFont font;
+    protected Texture background;
+    protected BitmapFont font;
     protected Color backgroundColor;
     protected Color textColor;
-    float textOffsetX,textOffsetY;
+    protected float textOffsetX,textOffsetY;
+    protected float textWidth, textHeight;
 
     /**
-     * Button with custom text. Uses TDGAme.fetchFont() to generate font.
+     * Button with custom text. Uses TDGame.fetchFont() to generate font.
      * @param position
      * @param text
      * @param fontsize
@@ -39,6 +41,10 @@ public abstract class CustomButton extends Clickable{
         this.textColor=textColor;
 
         background=fetchTexture("white_square");
+
+        GlyphLayout layout = new GlyphLayout(font, text);
+        textWidth = layout.width;
+        textHeight=layout.height;
     }
     @Override
     public void draw(SpriteBatch batch) {

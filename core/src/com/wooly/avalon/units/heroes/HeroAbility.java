@@ -6,6 +6,9 @@ public abstract class HeroAbility {
     public String name;
     public boolean isPassive;
     public Texture icon;
+    protected float maxCooldown;
+    protected float cooldown; //keeps track of when the spell can be cast next
+    protected String description;
     //TODO add cooldowns, description
 
     /**
@@ -13,10 +16,40 @@ public abstract class HeroAbility {
      */
     public HeroAbility(){
     }
-    public HeroAbility(String name,boolean isPassive,Texture icon) {
+    public HeroAbility(String name,Texture icon) {
         this.name=name;
-        this.isPassive = isPassive;
+        this.isPassive = true;
         this.icon=icon;
     }
-    public abstract void activate();
+    public HeroAbility(String name,Texture icon,float cooldown) {
+        this(name,icon);
+        this.name=name;
+        this.isPassive = false;
+        this.icon=icon;
+        this.maxCooldown=cooldown;
+    }
+
+    /**
+     * This activates the actual effect of the ability and sets its cooldown to max. Call super.activate() in every non-passive Override!
+     */
+    public void activate(){
+        cooldown=maxCooldown;
+    }
+    public void updateCooldown(float timeSinceLastFrame){
+        if(onCooldown()){
+            cooldown= Math.max(cooldown-timeSinceLastFrame,0);
+        }
+    }
+    /**
+     * @return true if the ability is still on cooldown, and therefore cannot be cast
+     */
+    public boolean onCooldown(){
+        return (cooldown>0);
+    }
+    public String getDescription() {
+        return description;
+    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
 }

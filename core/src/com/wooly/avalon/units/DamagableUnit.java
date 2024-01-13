@@ -61,7 +61,7 @@ public class DamagableUnit extends MovableUnit{
      * @param magicResistance
      */
     public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance) {
-        this(texture,position,movementSpeed,maxHp,armor,magicResistance,false);
+        this(texture,position,movementSpeed,maxHp,armor,magicResistance,false,0);
     }
 
     /**
@@ -167,7 +167,7 @@ public class DamagableUnit extends MovableUnit{
      * @param removeMode if true the modifier will instead be subtracted.
      */
     protected void applyBuff(UnitBuff buff,boolean removeMode){
-        int modifier=buff.getModifier();
+        float modifier=buff.getModifier();
         if(removeMode) modifier*=-1;
         switch (buff.stat){
             case "armor":

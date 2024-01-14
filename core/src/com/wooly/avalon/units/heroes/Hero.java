@@ -15,6 +15,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.screens.TextBubble;
 import com.wooly.avalon.screens.buttons.Button;
 import com.wooly.avalon.screens.buttons.CustomButton;
 import com.wooly.avalon.units.enemies.Enemy;
@@ -183,38 +184,24 @@ public abstract class Hero extends AlliedUnit {
                 if(!ability.isPassive && !ability.onCooldown()) ability.activate();
             }
         }
-        protected class HeroAbilityInfo extends CustomButton{
+        protected class HeroAbilityInfo extends Button{
             boolean toggled=false;
-            GlyphLayout layout;
-
+            TextBubble textBubble;
             /**
-             * Displays the description of the heroes ability.
-             *
+             * When clicked a description of teh hero ability will be displayed.
              * @param position
-             * @param text
-             * @param width
-             * @param height
              */
-            public HeroAbilityInfo(Coordinate position, String text, float width, float height) {
-                super(position, text, 20, Color.WHITE, Color.BLACK, width, height);
-                layout=new GlyphLayout(font,text,Color.WHITE,500,0,true);
-                textOffsetY=layout.height;
+            public HeroAbilityInfo(Coordinate position, String text) {
+                super(position, fetchTexture("white_square"), fetchTexture("enemies/red_square"));
+                textBubble=new TextBubble(SCREEN_BOT_LEFT,text,20,Color.WHITE,600,new Color(0,0,0,0.5f));
             }
+
             @Override
             public void draw(SpriteBatch batch) {
-                if(toggled){
-                    batch.setColor(backgroundColor);
-                    batch.draw(background, SCREEN_BOT_LEFT.x(), SCREEN_BOT_LEFT.y(),textWidth,textHeight);
-                    font.setColor(textColor);
-                    font.draw(batch, layout, SCREEN_BOT_LEFT.x()+textOffsetX, SCREEN_BOT_LEFT.y()+textOffsetY);
-
-                    batch.setColor(Color.WHITE);
-                    batch.draw(background, position.x(), position.y(),width,height);
-                }else{
-                    batch.setColor(Color.RED);
-                    batch.draw(background, position.x(), position.y(),width,height);
-                }
+                super.draw(batch);
+                if (toggled) textBubble.draw(batch);
             }
+
             @Override
             public void onClick() {
                 toggled=!toggled;
@@ -246,7 +233,7 @@ public abstract class Hero extends AlliedUnit {
 
             for (int i = 0; i < abilityNum; i++) {
                 abilityButtons[i]=new HeroAbilityButton(buttonPosition,abilities[i]);
-                abilityInfos[i]=new HeroAbilityInfo(buttonPosition.add(new Coordinate(0,iconHeight)),abilities[i].description,iconWidth,iconHeight);
+                abilityInfos[i]=new HeroAbilityInfo(buttonPosition.add(new Coordinate(0,iconHeight)),abilities[i].description);
 
                 buttonPosition=buttonPosition.add(new Coordinate(iconWidth,0));
             }

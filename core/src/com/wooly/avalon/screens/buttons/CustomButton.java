@@ -12,6 +12,7 @@ import com.wooly.avalon.maps.Coordinate;
 
 public abstract class CustomButton extends Clickable{
     protected String text;
+    protected GlyphLayout layout;
     protected Texture background;
     protected BitmapFont font;
     protected Color backgroundColor;
@@ -30,9 +31,13 @@ public abstract class CustomButton extends Clickable{
         super(position);
         this.text=text;
         font=fetchFont(fontsize);
+        layout = new GlyphLayout(font, text,textColor,width,-1,true);
 
         this.height=height;
-        this.width=width;
+        this.width= layout.width;
+
+        textWidth = layout.width;
+        textHeight=layout.height;
 
         textOffsetX=10;
         textOffsetY=height*0.7f;
@@ -42,9 +47,6 @@ public abstract class CustomButton extends Clickable{
 
         background=fetchTexture("white_square");
 
-        GlyphLayout layout = new GlyphLayout(font, text);
-        textWidth = layout.width;
-        textHeight=layout.height;
     }
     @Override
     public void draw(SpriteBatch batch) {
@@ -52,7 +54,7 @@ public abstract class CustomButton extends Clickable{
             batch.setColor(backgroundColor);
             batch.draw(background, position.x(), position.y(),width,height);
             font.setColor(textColor);
-            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY);
+            font.draw(batch, layout, position.x()+textOffsetX, position.y()+textOffsetY);
         }else{
             batch.setColor(textColor);
             batch.draw(background, position.x(), position.y(),width,height);

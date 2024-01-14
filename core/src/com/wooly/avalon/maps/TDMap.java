@@ -1,5 +1,7 @@
 package com.wooly.avalon.maps;
 
+import static com.wooly.avalon.TDGame.random;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.units.enemies.Enemy;
@@ -106,13 +108,15 @@ public class TDMap {
             if(damage>0){
                 playerHP-=damage;
                 shouldBeDeleted.add(enemy);
-                System.out.println("Enemy "+enemy.getSpawnID()+" has reached the end and will be deleted");
+                //System.out.println("Enemy "+enemy.getSpawnID()+" has reached the end and will be deleted");
             }else if(enemy.getCurrentHp()<=0){
-                playerGold+=enemy.getGoldDropped(); //get gold from enemies
-                System.out.println(enemy.getGoldDropped()+" gold");
+                int gold=enemy.getGoldDropped();
+                playerGold+=random.nextInt((int) (gold*0.75f),(int)(gold*1.25f)); //get gold from enemies
+                //System.out.println(enemy.getGoldDropped()+" gold");
+
                 enemy.die();
                 shouldBeDeleted.add(enemy);
-                System.out.println("Enemy "+enemy.getSpawnID()+" has died and will be deleted");
+                //System.out.println("Enemy "+enemy.getSpawnID()+" has died and will be deleted");
             }
         }
         //we remove the enemy from the list when they reach the end of the path

@@ -2,14 +2,10 @@ package com.wooly.avalon.units.heroes;
 
 import static com.wooly.avalon.TDGame.fetchTexture;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.units.UnitBuff;
 import com.wooly.avalon.units.enemies.Enemy;
-import com.wooly.avalon.units.projectiles.Projectile;
-import com.wooly.avalon.units.projectiles.ProjectileSpawner;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Mordred extends RangedHero{
@@ -31,7 +27,7 @@ public class Mordred extends RangedHero{
     public void update(List<Enemy> enemies, float timeSinceLastFrame) {
         updateExistingProjectiles();
         projectileSpawner.spawnLocation=position;
-        if(target!=null && target.isDead()) abilities[0].activate(); //if the target died get the damage buff from the passive
+        if(target!=null && target.shouldBeDead()) abilities[0].activate(); //if the target died get the damage buff from the passive
         super.update(enemies, timeSinceLastFrame);
     }
     private class AllConsumingFlames extends HeroAbility{

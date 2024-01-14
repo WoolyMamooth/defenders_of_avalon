@@ -31,7 +31,7 @@ public class TextBubble {
     public TextBubble(Coordinate position, String text, int fontsize, Color textColor,float width) {
         this.position = position;
         font=fetchFont(fontsize);
-        layout=new GlyphLayout(font,text,textColor,width,-1,true);
+        layout=new GlyphLayout(font,text,textColor,width,-1,true); //halign -1 is left align, 0 is center, 1 is right (i think)
         this.textColor=textColor;
     }
     public TextBubble(Coordinate position, String text, int fontsize, Color textColor, float width, Color backgroundColor){
@@ -48,7 +48,7 @@ public class TextBubble {
             batch.draw(backgroundTexture,position.x(),position.y(),backgroundWidth,backgroundHeight);
         }
         font.setColor(textColor);
-        font.draw(batch,layout, position.x()+10, position.y()+10+layout.height);
+        font.draw(batch,layout, position.x()+10, position.y()+10+layout.height); //+10 for margin
 
         batch.setColor(Color.WHITE);
     }

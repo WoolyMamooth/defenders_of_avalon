@@ -32,7 +32,7 @@ public abstract class CustomButton extends Clickable{
         this.text=text;
         font=fetchFont(fontsize);
         layout = new GlyphLayout(font, text,textColor,width,-1,true);
-
+        //TODO make this use text bubbles plox
         this.height=height;
         this.width= layout.width;
 

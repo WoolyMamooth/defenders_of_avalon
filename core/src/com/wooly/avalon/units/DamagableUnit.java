@@ -221,7 +221,7 @@ public class DamagableUnit extends MovableUnit{
     /**
      * @return true if HP is zero or less.
      */
-    public boolean isDead(){
+    public boolean shouldBeDead(){
         return currentHp<=0;
     }
     private class HPBar extends DrawableUnit{

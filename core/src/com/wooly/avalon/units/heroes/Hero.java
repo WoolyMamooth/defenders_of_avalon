@@ -2,28 +2,27 @@ package com.wooly.avalon.units.heroes;
 
 import static com.wooly.avalon.TDGame.SCREEN_BOT_LEFT;
 import static com.wooly.avalon.TDGame.SCREEN_BOT_RIGHT;
-import static com.wooly.avalon.TDGame.SCREEN_CENTER;
 import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
 import static com.wooly.avalon.TDGame.fetchTexture;
-import static com.wooly.avalon.TDGame.place;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.screens.TextBubble;
 import com.wooly.avalon.screens.buttons.Button;
-import com.wooly.avalon.screens.buttons.CustomButton;
 import com.wooly.avalon.units.enemies.Enemy;
 import com.wooly.avalon.units.AlliedUnit;
 
 import java.util.List;
 
 public abstract class Hero extends AlliedUnit {
+    float maxDeathTimer=10f; //the duration for which the hero will be down for if they die
+    float deathTimer=0f;
+    Texture deadTexture; //texture to be displayed on death
     HeroSelectorButton button;
     protected boolean selected=false;
     boolean moving=false;
@@ -51,6 +50,7 @@ public abstract class Hero extends AlliedUnit {
         super(texture, position, movementSpeed, maxHp, armor, magicResistance, damage, attackDelay, searchRange, damageType);
         button=new HeroSelectorButton(position);
         turnAround();
+        deadTexture=fetchTexture("heroes/dead_hero");
 
         rangeOutline=new ShapeRenderer();
         rangeOutline.setColor(Color.BLACK);
@@ -58,26 +58,35 @@ public abstract class Hero extends AlliedUnit {
 
     @Override
     public void update(List<Enemy> enemies, float timeSinceLastFrame) {
-        button.update(position);
-        updateCooldowns(timeSinceLastFrame);
-        if(isDead()) {
-            die(); //TODO heroes will respawn, but for now they just get deleted
-            return;
-        }
-        if(moving){ //TODO should only move when map is clicked, not menu
-            if (target != null) {
-                target.setTarget(null);
-                target = null;
+        if(!isDead()) {
+            button.update(position);
+            updateCooldowns(timeSinceLastFrame);
+            if (shouldBeDead()) {
+                die(); //TODO heroes will respawn, but for now they just get deleted
+                return;
             }
-            move(goal);
-            if(atCoordinate(goal)){
-                moving=false;
+            if (moving) { //TODO should only move when map is clicked, not menu
+                if (target != null) {
+                    target.setTarget(null);
+                    target = null;
+                }
+                move(goal);
+                if (atCoordinate(goal)) {
+                    moving = false;
+                }
+                checkMovement();
+            } else {
+                searchCenterPosition = position;
+                checkMovement();
+                super.update(enemies, timeSinceLastFrame);
             }
-            checkMovement();
-        }else {
-            searchCenterPosition=position;
-            checkMovement();
-            super.update(enemies, timeSinceLastFrame);
+        }else{
+            //the hero is dead, decrease death timer
+            deathTimer-=timeSinceLastFrame;
+            if (deathTimer<=0){
+                //if the timer is up, resurrect
+                currentHp=maxHp;
+            }
         }
     }
     protected void updateCooldowns(float timeSinceLastFrame){
@@ -87,7 +96,8 @@ public abstract class Hero extends AlliedUnit {
     }
     @Override
     public void die() {
-        super.die();
+        target=null;
+        deathTimer=maxDeathTimer;
     }
     @Override
     public void draw(SpriteBatch batch) {
@@ -101,9 +111,13 @@ public abstract class Hero extends AlliedUnit {
                 drawRange(searchRange,false);
                 batch.begin();
             }
+        }else{
+            batch.draw(deadTexture,position.x(),position.y());
         }
     }
-
+    private boolean isDead(){
+        return deathTimer>0;
+    }
     /**
      * Draws a circle around the hero at the specified range.
      * @param range
@@ -188,20 +202,18 @@ public abstract class Hero extends AlliedUnit {
             boolean toggled=false;
             TextBubble textBubble;
             /**
-             * When clicked a description of teh hero ability will be displayed.
+             * When clicked a description of the ability will be displayed.
              * @param position
              */
             public HeroAbilityInfo(Coordinate position, String text) {
                 super(position, fetchTexture("white_square"), fetchTexture("enemies/red_square"));
                 textBubble=new TextBubble(SCREEN_BOT_LEFT,text,20,Color.WHITE,600,new Color(0,0,0,0.5f));
             }
-
             @Override
             public void draw(SpriteBatch batch) {
                 super.draw(batch);
                 if (toggled) textBubble.draw(batch);
             }
-
             @Override
             public void onClick() {
                 toggled=!toggled;

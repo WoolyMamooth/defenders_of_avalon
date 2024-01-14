@@ -2,7 +2,6 @@ package com.wooly.avalon.units.heroes;
 
 import static com.wooly.avalon.TDGame.fetchTexture;
 
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.units.UnitBuff;
@@ -48,7 +47,7 @@ public class ArthurPendragon extends Hero{
             if(summon!=null){
                 summon.setSearchCenterPosition(summon.getPosition());
                 summon.update(enemies,timeSinceLastFrame);
-                if(summon.isDead()){
+                if(summon.shouldBeDead()){
                     summon.die();
                     summons[i]=null;
                 }

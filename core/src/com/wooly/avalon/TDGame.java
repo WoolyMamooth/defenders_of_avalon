@@ -30,7 +30,7 @@ public class TDGame extends Game {
 	public static final String TEXTURE_EXTENSION=".png";
 
 	//the player variable stores all data of the player that will be saved
-	public static final Player player=new Player();
+	public static Player player;
 	public static Random random=new Random();
 	
 	@Override
@@ -61,6 +61,7 @@ public class TDGame extends Game {
 				"\nwidthOffset: "+widthOffset+
 				"\nBOT_L: "+SCREEN_BOT_LEFT);
 
+		player=new Player();
 		System.out.println("PLAYER LOADED: "+player);
 
 		//sets the first screen, which is the main menu
@@ -68,6 +69,14 @@ public class TDGame extends Game {
 
 		//for quicker testing so we don't have to go through the menu:
 		//this.setScreen(new GameScreen(this,new TDMap(0)));
+	}
+
+	@Override
+	public void dispose() {
+		System.out.println("SAVING PLAYER DATA");
+		player.saveData();
+		System.out.println("EXITING");
+		super.dispose();
 	}
 
 	/**

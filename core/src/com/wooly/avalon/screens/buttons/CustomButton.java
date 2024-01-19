@@ -54,7 +54,7 @@ public abstract class CustomButton extends Clickable{
             batch.setColor(backgroundColor);
             batch.draw(background, position.x(), position.y(),width,height);
             font.setColor(textColor);
-            font.draw(batch, layout, position.x()+textOffsetX, position.y()+textOffsetY);
+            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY);
         }else{
             batch.setColor(textColor);
             batch.draw(background, position.x(), position.y(),width,height);

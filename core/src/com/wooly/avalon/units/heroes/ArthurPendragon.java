@@ -57,6 +57,7 @@ public class ArthurPendragon extends Hero{
     private class SummonGuards extends HeroAbility{
         public SummonGuards() {
             super("SummonGuards",fetchTexture("enemies/red_square"),30);
+            setDescription("todo");
         }
         @Override
         public void activate() {
@@ -69,6 +70,7 @@ public class ArthurPendragon extends Hero{
     private class BuffGuards extends HeroAbility{
         public BuffGuards() {
             super("BuffGuards", fetchTexture("enemies/red_square"),15);
+            setDescription("todo");
         }
         @Override
         public void activate() {
@@ -83,6 +85,7 @@ public class ArthurPendragon extends Hero{
     private class HealSelf extends HeroAbility{
         public HealSelf() {
             super("HealSelf",fetchTexture("enemies/red_square"),40);
+            setDescription("todo");
         }
         @Override
         public void activate() {

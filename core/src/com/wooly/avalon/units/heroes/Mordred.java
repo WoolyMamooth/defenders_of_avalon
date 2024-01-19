@@ -33,10 +33,10 @@ public class Mordred extends RangedHero{
     private class AllConsumingFlames extends HeroAbility{
         int damageIncreasePerStack;
         public AllConsumingFlames(){
-            super("AllConsumingFlames",fetchTexture("enemies/red_square"));
+            super("All Consuming Flames",fetchTexture("enemies/red_square"));
             damageIncreasePerStack=1;
             setDescription("Mordred gains power from the enemies she fells. After every unit killed she gets "
-                    +damageIncreasePerStack+" damage. Stacks infinitely. Cooldown: "+maxCooldown);
+                    +damageIncreasePerStack+" damage. Stacks infinitely.");
         }
         @Override
         public void activate() {
@@ -50,7 +50,7 @@ public class Mordred extends RangedHero{
         public Lightspeed(){
             super("Lightspeed",fetchTexture("enemies/red_square"),20);
             setDescription("Mordred channels the power of fire to accelerate herself, for "+buffDuration+" seconds she gains "+
-                    movementSpeedModifier+" movement speed and "+attackSpeedModifier+" attack speed. Cooldown: "+maxCooldown);
+                    movementSpeedModifier+" movement speed and "+attackSpeedModifier+" attack speed.");
         }
         @Override
         public void activate() {

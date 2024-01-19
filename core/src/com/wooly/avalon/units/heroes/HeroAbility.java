@@ -50,6 +50,6 @@ public abstract class HeroAbility {
         return description;
     }
     public void setDescription(String description) {
-        this.description = description;
+        this.description = name+"\n"+description+"\n"+(isPassive?"Passive.":"Cooldown: "+maxCooldown);
     }
 }

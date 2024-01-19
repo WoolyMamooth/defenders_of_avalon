@@ -15,7 +15,7 @@ public class Player {
      */
     public Player() {
         unlockedTowers=new String[]{"archer","barracks","None","None"};
-        unlockedHeroes=new String[]{"Mordred","Arthur","None"};
+        unlockedHeroes=new String[]{"Arthur","Mordred","None"};
 
         loadData();
     }

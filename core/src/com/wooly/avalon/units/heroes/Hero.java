@@ -20,6 +20,8 @@ import com.wooly.avalon.units.AlliedUnit;
 import java.util.List;
 
 public abstract class Hero extends AlliedUnit {
+    public String name;
+    public String description;
     float maxDeathTimer=10f; //the duration for which the hero will be down for if they die
     float deathTimer=0f;
     Texture deadTexture; //texture to be displayed on death
@@ -46,8 +48,10 @@ public abstract class Hero extends AlliedUnit {
      * @param searchRange
      * @param damageType
      */
-    public Hero(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance, int damage, float attackDelay, float searchRange, String damageType) {
+    public Hero(Texture texture, Coordinate position,String name, String description, float movementSpeed, int maxHp, int armor, int magicResistance, int damage, float attackDelay, float searchRange, String damageType) {
         super(texture, position, movementSpeed, maxHp, armor, magicResistance, damage, attackDelay, searchRange, damageType);
+        this.name=name;
+        this.description=description;
         button=new HeroSelectorButton(position);
         turnAround();
         deadTexture=fetchTexture("heroes/dead_hero");
@@ -148,6 +152,9 @@ public abstract class Hero extends AlliedUnit {
             goal = new Coordinate(x, SCREEN_HEIGHT - y);
             moving=true;
         }
+    }
+    public HeroAbility[] getAbilities() {
+        return abilities;
     }
     protected class HeroSelectorButton extends Button {
         private boolean onHero=true;

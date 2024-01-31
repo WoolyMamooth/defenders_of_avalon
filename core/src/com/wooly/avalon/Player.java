@@ -4,10 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class Player {
     String dataFileName="playerdata.txt";
     FileHandle fileHandle;
+    public String[] existingHeroes={"Arthur","Mordred"};
+    public String[] existingTowers={"archer","barracks"};
     String[] unlockedTowers;
     String[] unlockedHeroes;
     String[] equippedTowers;
@@ -52,6 +55,7 @@ public class Player {
      */
     public void saveData(){
         fileHandle.writeString(String.valueOf(stardust),false); //delete all info
+        fileHandle.writeString("\n",true);
         for (String hero:unlockedHeroes) {
             fileHandle.writeString(hero,true);
             fileHandle.writeString("\t",true);
@@ -62,6 +66,44 @@ public class Player {
             fileHandle.writeString("\t",true);
         }
     }
+
+    /**
+     * Subtracts cost from the Players stardust. Returns false if not enough, true otherwise.
+     */
+    public boolean spendStardust(int cost){
+        if(cost>stardust){
+            System.out.println("Not enough stardust");
+            return false;
+        }
+        stardust-=cost;
+        return true;
+    }
+    /**
+     * Player unlocks given hero.
+     * @param name
+     */
+    public void unlockHero(String name){
+        for (int i = 0; i < unlockedHeroes.length; i++) {
+            if(Objects.equals(unlockedHeroes[i], "None")){
+                unlockedHeroes[i]=name;
+                return;
+            }
+        }
+        //this should never run
+        System.out.println("All heroes unlocked");
+    }
+    /**
+     * Player unlocks given tower.
+     * @param name
+     */
+    public void unlockTower(String name){
+        for (int i = 0; i < unlockedTowers.length; i++) {
+            if(Objects.equals(unlockedTowers[i], "None")) unlockedTowers[i]=name;
+            return;
+        }
+        //this should never run
+        System.out.println("All towers unlocked");
+    }
     public String[] getEquippedTowers() {
         return equippedTowers;
     }
@@ -69,7 +111,15 @@ public class Player {
     public String getEquippedHero() {
         return equippedHero;
     }
-
+    public String[] getUnlockedTowers() {
+        return unlockedTowers;
+    }
+    public String[] getUnlockedHeroes() {
+        return unlockedHeroes;
+    }
+    public int getStardust() {
+        return stardust;
+    }
     @Override
     public String toString() {
         return "Player{" +

@@ -13,7 +13,7 @@ public abstract class Clickable {
     public Clickable(Coordinate position){
         this.position = position;
     }
-    protected boolean isActive() {
+    public boolean isActive() {
         if (Gdx.input.getX() < position.x() + this.width && Gdx.input.getX() > position.x() &&
                 TDGame.SCREEN_HEIGHT - Gdx.input.getY() < position.y() + this.height &&
                 TDGame.SCREEN_HEIGHT - Gdx.input.getY() > position.y()) {
@@ -40,5 +40,8 @@ public abstract class Clickable {
     public abstract void dispose();
     public Coordinate getPosition() {
         return position;
+    }
+    public void setPosition(Coordinate position) {
+        this.position = position;
     }
 }

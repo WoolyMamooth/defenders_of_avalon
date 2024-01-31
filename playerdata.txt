@@ -1,2 +1,3 @@
-69Mordred	Arthur	None	
+69
+Mordred	Arthur	None	
 archer	barracks	None	None	

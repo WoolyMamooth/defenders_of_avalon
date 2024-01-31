@@ -11,7 +11,7 @@ import com.wooly.avalon.screens.buttons.LoadScreenButton;
 
 public class MainMenuScreen extends MenuScreen {
 
-    Clickable playButton,exitButton;
+    Clickable playButton,exitButton,shopButton;
     public MainMenuScreen(TDGame game){
         super(game);
         System.out.println("LOADING MainMenuScreen");
@@ -25,15 +25,21 @@ public class MainMenuScreen extends MenuScreen {
         this.exitButton=new ExitButton(TDGame.fetchTexture("buttons/exit_active"),
                 TDGame.fetchTexture("buttons/exit"),
                 place(pos.x(), pos.y()));
+
+        pos=centerButton(3);
+        this.shopButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/play_active"),
+                TDGame.fetchTexture("buttons/play"),
+                place(pos.x(), pos.y()),
+                "shop");
     }
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1);
-
+        super.render(delta);
         game.batch.begin();
         renderButton(this.playButton);
         renderButton(this.exitButton);
+        renderButton(this.shopButton);
         game.batch.end();
     }
 
@@ -41,5 +47,6 @@ public class MainMenuScreen extends MenuScreen {
     public void dispose() {
         playButton.dispose();
         exitButton.dispose();
+        shopButton.dispose();
     }
 }

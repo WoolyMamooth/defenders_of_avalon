@@ -19,6 +19,8 @@ import com.wooly.avalon.units.towers.RangedTower;
 import com.wooly.avalon.units.towers.SummonerTower;
 import com.wooly.avalon.units.towers.Tower;
 import com.wooly.avalon.units.towers.TowerUpgrade;
+import com.wooly.avalon.units.towers.towers.ArcherTower;
+import com.wooly.avalon.units.towers.towers.BarracksTower;
 
 import java.util.List;
 
@@ -134,29 +136,21 @@ public class TowerSpace extends Button {
      */
     private void build(String towerName){
         Texture texture=TDGame.fetchTexture("towers/towerTextures/"+towerName);
-        TowerUpgrade[] upgrades=new TowerUpgrade[]{};
         switch (towerName){
             case "archer":
                 if(attemptGoldSpend(70)) {
-                    upgrades = new TowerUpgrade[]{
-                            new TowerUpgrade("range", 3, 10, 10, 1.25f),
-                            new TowerUpgrade("atkSpeed", 3, 10, 20, 1.5f),
-                            new TowerUpgrade("damage", 3, 25, 5, 2f)
-                    };
-                    tower = new RangedTower(texture, position, towerBuildID, "arrow", 10, 0.5f, upgrades, "physical");
+                    tower = new ArcherTower(texture, position, towerBuildID);
                 }else return;
                 break;
             case "barracks":
-                upgrades=new TowerUpgrade[]{
-                        new TowerUpgrade("summons",3,1,100,1.1f),
-                        new TowerUpgrade("armor",3,1,25,1.5f)
-                };
-                tower=new SummonerTower(texture,position,towerBuildID,"guard",5f,1,upgrades);
+                if(attemptGoldSpend(80)) {
+                    tower = new BarracksTower(texture, position, towerBuildID);
+                }else return;
                 break;
             case "None":
             default:
-                build("archer");
                 System.out.println("Warning tower "+ towerBuildID +" is set to default");
+                build("archer");
                 break;
         }
         occupied=true;
@@ -164,7 +158,7 @@ public class TowerSpace extends Button {
         activeTexture=fetchTexture("white_square");
         menuVisible=false;
 
-        this.menu=new TowerUpgradeMenu(tower.getTexture().getWidth(),upgrades); //change the menu
+        this.menu=new TowerUpgradeMenu(tower.getTexture().getWidth(),tower.upgrades); //change the menu
     }
     private void upgrade(String upgradeName){
         System.out.println("Upgrading");

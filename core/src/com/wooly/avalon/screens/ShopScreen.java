@@ -1,0 +1,256 @@
+package com.wooly.avalon.screens;
+
+import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
+import static com.wooly.avalon.TDGame.SCREEN_WIDTH;
+import static com.wooly.avalon.TDGame.fetchTexture;
+import static com.wooly.avalon.TDGame.place;
+import static com.wooly.avalon.TDGame.player;
+
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.wooly.avalon.TDGame;
+import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.screens.buttons.Button;
+import com.wooly.avalon.screens.buttons.Clickable;
+import com.wooly.avalon.screens.buttons.CustomButton;
+import com.wooly.avalon.screens.buttons.LoadScreenButton;
+import com.wooly.avalon.units.heroes.ArthurPendragon;
+import com.wooly.avalon.units.heroes.Hero;
+import com.wooly.avalon.units.heroes.HeroAbility;
+import com.wooly.avalon.units.towers.Tower;
+
+import java.util.Arrays;
+
+public class ShopScreen extends MenuScreen{
+    Clickable mainMenuButton;
+    TextBubble textBubble;
+    UnitContainer container;
+    /**
+     * On this screen the Player can purchase new towers and heroes.
+     * @param game
+     */
+    public ShopScreen(TDGame game) {
+        super(game);
+
+        textBubble=new TextBubble(centerButton(1),player.getStardust()+" Stardust",30, Color.GOLD,SCREEN_WIDTH);
+
+        Coordinate pos=centerButton(2);
+        this.mainMenuButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/menu_active"),
+                TDGame.fetchTexture("buttons/menu"),
+                place(pos.x(), pos.y()),"mainMenu");
+
+        pos=place(SCREEN_WIDTH*0.125f,0);
+        container=new HeroContainer(pos,new ArthurPendragon(pos));
+    }
+
+    @Override
+    public void render(float delta) {
+        super.render(delta);
+        game.batch.begin();
+        textBubble.draw(game.batch);
+        renderButton(mainMenuButton);
+        try {
+            container.draw(game.batch);
+        }catch (NullPointerException e){
+            //caused when we exit to the main menu because hero is disposed of
+            //doesn't cause issues, fixes itself next frame
+        }
+        game.batch.end();
+    }
+    @Override
+    public void dispose(){
+        mainMenuButton.dispose();
+        container.dispose();
+    }
+    private class BuyButton extends CustomButton{
+        String whatToUnlock;
+        int cost;
+        boolean hero;
+        /**
+         * @param hero if true this will use player.unlockHero else it will use player.unlockTower
+         */
+        public BuyButton(Coordinate position,String whatToUnlock, int cost,boolean hero) {
+            super(position, "BUY for "+cost+" SD", 30, Color.WHITE, Color.BLACK, 500, 128);
+            this.whatToUnlock=whatToUnlock;
+            this.cost=cost;
+            this.hero=hero;
+        }
+        @Override
+        public void onClick() {
+            if (player.spendStardust(cost)){
+                if(hero)player.unlockHero(whatToUnlock);
+                else player.unlockTower(whatToUnlock);
+            }
+        }
+    }
+    private abstract class UnitContainer{
+        Coordinate position;
+        Texture background;
+        Color backgroundColor=new Color(1,1,1,0.3f);
+        TextBubble nameText;
+        TextBubble descriptionText;
+        boolean canBeBought=true; //true if the Player has yet to unlock the hero
+        BuyButton buyButton;
+        float width,height;
+        float TEXTURE_SIZE_MULTIPLIER =5f;
+
+        public UnitContainer(Coordinate position) {
+            this.position = position;
+            this.background=fetchTexture("white_square");
+
+            this.width=SCREEN_WIDTH*0.75f;
+            this.height=SCREEN_HEIGHT*0.8f;
+        }
+
+        public void draw(SpriteBatch batch){
+            batch.setColor(backgroundColor);
+            batch.draw(background,position.x(),position.y(),width,height);
+            batch.setColor(Color.WHITE);
+
+            //text
+            nameText.draw(batch);
+            descriptionText.draw(batch);
+
+            //buy
+            if(canBeBought) renderButton(buyButton);
+        }
+        void updateDescriptionPosition(){
+            descriptionText.position=nameText.position.subtract(new Coordinate(0,descriptionText.getHeight()+30));
+        }
+        public abstract void dispose();
+    }
+    private class HeroContainer extends UnitContainer{
+        protected class HeroInfoButton extends Button {
+            String abilityDescription;
+            /**
+             * When clicked a description of the ability will be displayed.
+             * @param position
+             */
+            public HeroInfoButton(Coordinate position, String text) {
+                super(position, fetchTexture("white_square"), fetchTexture("enemies/red_square"));
+                abilityDescription=text;
+            }
+            public HeroInfoButton(Coordinate position, String text,float width, float height,Texture texture) {
+                super(position, texture, texture);
+                this.width=width;
+                this.height=height;
+                abilityDescription=text;
+            }
+            @Override
+            public void draw(SpriteBatch batch) {
+                super.draw(batch);
+            }
+            @Override
+            public void onClick() {
+                descriptionText.setText(abilityDescription);
+                updateDescriptionPosition();
+            }
+        }
+        Hero hero;
+        HeroInfoButton heroDescriptionButton;
+        HeroInfoButton[] abilityInfoButtons;
+
+        /**
+         * A container that displays the textrue and info of heroes and their abilities.
+         * @param position
+         * @param hero
+         */
+        public HeroContainer(Coordinate position,Hero hero) {
+            super(position);
+            this.hero = hero;
+
+            //position components here
+            //hero texture
+            this.hero.setWidth(hero.getWidth()* TEXTURE_SIZE_MULTIPLIER);
+            this.hero.setHeight(hero.getHeight()* TEXTURE_SIZE_MULTIPLIER);
+            this.hero.setPosition(hero.position.add(new Coordinate(0,height-hero.getHeight())));
+
+            //text
+            this.nameText=new TextBubble(position.add(hero.position.add(new Coordinate(hero.getWidth(),hero.getHeight()-100)))
+                    , hero.name,50,Color.CYAN,SCREEN_WIDTH*0.75f);
+            this.descriptionText =new TextBubble(nameText.position, hero.description,30,Color.WHITE,SCREEN_WIDTH*0.75f);
+            descriptionText.setWrap(false);
+            updateDescriptionPosition();
+
+            //ability infos
+            heroDescriptionButton=new HeroInfoButton(hero.position, hero.description,hero.getWidth(),hero.getHeight(),fetchTexture("white_square"));
+
+            HeroAbility[] abilities=this.hero.getAbilities();
+            int abilitynum=abilities.length;
+            abilityInfoButtons=new HeroInfoButton[abilitynum];
+            int offsetX=abilities[0].icon.getWidth();
+            int offsetY=-abilities[0].icon.getHeight()*2;
+            for (int i = 0; i < abilitynum; i++) {
+                abilityInfoButtons[i]=new HeroInfoButton(hero.position.add(new Coordinate(offsetX*i,offsetY)),abilities[i].getDescription());
+            }
+
+            //button that allows player to buy it
+            buyButton=new BuyButton(position, hero.name, 100,true);
+            buyButton.setPosition(buyButton.getPosition().add(new Coordinate(width-buyButton.width-20,10)));
+
+            //if the player already has the hero then it shouldn't be buy-able
+            if(Arrays.asList(player.getUnlockedHeroes()).contains(hero.name)){
+                canBeBought=false;
+            }
+        }
+        @Override
+        public void draw(SpriteBatch batch){
+            super.draw(batch);
+
+            //texture
+            batch.draw(hero.texture,hero.position.x(),hero.position.y(),hero.getWidth(),hero.getHeight());
+
+            if(heroDescriptionButton.isActive()) {
+                batch.setColor(0, 0, 0, 0.3f);
+            }else{
+                batch.setColor(0, 0, 0, 0f);
+            }
+            heroDescriptionButton.drawCheckClick(batch);
+            batch.setColor(Color.WHITE);
+
+            //abilities
+            for (HeroInfoButton infoButton:abilityInfoButtons) {
+                infoButton.drawCheckClick(batch);
+            }
+        }
+        @Override
+        public void dispose(){
+            hero.dispose();
+        }
+    }
+    private class TowerContainer extends UnitContainer{
+        Tower tower;
+
+        public TowerContainer(Coordinate position,Tower tower) {
+            super(position);
+            this.tower=tower;
+
+            //position components here
+            //tower texture
+            this.tower.setWidth(tower.getWidth()* TEXTURE_SIZE_MULTIPLIER);
+            this.tower.setHeight(tower.getHeight()* TEXTURE_SIZE_MULTIPLIER);
+            this.tower.setPosition(tower.position.add(new Coordinate(0,height-tower.getHeight())));
+
+            //text
+            this.nameText=new TextBubble(position.add(tower.position.add(new Coordinate(tower.getWidth(),tower.getHeight()-100)))
+                    , tower.name,50,Color.CYAN,SCREEN_WIDTH*0.75f);
+            this.descriptionText =new TextBubble(nameText.position, tower.description,30,Color.WHITE,SCREEN_WIDTH*0.75f);
+            descriptionText.setWrap(false);
+            updateDescriptionPosition();
+        }
+
+        @Override
+        public void draw(SpriteBatch batch) {
+            super.draw(batch);
+
+            //texture
+            batch.draw(tower.texture,tower.position.x(),tower.position.y(),tower.getWidth(),tower.getHeight());
+
+        }
+        @Override
+        public void dispose() {
+            tower.dispose();
+        }
+    }
+}

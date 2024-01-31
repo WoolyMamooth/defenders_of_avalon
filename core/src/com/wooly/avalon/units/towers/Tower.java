@@ -16,13 +16,28 @@ public abstract class Tower extends DrawableUnit implements Attacker {
     float attackDelay; //defines how much time should pass between attacks
     float range; //defines how far the tower will target
     public TowerUpgrade[] upgrades;
+    public String name; //only needed in shop
+    public String description; //only needed in shop
 
-    public Tower(Texture texture, Coordinate position,int towerSpawnID,float attackDelay,TowerUpgrade[] upgrades) {
+    public Tower(Texture texture, Coordinate position,int towerSpawnID,float attackDelay,float range,TowerUpgrade[] upgrades) {
         super(texture, position);
         this.towerSpawnID=towerSpawnID;
-        this.range=200;
+        this.range=range;
         this.attackDelay=attackDelay;
         this.upgrades=upgrades;
+        name="name";
+        description="description";
+    }
+
+    public Tower(Texture texture, Coordinate position,String name, String description,int towerSpawnID,float attackDelay, float range,TowerUpgrade[] upgrades) {
+        super(texture, position);
+        this.towerSpawnID=towerSpawnID;
+        this.range=range;
+        this.attackDelay=attackDelay;
+        this.upgrades=upgrades;
+
+        this.name=name;
+        this.description=description;
     }
 
     public abstract void attack();

@@ -23,12 +23,10 @@ public abstract class MenuScreen implements Screen {
         @Override
         public void render(float delta) {
             ScreenUtils.clear(0, 0, 0, 1);
-            game.batch.begin();
-            game.batch.end();
         }
 
         protected void renderButton(Clickable button){
-                button.drawCheckClick(game.batch);
+            button.drawCheckClick(game.batch);
         }
 
         /**

@@ -26,8 +26,8 @@ public abstract class RangedHero extends Hero{
      * @param searchRange
      * @param damageType
      */
-    public RangedHero(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance, int damage, float attackDelay, float attackRange, String projectileName, float searchRange, String damageType) {
-        super(texture, position, movementSpeed, maxHp, armor, magicResistance, damage, attackDelay, searchRange, damageType);
+    public RangedHero(Texture texture, Coordinate position,String name, String description, float movementSpeed, int maxHp, int armor, int magicResistance, int damage, float attackDelay, float attackRange, String projectileName, float searchRange, String damageType) {
+        super(texture, position,name,description, movementSpeed, maxHp, armor, magicResistance, damage, attackDelay, searchRange, damageType);
         projectileSpawner=new ProjectileSpawner(position);
         this.attackRange=attackRange;
         this.projectileName=projectileName;

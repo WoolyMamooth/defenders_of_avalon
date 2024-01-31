@@ -27,8 +27,7 @@ public class ChooseMapScreen extends MenuScreen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0, 1);
-
+        super.render(delta);
         game.batch.begin();
         renderButton(this.mainMenuButton);
         renderButton(this.pickMapButton);

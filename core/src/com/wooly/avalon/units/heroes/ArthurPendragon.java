@@ -20,7 +20,7 @@ public class ArthurPendragon extends Hero{
      * @param position
      */
     public ArthurPendragon(Coordinate position) {
-        super(fetchTexture("heroes/arthur"), position, 100, 100, 10, 10, 10, 1, 200, "physical");
+        super(fetchTexture("heroes/arthur"), position,"Arthur","description here", 100, 100, 10, 10, 10, 1, 200, "physical");
         spawner=new SummonSpawner(position,searchRange);
         summons=new Summon[MAX_SUMMON_NUMBER];
 

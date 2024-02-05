@@ -31,8 +31,24 @@ public class TDGame extends Game {
 
 	//the player variable stores all data of the player that will be saved
 	public static Player player;
-	public static Random random=new Random();
-	
+	public static class CustomRandom{
+		static Random r=new Random();
+
+		/**
+		 * The built in Random functions crash the game on android because they apparently don't take parameters,
+		 * so this class should be used for generating random numbers.
+		 */
+		public CustomRandom(){}
+		public static int nextInt(int min, int max){
+			return r.nextInt()*(max-min)+min;
+		}
+		public static float nextFloat(float min, float max){
+			return r.nextFloat()*(max-min)+min;
+		}
+		public static boolean nextBoolean(){
+			return r.nextBoolean();
+		}
+	}
 	@Override
 	public void create () {
 		batch=new SpriteBatch();

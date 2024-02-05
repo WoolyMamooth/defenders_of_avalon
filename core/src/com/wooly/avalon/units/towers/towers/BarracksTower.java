@@ -7,11 +7,14 @@ import com.wooly.avalon.units.towers.TowerUpgrade;
 
 public class BarracksTower extends SummonerTower {
     public BarracksTower(Texture texture, Coordinate position, int towerSpawnID) {
-        super(texture, position, towerSpawnID, "guard",5f,1,
+        super(texture, position, towerSpawnID, 200f,"guard",5f,1,
             new TowerUpgrade[]{
                 new TowerUpgrade("summons",3,1,100,1.1f),
                 new TowerUpgrade("armor",3,1,25,1.5f)
             }
         );
+        setName("barracks");
+        setDescription("This tower summons a "+summonName+" every "+getAttackDelay()+" seconds, up to a maximum of "+maxSummons+".\n");
+        //TODO add summons stats into description maybe
     }
 }

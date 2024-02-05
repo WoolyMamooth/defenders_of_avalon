@@ -28,18 +28,6 @@ public abstract class Tower extends DrawableUnit implements Attacker {
         name="name";
         description="description";
     }
-
-    public Tower(Texture texture, Coordinate position,String name, String description,int towerSpawnID,float attackDelay, float range,TowerUpgrade[] upgrades) {
-        super(texture, position);
-        this.towerSpawnID=towerSpawnID;
-        this.range=range;
-        this.attackDelay=attackDelay;
-        this.upgrades=upgrades;
-
-        this.name=name;
-        this.description=description;
-    }
-
     public abstract void attack();
     public abstract void update(List<Enemy> enemies,float timeSinceLastFrame);
     @Override
@@ -101,6 +89,15 @@ public abstract class Tower extends DrawableUnit implements Attacker {
     public float getRange() {
         return range;
     }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Tower{" +

@@ -1,9 +1,9 @@
 package com.wooly.avalon.units.towers;
 
 import static com.wooly.avalon.TDGame.fetchTexture;
-import static com.wooly.avalon.TDGame.random;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.units.Spawner;
 
@@ -54,8 +54,8 @@ public class SummonSpawner extends Spawner {
                 return spawnSummon("guard");
         }
         float randomOffsetMax= searchRange/3f;
-        float x=random.nextFloat()*(randomOffsetMax*2)-randomOffsetMax;
-        float y=random.nextFloat()*(randomOffsetMax*2)-randomOffsetMax;
+        float x= TDGame.CustomRandom.nextFloat(-randomOffsetMax,randomOffsetMax);
+        float y= TDGame.CustomRandom.nextFloat(-randomOffsetMax,randomOffsetMax);
         /*
         float y=random.nextFloat(-randomOffsetMax,randomOffsetMax);
         Apparently the line above crashes the game, but only on android.

@@ -1,8 +1,7 @@
 package com.wooly.avalon.units.towers;
 
-import static com.wooly.avalon.TDGame.random;
-
 import com.badlogic.gdx.graphics.Texture;
+import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.units.AlliedUnit;
 import com.wooly.avalon.units.enemies.Enemy;
@@ -25,7 +24,7 @@ public class Summon extends AlliedUnit {
     public Summon(Texture texture, Coordinate position, Coordinate spawnOffset,float movementSpeed, int maxHp, int armor, int magicResistance, int damage, float attackDelay, float searchRange, String damageType) {
         super(texture, position, movementSpeed, maxHp, armor, magicResistance, damage, attackDelay, searchRange, damageType);
         this.position=this.position.add(spawnOffset); //we add a random offset so they don't just spawn on each other
-        if(random.nextBoolean()){
+        if(TDGame.CustomRandom.nextBoolean()){
             turnAround();
         }
     }

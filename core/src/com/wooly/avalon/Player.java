@@ -2,6 +2,7 @@ package com.wooly.avalon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -21,10 +22,16 @@ public class Player {
      * Keeps track of all data related to the player. ex.: unlocked towers.
      */
     public Player() {
-        unlockedTowers=new String[]{"archer","barracks","None","None"};
-        unlockedHeroes=new String[]{"Arthur","Mordred","None"};
         fileHandle=Gdx.files.local(dataFileName);
-        loadData();
+        try {
+            loadData();
+        }catch (GdxRuntimeException exception){
+            //this happens on first install because the file hasn't been created yet on specific device
+            fileHandle.writeString("0",false);
+            fileHandle.writeString("\nNone\tNone\tNone\t",true); //base unlocked heroes
+            fileHandle.writeString("\narcher\tbarracks\tNone\tNone\t",true); //base unlocked towers
+            loadData();
+        }
     }
     /**
      * Loads stardust amount, unlocked and equipped towers, heroes into memory.

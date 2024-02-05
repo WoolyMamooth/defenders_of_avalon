@@ -1,8 +1,7 @@
 package com.wooly.avalon.units.enemies;
 
-import static com.wooly.avalon.TDGame.random;
-
 import com.badlogic.gdx.graphics.Texture;
+import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.maps.Path;
 import com.wooly.avalon.units.Attacker;
@@ -33,7 +32,7 @@ public class Enemy extends DamagableUnit implements Attacker {
         this.attackRange=attackRange/2f;
         this.goldDropped=goldDropped;
 
-        float offsetY=random.nextFloat()*(height)-height/2f;
+        float offsetY= TDGame.CustomRandom.nextFloat(-height,height);
         pathOffset=new Coordinate(0,offsetY);
 
         this.position=this.position.add(pathOffset);
@@ -60,13 +59,13 @@ public class Enemy extends DamagableUnit implements Attacker {
     * and check for if it reached the end of the path. Returns the damage dealt to the player if the end of path is reached, 0 otherwise.
     */
     public int update(Path path,float timeSinceLastFrame){
-        if (atCoordinate(path.getCoordinate(path.length() - 1))) { //if reached the end of path
+        if (atCoordinate(path.getCoordinate(path.length()-1).add(pathOffset))) { //if reached the end of path
             return damageToPlayer;
         }
 
         if(target==null) { //if it not is attacking a Summon, move
-            Coordinate goal = path.getCoordinate(previousPathCoordinateID); //where the enemy will want to go next
-            move(goal.add(pathOffset));
+            Coordinate goal = path.getCoordinate(previousPathCoordinateID).add(pathOffset); //where the enemy will want to go next
+            move(goal);
             if (atCoordinate(goal)) { //if reached goal, set a new goal
                 previousPathCoordinateID++;
                 //System.out.println("Enemy "+spawnID+" new goal: "+goal);

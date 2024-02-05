@@ -26,6 +26,8 @@ public class ShopScreen extends MenuScreen{
     Clickable mainMenuButton;
     TextBubble textBubble;
     UnitContainer container;
+    Coordinate containerPos;
+    int containerUnitId=0;
     /**
      * On this screen the Player can purchase new towers and heroes.
      * @param game
@@ -40,8 +42,9 @@ public class ShopScreen extends MenuScreen{
                 TDGame.fetchTexture("buttons/menu"),
                 place(pos.x(), pos.y()),"mainMenu");
 
-        pos=place(SCREEN_WIDTH*0.125f,0);
-        container=new HeroContainer(pos,new ArthurPendragon(pos));
+        containerPos=place(SCREEN_WIDTH*0.125f,0);
+
+        container=new HeroContainer(containerPos,new ArthurPendragon(pos));
     }
 
     @Override
@@ -62,6 +65,24 @@ public class ShopScreen extends MenuScreen{
     public void dispose(){
         mainMenuButton.dispose();
         container.dispose();
+    }
+    private class SwitchUnitButton extends Button{
+        boolean forward;
+        /**
+         * Switches the unit in container to the next one/previous one.
+         */
+        public SwitchUnitButton(Coordinate position,boolean forward) {
+            super(position, fetchTexture(""), fetchTexture(""));
+            this.forward=forward;
+        }
+        @Override
+        public void onClick() {
+            if(forward){
+                containerUnitId++;
+            }else{
+                containerUnitId--;
+            }
+        }
     }
     private class BuyButton extends CustomButton{
         String whatToUnlock;
@@ -221,7 +242,6 @@ public class ShopScreen extends MenuScreen{
     }
     private class TowerContainer extends UnitContainer{
         Tower tower;
-
         public TowerContainer(Coordinate position,Tower tower) {
             super(position);
             this.tower=tower;
@@ -246,7 +266,6 @@ public class ShopScreen extends MenuScreen{
 
             //texture
             batch.draw(tower.texture,tower.position.x(),tower.position.y(),tower.getWidth(),tower.getHeight());
-
         }
         @Override
         public void dispose() {

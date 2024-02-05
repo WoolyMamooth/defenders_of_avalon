@@ -1,9 +1,8 @@
 package com.wooly.avalon.maps;
 
-import static com.wooly.avalon.TDGame.random;
-
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.wooly.avalon.TDGame;
 import com.wooly.avalon.units.enemies.Enemy;
 import com.wooly.avalon.units.enemies.EnemySpawner;
 import com.wooly.avalon.units.heroes.Hero;
@@ -111,7 +110,7 @@ public class TDMap {
                 //System.out.println("Enemy "+enemy.getSpawnID()+" has reached the end and will be deleted");
             }else if(enemy.getCurrentHp()<=0){
                 int gold=enemy.getGoldDropped();
-                playerGold+=random.nextInt((int) (gold*0.75f),(int)(gold*1.25f)); //get gold from enemies
+                playerGold+=(int) TDGame.CustomRandom.nextFloat(enemy.getGoldDropped()*0.75f,enemy.getGoldDropped()*1.25f); //get gold from enemies
                 //System.out.println(enemy.getGoldDropped()+" gold");
 
                 enemy.die();

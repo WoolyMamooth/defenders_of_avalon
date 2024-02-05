@@ -11,16 +11,16 @@ import java.util.List;
 public class SummonerTower extends Tower{
     SummonSpawner spawner;
     List<Summon> summons=new ArrayList<>();
-    int maxSummons; //defines the maximum number of summoned units that can be created by this tower
-    String summonName;
-    public SummonerTower(Texture texture, Coordinate position, int towerSpawnID, String summonName, float summonDelay, int maxSummons, TowerUpgrade[] upgrades) {
-        super(texture, position, towerSpawnID, summonDelay, upgrades);
+    protected int maxSummons; //defines the maximum number of summoned units that can be created by this tower
+    protected String summonName;
+    public SummonerTower(Texture texture, Coordinate position, int towerSpawnID,float range, String summonName, float summonDelay, int maxSummons, TowerUpgrade[] upgrades) {
+        super(texture, position, towerSpawnID, summonDelay,range, upgrades);
         this.maxSummons=maxSummons;
         this.summonName=summonName;
         spawner=new SummonSpawner(position,range);
     }
     /**
-     * Spawns a summon. TODO add offset their spawn location based on how many there are
+     * Spawns a summon.
      */
     @Override
     public void attack() {
@@ -94,7 +94,7 @@ public class SummonerTower extends Tower{
                 spawner.damageUpgrade+=u.getIncrease();
                 break;
             case "heal":
-                //TODO summons heal while not in combat
+                spawner.healingUpgrade+=u.getIncrease();
                 break;
             default:
                 super.applyUpgrade(u);

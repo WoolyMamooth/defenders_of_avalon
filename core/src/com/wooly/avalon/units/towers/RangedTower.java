@@ -15,10 +15,10 @@ public class RangedTower extends Tower{
     List<Projectile> projectiles=new ArrayList<>();
     String projectileName;
     Enemy target=null;
-    int damage;
-    String damageType;
-    public RangedTower(Texture texture, Coordinate position, int towerSpawnID, String projectileName, int damage, float attackDelay, TowerUpgrade[] upgrades, String damageType) {
-        super(texture, position, towerSpawnID, attackDelay, upgrades);
+    protected int damage;
+    protected String damageType;
+    public RangedTower(Texture texture, Coordinate position, int towerSpawnID,float range, String projectileName, int damage, float attackDelay, TowerUpgrade[] upgrades, String damageType) {
+        super(texture, position, towerSpawnID, attackDelay,range, upgrades);
         this.projectileName=projectileName;
         this.damage = damage;
         this.damageType=damageType;

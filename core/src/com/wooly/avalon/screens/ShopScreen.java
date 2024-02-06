@@ -1,5 +1,7 @@
 package com.wooly.avalon.screens;
 
+import static com.wooly.avalon.TDGame.SCREEN_BOT_LEFT;
+import static com.wooly.avalon.TDGame.SCREEN_BOT_RIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_WIDTH;
 import static com.wooly.avalon.TDGame.fetchTexture;
@@ -18,7 +20,10 @@ import com.wooly.avalon.screens.buttons.LoadScreenButton;
 import com.wooly.avalon.units.heroes.ArthurPendragon;
 import com.wooly.avalon.units.heroes.Hero;
 import com.wooly.avalon.units.heroes.HeroAbility;
+import com.wooly.avalon.units.heroes.Mordred;
 import com.wooly.avalon.units.towers.Tower;
+import com.wooly.avalon.units.towers.towers.ArcherTower;
+import com.wooly.avalon.units.towers.towers.BarracksTower;
 
 import java.util.Arrays;
 
@@ -27,6 +32,8 @@ public class ShopScreen extends MenuScreen{
     TextBubble textBubble;
     UnitContainer container;
     Coordinate containerPos;
+    SwitchUnitButton forward;
+    SwitchUnitButton backward;
     int containerUnitId=0;
     /**
      * On this screen the Player can purchase new towers and heroes.
@@ -37,14 +44,59 @@ public class ShopScreen extends MenuScreen{
 
         textBubble=new TextBubble(centerButton(1),player.getStardust()+" Stardust",30, Color.GOLD,SCREEN_WIDTH);
 
-        Coordinate pos=centerButton(2);
+        Coordinate temp=centerButton(2);
         this.mainMenuButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/menu_active"),
                 TDGame.fetchTexture("buttons/menu"),
-                place(pos.x(), pos.y()),"mainMenu");
+                place(temp.x(), temp.y()),"mainMenu");
 
         containerPos=place(SCREEN_WIDTH*0.125f,0);
+        container=new HeroContainer(containerPos,new ArthurPendragon(containerPos));
 
-        container=new HeroContainer(containerPos,new ArthurPendragon(pos));
+        forward=new SwitchUnitButton(SCREEN_BOT_RIGHT.subtract(new Coordinate(64,0)),true); //TODO place this correctly
+        backward=new SwitchUnitButton(SCREEN_BOT_LEFT,false);
+    }
+
+    /**
+     * Swaps the unit on the screen. EVERY SINGLE UNIT must be added here.
+     */
+    private void swapContainerUnit(){
+        int maxUnitId=4; //case number/id of the last possible unit
+        switch (containerUnitId){
+        // HEROES
+            case 0:
+                container.dispose();
+                container=new HeroContainer(containerPos,new ArthurPendragon(containerPos));
+                break;
+            case 1:
+                container.dispose();
+                container=new HeroContainer(containerPos,new Mordred(containerPos));
+                break;
+            case 2:
+                //container.dispose();
+                //container=new HeroContainer(containerPos,new Merlin(unitPos));
+                break;
+        // TOWERS
+            case 3:
+                container.dispose();
+                container=new TowerContainer(containerPos,new ArcherTower(containerPos,0));
+                break;
+            case 4:
+                container.dispose();
+                container=new TowerContainer(containerPos,new BarracksTower(containerPos,0));
+                break;
+
+            case -1:
+                //went left from ID 0
+                containerUnitId=maxUnitId;
+                swapContainerUnit();
+                break;
+            default:
+                //went right from last one
+                containerUnitId=0;
+                swapContainerUnit();
+                break;
+        }
+        System.out.println("swapping unit to "+containerUnitId);
     }
 
     @Override
@@ -59,6 +111,8 @@ public class ShopScreen extends MenuScreen{
             //caused when we exit to the main menu because hero is disposed of
             //doesn't cause issues, fixes itself next frame
         }
+        renderButton(forward);
+        renderButton(backward);
         game.batch.end();
     }
     @Override
@@ -72,7 +126,7 @@ public class ShopScreen extends MenuScreen{
          * Switches the unit in container to the next one/previous one.
          */
         public SwitchUnitButton(Coordinate position,boolean forward) {
-            super(position, fetchTexture(""), fetchTexture(""));
+            super(position, fetchTexture("white_square"), fetchTexture("white_square"));
             this.forward=forward;
         }
         @Override
@@ -82,6 +136,7 @@ public class ShopScreen extends MenuScreen{
             }else{
                 containerUnitId--;
             }
+            swapContainerUnit();
         }
     }
     private class BuyButton extends CustomButton{
@@ -224,11 +279,9 @@ public class ShopScreen extends MenuScreen{
 
             if(heroDescriptionButton.isActive()) {
                 batch.setColor(0, 0, 0, 0.3f);
-            }else{
-                batch.setColor(0, 0, 0, 0f);
+                heroDescriptionButton.drawCheckClick(batch);
+                batch.setColor(Color.WHITE);
             }
-            heroDescriptionButton.drawCheckClick(batch);
-            batch.setColor(Color.WHITE);
 
             //abilities
             for (HeroInfoButton infoButton:abilityInfoButtons) {
@@ -258,11 +311,21 @@ public class ShopScreen extends MenuScreen{
             this.descriptionText =new TextBubble(nameText.position, tower.description,30,Color.WHITE,SCREEN_WIDTH*0.75f);
             descriptionText.setWrap(false);
             updateDescriptionPosition();
+
+            //button that allows player to buy it
+            buyButton=new BuyButton(position, tower.name, 100,false);
+            buyButton.setPosition(buyButton.getPosition().add(new Coordinate(width-buyButton.width-20,10)));
+
+            //if the player already has the hero then it shouldn't be buy-able
+            if(Arrays.asList(player.getUnlockedTowers()).contains(tower.name)){
+                canBeBought=false;
+            }
         }
 
         @Override
         public void draw(SpriteBatch batch) {
             super.draw(batch);
+            System.out.println("draw tower");
 
             //texture
             batch.draw(tower.texture,tower.position.x(),tower.position.y(),tower.getWidth(),tower.getHeight());

@@ -135,16 +135,15 @@ public class TowerSpace extends Button {
      * @param towerName what to build
      */
     private void build(String towerName){
-        Texture texture=TDGame.fetchTexture("towers/towerTextures/"+towerName);
         switch (towerName){
             case "archer":
                 if(attemptGoldSpend(70)) {
-                    tower = new ArcherTower(texture, position, towerBuildID);
+                    tower = new ArcherTower(position, towerBuildID);
                 }else return;
                 break;
             case "barracks":
                 if(attemptGoldSpend(80)) {
-                    tower = new BarracksTower(texture, position, towerBuildID);
+                    tower = new BarracksTower(position, towerBuildID);
                 }else return;
                 break;
             case "None":

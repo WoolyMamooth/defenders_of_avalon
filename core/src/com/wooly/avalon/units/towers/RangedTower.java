@@ -10,7 +10,7 @@ import com.wooly.avalon.units.projectiles.ProjectileSpawner;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RangedTower extends Tower{
+public abstract class RangedTower extends Tower{
     ProjectileSpawner projectileSpawner;
     List<Projectile> projectiles=new ArrayList<>();
     String projectileName;

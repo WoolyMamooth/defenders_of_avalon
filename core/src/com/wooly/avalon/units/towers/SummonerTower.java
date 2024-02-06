@@ -8,7 +8,7 @@ import com.wooly.avalon.units.enemies.Enemy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SummonerTower extends Tower{
+public abstract class SummonerTower extends Tower{
     SummonSpawner spawner;
     List<Summon> summons=new ArrayList<>();
     protected int maxSummons; //defines the maximum number of summoned units that can be created by this tower

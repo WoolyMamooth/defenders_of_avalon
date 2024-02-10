@@ -3,6 +3,7 @@ package com.wooly.avalon.screens;
 import static com.wooly.avalon.TDGame.SCREEN_BOT_LEFT;
 import static com.wooly.avalon.TDGame.SCREEN_BOT_RIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
+import static com.wooly.avalon.TDGame.SCREEN_TOP_LEFT;
 import static com.wooly.avalon.TDGame.SCREEN_WIDTH;
 import static com.wooly.avalon.TDGame.fetchTexture;
 import static com.wooly.avalon.TDGame.place;
@@ -26,12 +27,14 @@ import com.wooly.avalon.units.towers.towers.ArcherTower;
 import com.wooly.avalon.units.towers.towers.BarracksTower;
 
 import java.util.Arrays;
+import java.util.Objects;
 
 public class ShopScreen extends MenuScreen{
     Clickable mainMenuButton;
     TextBubble textBubble;
     UnitContainer container;
     Coordinate containerPos;
+    EquippedUnitsContainer equippedUnits;
     SwitchUnitButton forward;
     SwitchUnitButton backward;
     int containerUnitId=0;
@@ -54,6 +57,8 @@ public class ShopScreen extends MenuScreen{
 
         forward=new SwitchUnitButton(SCREEN_BOT_RIGHT.subtract(new Coordinate(64,0)),true); //TODO place this correctly
         backward=new SwitchUnitButton(SCREEN_BOT_LEFT,false);
+
+        equippedUnits=new EquippedUnitsContainer(SCREEN_TOP_LEFT);
     }
 
     /**
@@ -113,6 +118,7 @@ public class ShopScreen extends MenuScreen{
         }
         renderButton(forward);
         renderButton(backward);
+        equippedUnits.draw(game.batch);
         game.batch.end();
     }
     @Override
@@ -160,14 +166,78 @@ public class ShopScreen extends MenuScreen{
             }
         }
     }
+    private class EquipButton extends CustomButton{
+        String whatToEquip;
+        boolean hero;
+        boolean unequip;
+        /**
+         * Adds the currently displayed unit to the equippedTowers/hero of the player.
+         * If already equipped it instead unequips it.
+         */
+        public EquipButton(Coordinate position, boolean unequip, String whatToEquip, boolean hero) {
+            super(position, unequip?"Unequip":"Equip", 30, Color.WHITE, Color.BLACK, 500, 128);
+            this.unequip=unequip;
+            this.whatToEquip = whatToEquip;
+            this.hero=hero;
+        }
+        @Override
+        public void onClick() {
+            if(hero) player.equipHero(whatToEquip,unequip);
+            else player.equipTower(whatToEquip,unequip);
+            //update the screen
+            equippedUnits=new EquippedUnitsContainer(SCREEN_TOP_LEFT);
+            swapContainerUnit();
+        }
+    }
+    private class EquippedUnitsContainer{
+        Coordinate position;
+        int unitNum; //how many units it contains
+        Texture[] unitTextures;
+        Texture emptyPosTexture;
+        float unitOffsetX;
+        /**
+         * Shows what the player currently has equipped.
+         */
+        public EquippedUnitsContainer(Coordinate position) {
+            unitNum=5; //4 towers + 1 hero
+            unitTextures=new Texture[unitNum];
+            emptyPosTexture=fetchTexture("white_square");
+
+            if(!Objects.equals(player.getEquippedHero(), "None")){
+                unitTextures[0]=fetchTexture("heroes/"+player.getEquippedHero().toLowerCase());
+            }else{
+                unitTextures[0]=emptyPosTexture;
+            }
+
+            int i=1;
+            for (String unit: player.getEquippedTowers()) {
+                if(Objects.equals(unit, "None")){
+                    unitTextures[i]=emptyPosTexture;
+                }else{
+                    unitTextures[i]=fetchTexture("towers/towerTextures/"+unit);
+                }
+                i++;
+            }
+            unitOffsetX=unitTextures[0].getWidth();
+            this.position=position.subtract(new Coordinate(0,unitTextures[0].getHeight()));
+        }
+        public void draw(SpriteBatch batch){
+            float x=position.x();
+            float y=position.y();
+            for (int i = 0; i < unitNum; i++) {
+                batch.draw(unitTextures[i],x,y,64,64);
+                x+=unitOffsetX;
+            }
+        }
+    }
     private abstract class UnitContainer{
         Coordinate position;
         Texture background;
         Color backgroundColor=new Color(1,1,1,0.3f);
         TextBubble nameText;
         TextBubble descriptionText;
-        boolean canBeBought=true; //true if the Player has yet to unlock the hero
-        BuyButton buyButton;
+        boolean canBeBought=true; //true if the Player has yet to unlock the unit
+        CustomButton button;
         float width,height;
         float TEXTURE_SIZE_MULTIPLIER =5f;
 
@@ -178,7 +248,6 @@ public class ShopScreen extends MenuScreen{
             this.width=SCREEN_WIDTH*0.75f;
             this.height=SCREEN_HEIGHT*0.8f;
         }
-
         public void draw(SpriteBatch batch){
             batch.setColor(backgroundColor);
             batch.draw(background,position.x(),position.y(),width,height);
@@ -188,8 +257,8 @@ public class ShopScreen extends MenuScreen{
             nameText.draw(batch);
             descriptionText.draw(batch);
 
-            //buy
-            if(canBeBought) renderButton(buyButton);
+            //buy / equip
+            renderButton(button);
         }
         void updateDescriptionPosition(){
             descriptionText.position=nameText.position.subtract(new Coordinate(0,descriptionText.getHeight()+30));
@@ -261,13 +330,18 @@ public class ShopScreen extends MenuScreen{
                 abilityInfoButtons[i]=new HeroInfoButton(hero.position.add(new Coordinate(offsetX*i,offsetY)),abilities[i].getDescription());
             }
 
-            //button that allows player to buy it
-            buyButton=new BuyButton(position, hero.name, 100,true);
-            buyButton.setPosition(buyButton.getPosition().add(new Coordinate(width-buyButton.width-20,10)));
 
             //if the player already has the hero then it shouldn't be buy-able
             if(Arrays.asList(player.getUnlockedHeroes()).contains(hero.name)){
                 canBeBought=false;
+                if(canBeBought) {
+                    //button that allows player to buy it
+                    button = new BuyButton(position, hero.name, 100, true);
+                    button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
+                }else{
+                    button=new EquipButton(position, Objects.equals(player.getEquippedHero(), hero.name),hero.name,true);
+                    button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
+                }
             }
         }
         @Override
@@ -312,13 +386,16 @@ public class ShopScreen extends MenuScreen{
             descriptionText.setWrap(false);
             updateDescriptionPosition();
 
-            //button that allows player to buy it
-            buyButton=new BuyButton(position, tower.name, 100,false);
-            buyButton.setPosition(buyButton.getPosition().add(new Coordinate(width-buyButton.width-20,10)));
-
-            //if the player already has the hero then it shouldn't be buy-able
+            //button that allows player to buy it/equip it
             if(Arrays.asList(player.getUnlockedTowers()).contains(tower.name)){
                 canBeBought=false;
+                if(canBeBought) {
+                    button = new BuyButton(position, tower.name, 100, false);
+                    button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
+                }else{
+                    button=new EquipButton(position, Arrays.asList(player.getEquippedTowers()).contains(tower.name), tower.name,false);
+                    button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
+                }
             }
         }
 

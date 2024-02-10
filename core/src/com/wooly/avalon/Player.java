@@ -111,10 +111,41 @@ public class Player {
         //this should never run
         System.out.println("All towers unlocked");
     }
+    public void equipHero(String name, boolean unequip){
+        if(unequip){
+            equippedHero="None";
+        }else{
+            equippedHero=name;
+        }
+    }
+
+    /**
+     * Equips a tower to the first empty slot found and returns true, if no empty slot is found returns false.
+     * @param name
+     * @param unequip if true instead unequips the tower
+     * @return
+     */
+    public boolean equipTower(String name, boolean unequip){
+        if(unequip){
+            for (int i = 0; i < equippedTowers.length; i++) {
+                if(Objects.equals(equippedTowers[i], name)){
+                    equippedTowers[i]="None";
+                    return true;
+                }
+            }
+        }else{
+            for (int i = 0; i < equippedTowers.length; i++) {
+                if(Objects.equals(equippedTowers[i], "None")){
+                    equippedTowers[i]=name;
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public String[] getEquippedTowers() {
         return equippedTowers;
     }
-
     public String getEquippedHero() {
         return equippedHero;
     }

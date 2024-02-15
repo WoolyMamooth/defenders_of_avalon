@@ -44,7 +44,7 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 0);
         int gameState = 0;//1 if player lost, 2 if player won, 0 otherwise
 
-        //if the com.wooly.avalon is paused then we skip updating the map
+        //if the game is paused then we skip updating the map
         if(!paused) {
             //temporary for checking coordinates:
             //if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
@@ -59,6 +59,7 @@ public class GameScreen implements Screen {
             map.trySpawn(delta);
 
         }
+
         //drawing begins here
         game.batch.begin();
         //draw the background

@@ -114,6 +114,11 @@ public class TDGame extends Game {
 	public static Coordinate place(float x,float y){
 		return new Coordinate(x+widthOffset, y+heightOffset);
 	}
+
+	/**
+	 * Returns a Coordinate which contains the position that was last clicked by the user, corrected for screen size/window size differences.
+	 * @return
+	 */
 	public static Coordinate trueInput(){
 		return new Coordinate(Gdx.input.getX(),Gdx.input.getY()-2*heightOffset);
 	}

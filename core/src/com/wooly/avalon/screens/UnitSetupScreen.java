@@ -214,7 +214,7 @@ public class UnitSetupScreen extends MenuScreen{
             emptyPosTexture=fetchTexture("white_square");
 
             if(!Objects.equals(player.getEquippedHero(), "None")){
-                unitTextures[0]=fetchTexture("heroes/"+player.getEquippedHero().toLowerCase());
+                unitTextures[0]=fetchTexture("heroes/"+player.getEquippedHero().toLowerCase()+"/"+player.getEquippedHero().toLowerCase());
             }else{
                 unitTextures[0]=emptyPosTexture;
             }

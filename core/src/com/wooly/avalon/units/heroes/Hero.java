@@ -4,6 +4,8 @@ import static com.wooly.avalon.TDGame.SCREEN_BOT_LEFT;
 import static com.wooly.avalon.TDGame.SCREEN_BOT_RIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
 import static com.wooly.avalon.TDGame.fetchTexture;
+import static com.wooly.avalon.TDGame.place;
+import static com.wooly.avalon.TDGame.trueInput;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -12,6 +14,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.maps.TDMap;
 import com.wooly.avalon.screens.TextBubble;
 import com.wooly.avalon.screens.buttons.Button;
 import com.wooly.avalon.units.enemies.Enemy;
@@ -25,13 +28,14 @@ public abstract class Hero extends AlliedUnit {
     float maxDeathTimer=10f; //the duration for which the hero will be down for if they die
     float deathTimer=0f;
     Texture deadTexture; //texture to be displayed on death
-    HeroSelectorButton button;
+    HeroSelectorButton selectorButton;
     protected boolean selected=false;
     boolean moving=false;
     Coordinate goal;
     ShapeRenderer rangeOutline;
     HeroAbility[] abilities;
     HeroAbilityMenu menu;
+    public int maxLevel,level=1; //levels determine how many abilities the hero has available to them, max level is the number of abilities the hero has
 
     /**
      * Heroes are units that can be directly controlled by the player.
@@ -52,7 +56,7 @@ public abstract class Hero extends AlliedUnit {
         super(texture, position, movementSpeed, maxHp, armor, magicResistance, damage, attackDelay, searchRange, damageType);
         this.name=name;
         this.description=description;
-        button=new HeroSelectorButton(position);
+        selectorButton =new HeroSelectorButton(position);
         turnAround();
         deadTexture=fetchTexture("heroes/dead_hero");
 
@@ -63,7 +67,7 @@ public abstract class Hero extends AlliedUnit {
     @Override
     public void update(List<Enemy> enemies, float timeSinceLastFrame) {
         if(!isDead()) {
-            button.update(position);
+            selectorButton.update(position);
             updateCooldowns(timeSinceLastFrame);
             if (shouldBeDead()) {
                 die(); //TODO heroes will respawn, but for now they just get deleted
@@ -107,7 +111,7 @@ public abstract class Hero extends AlliedUnit {
     public void draw(SpriteBatch batch) {
         if(!isDead()) {
             super.draw(batch);
-            button.drawCheckClick(batch);
+            selectorButton.drawCheckClick(batch);
             menu.draw(batch);
             if (selected) {
                 batch.end();
@@ -146,12 +150,25 @@ public abstract class Hero extends AlliedUnit {
     }
     private void checkMovement(){
         if (selected && Gdx.input.justTouched()) {
+            //Gdx.input.vibrate(100); TODO maybe add this to manifest it seems kinda fun
+
             selected=false;
-            int x = Gdx.input.getX();
-            int y = Gdx.input.getY();
-            goal = new Coordinate(x, SCREEN_HEIGHT - y);
+            Coordinate input=trueInput();
+
+            goal = place(input.x(), SCREEN_HEIGHT-input.y());
             moving=true;
+            System.out.println("Hero moving");
         }
+    }
+
+    /**
+     * Sets the heroes abilities, max level and creates their ability menu. Must be called in all hero constructors.
+     * @param abilities
+     */
+    protected void setAbilities(HeroAbility[] abilities){
+        this.abilities=abilities;
+        maxLevel=abilities.length;
+        menu=new HeroAbilityMenu(abilities);
     }
     public HeroAbility[] getAbilities() {
         return abilities;
@@ -186,6 +203,24 @@ public abstract class Hero extends AlliedUnit {
         @Override
         public void onClick() {
             selected=!selected;
+            System.out.println("Hero "+(selected?"selected":"not selected"));
+        }
+    }
+    protected class LevelUpButton extends Button{
+        int cost=100;
+        /**
+         * Levels up the hero, costs 100 gold for now.
+         *
+         * @param position
+         */
+        public LevelUpButton(Coordinate position) {
+            super(position, fetchTexture("heroes/level_up"), fetchTexture("heroes/level_up"));
+        }
+
+        @Override
+        public void onClick() {
+            if(level>=maxLevel) return;
+            if(TDMap.attemptGoldSpend(cost)) level++;
         }
     }
     protected class HeroAbilityMenu{
@@ -227,6 +262,7 @@ public abstract class Hero extends AlliedUnit {
             }
         }
         HeroSelectorButton selectorButton;
+        LevelUpButton levelUpButton;
         HeroAbilityButton[] abilityButtons;
         HeroAbilityInfo[] abilityInfos;
         int abilityNum;
@@ -248,6 +284,7 @@ public abstract class Hero extends AlliedUnit {
             Coordinate buttonPosition=SCREEN_BOT_RIGHT.subtract(new Coordinate(iconWidth*(abilityNum+1)+10,-10));
 
             selectorButton=new HeroSelectorButton(buttonPosition,texture);
+            levelUpButton=new LevelUpButton(buttonPosition.add(new Coordinate(0,iconHeight)));
             buttonPosition=buttonPosition.add(new Coordinate(iconWidth,0));
 
             for (int i = 0; i < abilityNum; i++) {
@@ -259,8 +296,14 @@ public abstract class Hero extends AlliedUnit {
         }
         public void draw(SpriteBatch batch){
             selectorButton.drawCheckClick(batch);
+            levelUpButton.drawCheckClick(batch);
             for (int i = 0; i < abilityNum; i++) {
-                abilityButtons[i].drawCheckClick(batch);
+                if(i<level) {
+                    abilityButtons[i].drawCheckClick(batch);
+                }
+                else{
+                    abilityButtons[i].draw(batch);
+                }
                 abilityInfos[i].drawCheckClick(batch);
             }
         }

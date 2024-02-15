@@ -27,7 +27,7 @@ public class Player {
             loadData();
         }catch (GdxRuntimeException exception){
             //this happens on first install because the file hasn't been created yet on specific device
-            fileHandle.writeString("0",false);
+            fileHandle.writeString("1000",false);
             fileHandle.writeString("\nNone\tNone\tNone\t",true); //base unlocked heroes
             fileHandle.writeString("\narcher\tbarracks\tNone\tNone\t",true); //base unlocked towers
             loadData();

@@ -1,3 +1,3 @@
-69
-Mordred	Arthur	None	
+800
+Arthur	Mordred	None	
 archer	barracks	None	None	

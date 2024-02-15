@@ -4,6 +4,7 @@ import static com.wooly.avalon.TDGame.SCREEN_BOT_LEFT;
 import static com.wooly.avalon.TDGame.SCREEN_BOT_RIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_TOP_LEFT;
+import static com.wooly.avalon.TDGame.SCREEN_TOP_RIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_WIDTH;
 import static com.wooly.avalon.TDGame.fetchTexture;
 import static com.wooly.avalon.TDGame.place;
@@ -29,28 +30,30 @@ import com.wooly.avalon.units.towers.towers.BarracksTower;
 import java.util.Arrays;
 import java.util.Objects;
 
-public class ShopScreen extends MenuScreen{
+public class UnitSetupScreen extends MenuScreen{
     Clickable mainMenuButton;
-    TextBubble textBubble;
+    TextBubble stardustText;
     UnitContainer container;
-    Coordinate containerPos;
+    Coordinate containerPos,stardustTextPos;
     EquippedUnitsContainer equippedUnits;
     SwitchUnitButton forward;
     SwitchUnitButton backward;
     int containerUnitId=0;
     /**
-     * On this screen the Player can purchase new towers and heroes.
+     * On this screen the Player can purchase new towers and heroes as well as equip or unequip the units they have.
      * @param game
      */
-    public ShopScreen(TDGame game) {
+    public UnitSetupScreen(TDGame game) {
         super(game);
+        stardustTextPos=centerButton(1);
+        updateStardustText();
 
-        textBubble=new TextBubble(centerButton(1),player.getStardust()+" Stardust",30, Color.GOLD,SCREEN_WIDTH);
-
-        Coordinate temp=centerButton(2);
+        //Coordinate temp=centerButton(2);
         this.mainMenuButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/menu_active"),
                 TDGame.fetchTexture("buttons/menu"),
-                place(temp.x(), temp.y()),"mainMenu");
+                SCREEN_TOP_RIGHT.subtract(new Coordinate(256,128)),"mainMenu");
+        mainMenuButton.width=mainMenuButton.width*2;
+        mainMenuButton.height=mainMenuButton.height*2;
 
         containerPos=place(SCREEN_WIDTH*0.125f,0);
         container=new HeroContainer(containerPos,new ArthurPendragon(containerPos));
@@ -59,6 +62,9 @@ public class ShopScreen extends MenuScreen{
         backward=new SwitchUnitButton(SCREEN_BOT_LEFT,false);
 
         equippedUnits=new EquippedUnitsContainer(SCREEN_TOP_LEFT);
+    }
+    private void updateStardustText(){
+        stardustText =new TextBubble(stardustTextPos,player.getStardust()+" Stardust",40, Color.GOLD,SCREEN_WIDTH);
     }
 
     /**
@@ -108,7 +114,7 @@ public class ShopScreen extends MenuScreen{
     public void render(float delta) {
         super.render(delta);
         game.batch.begin();
-        textBubble.draw(game.batch);
+        stardustText.draw(game.batch);
         renderButton(mainMenuButton);
         try {
             container.draw(game.batch);
@@ -163,6 +169,9 @@ public class ShopScreen extends MenuScreen{
             if (player.spendStardust(cost)){
                 if(hero)player.unlockHero(whatToUnlock);
                 else player.unlockTower(whatToUnlock);
+                //update the screen
+                updateStardustText();
+                swapContainerUnit();
             }
         }
     }
@@ -195,6 +204,7 @@ public class ShopScreen extends MenuScreen{
         Texture[] unitTextures;
         Texture emptyPosTexture;
         float unitOffsetX;
+        float textureBaseSize=64,textureSizeMultiplier=2;
         /**
          * Shows what the player currently has equipped.
          */
@@ -218,14 +228,14 @@ public class ShopScreen extends MenuScreen{
                 }
                 i++;
             }
-            unitOffsetX=unitTextures[0].getWidth();
-            this.position=position.subtract(new Coordinate(0,unitTextures[0].getHeight()));
+            unitOffsetX=unitTextures[0].getWidth()*textureSizeMultiplier;
+            this.position=position.subtract(new Coordinate(0,unitTextures[0].getHeight()*textureSizeMultiplier));
         }
         public void draw(SpriteBatch batch){
             float x=position.x();
             float y=position.y();
             for (int i = 0; i < unitNum; i++) {
-                batch.draw(unitTextures[i],x,y,64,64);
+                batch.draw(unitTextures[i],x,y,textureBaseSize*textureSizeMultiplier,textureBaseSize*textureSizeMultiplier);
                 x+=unitOffsetX;
             }
         }
@@ -333,15 +343,14 @@ public class ShopScreen extends MenuScreen{
 
             //if the player already has the hero then it shouldn't be buy-able
             if(Arrays.asList(player.getUnlockedHeroes()).contains(hero.name)){
+                //button that allows equiping
+                button=new EquipButton(position, Objects.equals(player.getEquippedHero(), hero.name),hero.name,true);
+                button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
                 canBeBought=false;
-                if(canBeBought) {
-                    //button that allows player to buy it
-                    button = new BuyButton(position, hero.name, 100, true);
-                    button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
-                }else{
-                    button=new EquipButton(position, Objects.equals(player.getEquippedHero(), hero.name),hero.name,true);
-                    button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
-                }
+            }else{
+                //button that allows player to buy it
+                button = new BuyButton(position, hero.name, 100, true);
+                button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
             }
         }
         @Override

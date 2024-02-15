@@ -20,7 +20,9 @@ public class ArthurPendragon extends Hero{
      * @param position
      */
     public ArthurPendragon(Coordinate position) {
-        super(fetchTexture("heroes/arthur"), position,"Arthur","description here", 100, 100, 10, 10, 10, 1, 200, "physical");
+        super(fetchTexture("heroes/arthur"), position,"Arthur",
+                "Arthur Pendragon, rightful king of Great Britain.\nChosen by the Lady of the lake herself, Arthur\nwas blessed with great power and resiliance.\nHe can summon his royal guard to aid him\nin battle and buff and heal them as well as himself.",
+                100, 100, 10, 10, 10, 1, 200, "physical");
         spawner=new SummonSpawner(position,searchRange);
         summons=new Summon[MAX_SUMMON_NUMBER];
 

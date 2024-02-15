@@ -23,6 +23,7 @@ import com.wooly.avalon.units.towers.towers.ArcherTower;
 import com.wooly.avalon.units.towers.towers.BarracksTower;
 
 import java.util.List;
+import java.util.Objects;
 
 public class TowerSpace extends Button {
     private abstract class TowerMenu{
@@ -55,7 +56,8 @@ public class TowerSpace extends Button {
             }
             @Override
             public void onClick() {
-                build(this.text);
+                if(Objects.equals(text, "None")) return;
+                build(text);
             }
         }
         /**
@@ -64,7 +66,7 @@ public class TowerSpace extends Button {
          */
         public TowerBuildMenu(float buttonOffsetX) {
             super(buttonOffsetX);
-            this.amountOfButtons=4; //max number of towers that can be brought to a com.wooly.avalon. should remain 4 but you never know
+            this.amountOfButtons=player.getEquippedTowers().length; //max number of towers that can be brought to a com.wooly.avalon. should remain 4 but you never know
 
             buttons=new TowerBuildButton[amountOfButtons]; //buttons that can be clicked to build the chosen tower
             String[] buildableTowerNames = player.getEquippedTowers(); //we show the equipped towers as options

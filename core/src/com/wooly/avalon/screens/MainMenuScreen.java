@@ -2,7 +2,6 @@ package com.wooly.avalon.screens;
 
 import static com.wooly.avalon.TDGame.place;
 
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.screens.buttons.Clickable;

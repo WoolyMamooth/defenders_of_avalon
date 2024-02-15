@@ -1,5 +1,7 @@
 package com.wooly.avalon.screens.buttons;
 
+import static com.wooly.avalon.TDGame.trueInput;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.TDGame;
@@ -14,9 +16,10 @@ public abstract class Clickable {
         this.position = position;
     }
     public boolean isActive() {
-        if (Gdx.input.getX() < position.x() + this.width && Gdx.input.getX() > position.x() &&
-                TDGame.SCREEN_HEIGHT - Gdx.input.getY() < position.y() + this.height &&
-                TDGame.SCREEN_HEIGHT - Gdx.input.getY() > position.y()) {
+        Coordinate input=trueInput();
+        if (input.x() < position.x() + this.width && input.x()  > position.x() &&
+                TDGame.SCREEN_HEIGHT - input.y()  < position.y() + this.height &&
+                TDGame.SCREEN_HEIGHT - input.y() > position.y()) {
             return true;
         }
         return false;

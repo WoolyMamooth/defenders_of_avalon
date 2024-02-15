@@ -21,7 +21,7 @@ public class TDGame extends Game {
 	public static Coordinate SCREEN_TOP_RIGHT;
 	public static Coordinate SCREEN_BOT_LEFT;
 	public static Coordinate SCREEN_BOT_RIGHT;
-	public static float widthOffset=0f;
+	public static float widthOffset=0f,heightOffset=0f;
 
 	//call batch.draw to draw on the screen efficiently
 	public SpriteBatch batch;
@@ -56,13 +56,17 @@ public class TDGame extends Game {
 		int deviceHeight = Gdx.graphics.getHeight();
 		int deviceWidth = Gdx.graphics.getWidth();
 
-		SCREEN_HEIGHT = deviceHeight;//1000;
+		SCREEN_HEIGHT = 1024; //the game is optimized for these dimensions
 		SCREEN_WIDTH = 1920;
 
 		if(deviceWidth>SCREEN_WIDTH){
 			widthOffset=deviceWidth-SCREEN_WIDTH;
 			widthOffset/=2;
 			//SCREEN_WIDTH+=widthOffset;
+		}
+		if(deviceHeight>SCREEN_HEIGHT){
+			heightOffset=deviceHeight-SCREEN_HEIGHT;
+			heightOffset/=2;
 		}
 
 		SCREEN_CENTER = place(SCREEN_WIDTH/2f,SCREEN_HEIGHT/2f);
@@ -75,6 +79,7 @@ public class TDGame extends Game {
 				"SCREEN DATA:\ndeviceH: "+deviceHeight+" deviceW: "+deviceWidth+
 				"\nSCREEN_H: "+SCREEN_HEIGHT+" SCREEN_W: "+SCREEN_WIDTH+
 				"\nwidthOffset: "+widthOffset+
+				"\nheightOffset: "+heightOffset+
 				"\nBOT_L: "+SCREEN_BOT_LEFT);
 
 		player=new Player();
@@ -107,7 +112,10 @@ public class TDGame extends Game {
 	 * Returns a Coordinate which is correctly placed relative to screen size.
 	 */
 	public static Coordinate place(float x,float y){
-		return new Coordinate(x+widthOffset, y);
+		return new Coordinate(x+widthOffset, y+heightOffset);
+	}
+	public static Coordinate trueInput(){
+		return new Coordinate(Gdx.input.getX(),Gdx.input.getY()-2*heightOffset);
 	}
 
 	/**

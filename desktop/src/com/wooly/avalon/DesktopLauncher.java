@@ -11,6 +11,7 @@ public class DesktopLauncher {
 		config.setTitle("Defenders of Avalon");
 		config.setMaximized(true);
 		config.setWindowIcon("red_square.jpg");
+		//config.setWindowedMode(1920,1024);
 		new Lwjgl3Application(new TDGame(), config);
 	}
 }

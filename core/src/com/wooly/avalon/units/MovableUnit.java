@@ -25,22 +25,24 @@ public class MovableUnit extends DrawableUnit{
             return;
         }
 
+        Coordinate pos=textureCenterPosition();
         //turn the unit around if needed
-        if(!facingLeft && goal.x()<position.x()) turnAround();
-        if(facingLeft && goal.x()> position.x()) turnAround();
+        if(!facingLeft && goal.x()<pos.x()) turnAround();
+        if(facingLeft && goal.x()> pos.x()) turnAround();
 
-        Coordinate movementDirection=goal.subtract(position).normalize(); //get a unit vector pointing to goal
+        Coordinate movementDirection=goal.subtract(pos).normalize(); //get a unit vector pointing to goal
         position=position.add(movementDirection.multiplyByScalar(movementSpeed* Gdx.graphics.getDeltaTime())); //move
     }
 
     //checks if the unit has reached a given coordinate
     protected boolean atCoordinate(Coordinate coordinate){
         if(coordinate==null || position==null) return true;
+        Coordinate pos=textureCenterPosition();
         if(
-                position.x()>coordinate.x()-width/2f &&
-                        position.y()>coordinate.y()-height/2f &&
-                        position.x()<coordinate.x()+width/2f &&
-                        position.y()<coordinate.y()+height/2f
+                pos.x()>coordinate.x()-width/2f &&
+                        pos.y()>coordinate.y()-height/2f &&
+                        pos.x()<coordinate.x()+width/2f &&
+                        pos.y()<coordinate.y()+height/2f
         ) return true;
         return false;
     }

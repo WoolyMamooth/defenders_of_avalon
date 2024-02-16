@@ -139,7 +139,7 @@ public class IngameMenu {
 
         public void draw(SpriteBatch batch){
             batch.setColor(0f,0f,0f,0.3f);
-            batch.draw(forBackgrounds,SCREEN_BOT_LEFT.x(),SCREEN_BOT_LEFT.y(),SCREEN_WIDTH,SCREEN_HEIGHT);
+            batch.draw(forBackgrounds,SCREEN_BOT_LEFT.x(),SCREEN_BOT_LEFT.y(),SCREEN_WIDTH,SCREEN_HEIGHT+100);
             batch.setColor(Color.WHITE);
 
             retryButton.drawCheckClick(batch);

@@ -134,9 +134,9 @@ public class TDMap {
         }
     }
     public void draw(SpriteBatch batch){
-        drawAllTowers(batch);
-        drawAllEnemies(batch);
         if(hasHero) hero.draw(batch);
+        drawAllEnemies(batch);
+        drawAllTowers(batch);
     }
     private void drawAllEnemies(SpriteBatch batch){
         for (Enemy enemy:enemies) {

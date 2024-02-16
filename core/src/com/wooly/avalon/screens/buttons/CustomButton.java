@@ -32,9 +32,11 @@ public abstract class CustomButton extends Clickable{
         this.text=text;
         font=fetchFont(fontsize);
         layout = new GlyphLayout(font, text,textColor,width,-1,true);
-        //TODO make this use text bubbles plox
+        //I wanted to make this use the TextBubble class, but then we'd have to store 2 of them and alternate
+        //based on if teh button is active or not so honestly it's easier to just leave this class be
+        //changing it wouldn't simplify anything.
         this.height=height;
-        this.width= layout.width;
+        this.width= layout.width+30;
 
         textWidth = layout.width;
         textHeight=layout.height;
@@ -54,12 +56,12 @@ public abstract class CustomButton extends Clickable{
             batch.setColor(backgroundColor);
             batch.draw(background, position.x(), position.y(),width,height);
             font.setColor(textColor);
-            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY);
+            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY,textWidth,-1,false);
         }else{
             batch.setColor(textColor);
             batch.draw(background, position.x(), position.y(),width,height);
             font.setColor(backgroundColor);
-            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY);
+            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY,textWidth,-1,false);
         }
         batch.setColor(Color.WHITE);
     }

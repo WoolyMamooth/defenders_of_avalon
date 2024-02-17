@@ -29,7 +29,6 @@ public class SummonSpawner extends Spawner {
 
     public Summon spawnSummon(String summonName, Coordinate position) {
         Texture texture=fetchTexture("towers/summons/"+summonName);
-        //TODO add offset to spawn location
 
         //we apply upgrades like this
         float movementSpeed=0;
@@ -62,6 +61,9 @@ public class SummonSpawner extends Spawner {
         A 12 year old StackOverflow post says "nextFloat doesn't take an argument", which I find highly unlikely,
         since it runs fine on desktop, but changing it did fix the problem so whatever.
         https://stackoverflow.com/questions/6078157/random-nextfloat-is-not-applicable-for-floats
+
+        Update:
+        Since then i made a CustomRandom class to circumvent the issue.
         */
 
         Summon summon= new Summon(texture,position,new Coordinate(x,y),movementSpeed,maxHp,armor,magicResistance,damage,attackDelay, searchRange,damageType);

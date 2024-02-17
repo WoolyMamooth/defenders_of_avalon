@@ -14,11 +14,21 @@ import com.wooly.avalon.units.heroes.ArthurPendragon;
 import com.wooly.avalon.units.heroes.Hero;
 import com.wooly.avalon.units.heroes.Mordred;
 
+import java.util.Objects;
+
 public class MapLoader {
     //responsible for loading in the map data
     //still needs a lot of work
-
     TDGame game;
+    /**
+     * Responsible for setting the difficulty of the game. The levels are:
+     * 0-Easy,
+     * 1-Normal,
+     * 2-Hard,
+     * 3-Extreme,
+     * 4-Nightmare
+     */
+    public static int GAME_DIFFICULTY =4;
     public MapLoader(TDGame game) {
         this.game=game;
     }
@@ -30,7 +40,7 @@ public class MapLoader {
         String[] enemiesToSpawn=loadEnemiesToSpawn(mapID); //loads enemies that will be spawned
         Float[] enemiesSpawnDelay=loadSpawnDelay(mapID); //loads the delay between enemy spawns
         TowerSpace[] towerSpaces=loadTowerLocations(mapID); //loads the buildable spaces
-        if(player.getEquippedHero()=="None") {
+        if(Objects.equals(player.getEquippedHero(), "None")) {
             return new TDMap(mapID, backgroundTexture, path, enemiesToSpawn, enemiesSpawnDelay, towerSpaces);
         }else{
             Hero hero=loadHero(player.getEquippedHero());

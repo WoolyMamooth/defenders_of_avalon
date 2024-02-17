@@ -9,8 +9,6 @@ public abstract class HeroAbility {
     protected float maxCooldown;
     protected float cooldown; //keeps track of when the spell can be cast next
     protected String description;
-    //TODO add cooldowns, description
-
     /**
      * Any ability of a hero, implement them as private classes in the given heroes class.
      */

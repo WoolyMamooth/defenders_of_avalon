@@ -18,7 +18,6 @@ public abstract class CustomButton extends Clickable{
     protected Color backgroundColor;
     protected Color textColor;
     protected float textOffsetX,textOffsetY;
-    protected float textWidth, textHeight;
 
     /**
      * Button with custom text. Uses TDGame.fetchFont() to generate font.
@@ -33,13 +32,10 @@ public abstract class CustomButton extends Clickable{
         font=fetchFont(fontsize);
         layout = new GlyphLayout(font, text,textColor,width,-1,true);
         //I wanted to make this use the TextBubble class, but then we'd have to store 2 of them and alternate
-        //based on if teh button is active or not so honestly it's easier to just leave this class be
+        //based on if the button is active or not so honestly it's easier to just leave this class be
         //changing it wouldn't simplify anything.
         this.height=height;
-        this.width= layout.width+30;
-
-        textWidth = layout.width;
-        textHeight=layout.height;
+        this.width= layout.width+20;
 
         textOffsetX=10;
         textOffsetY=height*0.7f;
@@ -56,12 +52,12 @@ public abstract class CustomButton extends Clickable{
             batch.setColor(backgroundColor);
             batch.draw(background, position.x(), position.y(),width,height);
             font.setColor(textColor);
-            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY,textWidth,-1,false);
+            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY,width,-1,false);
         }else{
             batch.setColor(textColor);
             batch.draw(background, position.x(), position.y(),width,height);
             font.setColor(backgroundColor);
-            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY,textWidth,-1,false);
+            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY,width,-1,false);
         }
         batch.setColor(Color.WHITE);
     }

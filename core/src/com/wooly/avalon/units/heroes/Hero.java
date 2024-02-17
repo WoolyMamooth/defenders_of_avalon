@@ -70,7 +70,7 @@ public abstract class Hero extends AlliedUnit {
             selectorButton.update(position);
             updateCooldowns(timeSinceLastFrame);
             if (shouldBeDead()) {
-                die(); //TODO heroes will respawn, but for now they just get deleted
+                die();
                 return;
             }
             if (moving) { //TODO should only move when map is clicked, not menu

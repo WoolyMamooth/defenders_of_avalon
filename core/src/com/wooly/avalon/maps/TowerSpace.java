@@ -132,8 +132,7 @@ public class TowerSpace extends Button {
     }
 
     /**
-     * The buildable towers are defined in this method
-     * TODO implement gold subtraction for building etc
+     * The buildable towers are defined in this method.
      * @param towerName what to build
      */
     private void build(String towerName){

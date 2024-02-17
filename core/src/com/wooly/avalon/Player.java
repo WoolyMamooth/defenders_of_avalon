@@ -3,6 +3,7 @@ package com.wooly.avalon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.wooly.avalon.maps.MapLoader;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -27,7 +28,7 @@ public class Player {
             loadData();
         }catch (GdxRuntimeException exception){
             //this happens on first install because the file hasn't been created yet on specific device
-            fileHandle.writeString("1000",false);
+            fileHandle.writeString("1000\t0",false); //stardust, difficulty
             fileHandle.writeString("\nNone\tNone\tNone\t",true); //base unlocked heroes
             fileHandle.writeString("\narcher\tbarracks\tNone\tNone\t",true); //base unlocked towers
             loadData();
@@ -47,6 +48,7 @@ public class Player {
         //loads player info into memory
         String[] datafile =fileHandle.readString().split("\n");
         stardust=Integer.parseInt(datafile[0].split("\t")[0]);
+        MapLoader.GAME_DIFFICULTY=Integer.parseInt(datafile[0].split("\t")[1]);
         unlockedHeroes=datafile[1].split("\t");
         unlockedTowers=datafile[2].split("\t");
 
@@ -61,7 +63,7 @@ public class Player {
      * Writes to playerdata.txt to save unlocked towers, heroes and stardust.
      */
     public void saveData(){
-        fileHandle.writeString(String.valueOf(stardust),false); //delete all info
+        fileHandle.writeString(String.valueOf(stardust)+"\t"+String.valueOf(MapLoader.GAME_DIFFICULTY),false); //delete all info
         fileHandle.writeString("\n",true);
         for (String hero:unlockedHeroes) {
             fileHandle.writeString(hero,true);

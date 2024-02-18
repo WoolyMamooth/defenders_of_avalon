@@ -1,11 +1,8 @@
 package com.wooly.avalon.maps;
 
-import static com.wooly.avalon.TDGame.SCREEN_BOT_RIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_CENTER;
 import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
-import static com.wooly.avalon.TDGame.SCREEN_TOP_LEFT;
 import static com.wooly.avalon.TDGame.TEXTURE_EXTENSION;
-import static com.wooly.avalon.TDGame.place;
 import static com.wooly.avalon.TDGame.player;
 
 import com.badlogic.gdx.Gdx;
@@ -27,7 +24,8 @@ public class MapLoader {
     //responsible for loading in the map data
     //still needs a lot of work
     TDGame game;
-    String mapdataPath="mapdata/map"; //add mapID and .tsv to the end
+    public static int GAME_DIFFICULTY =1;
+    public static String MAPDATA_PATH ="mapdata/map"; //add mapID and .tsv to the end
     /**
      * Keeps track of what data is in which line of the data file.
      */
@@ -46,7 +44,6 @@ public class MapLoader {
      * 4-Nightmare
      */
     String mapdataDelimiter="\t";
-    public static int GAME_DIFFICULTY =4;
     public MapLoader(TDGame game) {
         this.game=game;
 
@@ -63,7 +60,7 @@ public class MapLoader {
 
     public TDMap getMap(int mapID){
         System.out.println("MAPLOADER LOADING");
-        FileHandle fileHandle=Gdx.files.local(mapdataPath+mapID+".tsv");
+        FileHandle fileHandle=Gdx.files.local(MAPDATA_PATH +mapID+".tsv");
         mapdata=fileHandle.readString().split("\n");
         System.out.println(Arrays.toString(mapdata));
 

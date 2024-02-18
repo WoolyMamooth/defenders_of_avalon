@@ -2,13 +2,22 @@ package com.wooly.avalon.screens;
 
 import static com.wooly.avalon.TDGame.place;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.maps.MapLoader;
 import com.wooly.avalon.screens.buttons.*;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
 public class ChooseMapScreen extends MenuScreen {
-    Clickable mainMenuButton,pickMapButton;
+    Clickable mainMenuButton;
+    List<PickMapButton> mapButtons=new ArrayList<>();
 
     public ChooseMapScreen(TDGame game){
         super(game);
@@ -19,10 +28,16 @@ public class ChooseMapScreen extends MenuScreen {
                 TDGame.fetchTexture("buttons/menu"),
                 place(pos.x(), pos.y()),"mainMenu");
 
-        pos=centerButton(2);
-        this.pickMapButton=new PickMapButton(this.game,TDGame.fetchTexture("buttons/pick_map_active"),
-                TDGame.fetchTexture("buttons/pick_map"),
-                place(pos.x(), pos.y()),0);
+        FileHandle mapdataFolder=Gdx.files.local("mapdata");
+
+        int i=2;
+        for (FileHandle file :mapdataFolder.list()) {
+            System.out.println("button"+(i-2));
+            mapButtons.add(new PickMapButton(game,i-2,centerButton(i),
+                    file.readString().split("\n")[0].trim(), 45, Color.WHITE,Color.BLACK,1000,64));
+            i++;
+        }
+        System.gc();
     }
 
     @Override
@@ -30,13 +45,17 @@ public class ChooseMapScreen extends MenuScreen {
         super.render(delta);
         game.batch.begin();
         renderButton(this.mainMenuButton);
-        renderButton(this.pickMapButton);
+        for (PickMapButton button:mapButtons) {
+            renderButton(button);
+        }
         game.batch.end();
     }
 
     @Override
     public void dispose() {
         mainMenuButton.dispose();
-        pickMapButton.dispose();
+        for (PickMapButton button:mapButtons) {
+            button.dispose();
+        }
     }
 }

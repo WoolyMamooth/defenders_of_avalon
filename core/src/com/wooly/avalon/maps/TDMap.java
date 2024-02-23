@@ -43,6 +43,7 @@ public class TDMap {
     public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces, Hero hero){
         this(mapID, backgroundTexture, path, enemiesToSpawn,enemiesSpawnDelay,towerSpaces);
         this.hero=hero;
+        hero.mapPath=this.path;
         this.hasHero=true;
     }
 

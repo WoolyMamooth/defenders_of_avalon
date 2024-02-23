@@ -56,6 +56,11 @@ public class Coordinate {
         }
     }
 
+    /**
+     * Calculates Euclidian distance between two coordinates.
+     * @param other
+     * @return
+     */
     public float distanceFrom(Coordinate other) {
         if(other==null) return 0f;
         float deltaX = other.x() - this.x();
@@ -63,6 +68,15 @@ public class Coordinate {
         return (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY);
     }
 
+    /**
+     * Returns a new Coordinate with x and y rounded to the nearest integer.
+     * @return
+     */
+    public Coordinate round(){
+        float x=Math.round(coord_x);
+        float y=Math.round(coord_y);
+        return new Coordinate(x,y);
+    }
     @Override
     public String toString() {
         return "(" + coord_x + ", " + coord_y + ")";

@@ -32,7 +32,7 @@ public class Enemy extends DamagableUnit implements Attacker {
         this.attackRange=attackRange/2f;
         this.goldDropped=goldDropped;
 
-        float offsetY= TDGame.CustomRandom.nextFloat(-height,height);
+        float offsetY= TDGame.CustomRandom.nextFloat(-height/2,height/2);
         pathOffset=new Coordinate(0,offsetY);
 
         this.position=this.position.add(pathOffset);
@@ -59,7 +59,7 @@ public class Enemy extends DamagableUnit implements Attacker {
     * and check for if it reached the end of the path. Returns the damage dealt to the player if the end of path is reached, 0 otherwise.
     */
     public int update(Path path,float timeSinceLastFrame){
-        if (atCoordinate(path.getCoordinate(path.length()-1).add(pathOffset))) { //if reached the end of path
+        if (atCoordinate(path.getCoordinate(path.getLength()-1).add(pathOffset))) { //if reached the end of path
             return damageToPlayer;
         }
 

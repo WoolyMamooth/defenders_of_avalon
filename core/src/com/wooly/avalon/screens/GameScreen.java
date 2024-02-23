@@ -2,6 +2,7 @@ package com.wooly.avalon.screens;
 
 import static com.wooly.avalon.TDGame.*;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -44,10 +45,11 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(0, 0, 0, 0);
         int gameState = 0;//1 if player lost, 2 if player won, 0 otherwise
 
+        //temporary for checking coordinates:
+        if(Gdx.input.justTouched()){System.out.println("CLICKED AT "+trueInput());}
+
         //if the game is paused then we skip updating the map
         if(!paused) {
-            //temporary for checking coordinates:
-            //if(Gdx.input.isTouched()){System.out.println(Gdx.input.getX()+" "+Gdx.input.getY());}
 
             //update gametime
             gametime += delta;

@@ -14,12 +14,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.maps.Path;
 import com.wooly.avalon.maps.TDMap;
 import com.wooly.avalon.screens.TextBubble;
 import com.wooly.avalon.screens.buttons.Button;
 import com.wooly.avalon.units.enemies.Enemy;
 import com.wooly.avalon.units.AlliedUnit;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Hero extends AlliedUnit {
@@ -30,8 +32,14 @@ public abstract class Hero extends AlliedUnit {
     Texture deadTexture; //texture to be displayed on death
     HeroSelectorButton selectorButton;
     protected boolean selected=false;
+    //--movement related variables--------
     boolean moving=false;
     Coordinate goal;
+    public Path mapPath;
+    private List<Coordinate> pathTrace=new ArrayList<>();
+    private int pathTraceIndex;
+    Texture movementIndicator;
+    //---------------
     ShapeRenderer rangeOutline;
     HeroAbility[] abilities;
     HeroAbilityMenu menu;
@@ -59,6 +67,7 @@ public abstract class Hero extends AlliedUnit {
         selectorButton =new HeroSelectorButton(position);
         turnAround();
         deadTexture=fetchTexture("heroes/dead_hero");
+        movementIndicator=fetchTexture("heroes/dead_hero");
 
         rangeOutline=new ShapeRenderer();
         rangeOutline.setColor(Color.BLACK);
@@ -80,7 +89,12 @@ public abstract class Hero extends AlliedUnit {
                 }
                 move(goal);
                 if (atCoordinate(goal)) {
-                    moving = false;
+                    pathTraceIndex++;
+                    if(pathTraceIndex>=pathTrace.size()){
+                        moving = false;
+                    }else {
+                        goal = pathTrace.get(pathTraceIndex);
+                    }
                 }
                 checkMovement();
             } else {
@@ -119,6 +133,10 @@ public abstract class Hero extends AlliedUnit {
                 drawRange(searchRange,false);
                 batch.begin();
             }
+            if(moving){
+                Coordinate temp=pathTrace.get(pathTrace.size()-1);
+                batch.draw(movementIndicator,temp.x(),temp.y());
+            }
         }else{
             batch.draw(deadTexture,position.x(),position.y());
         }
@@ -151,13 +169,33 @@ public abstract class Hero extends AlliedUnit {
     private void checkMovement(){
         if (selected && Gdx.input.justTouched()) {
             //Gdx.input.vibrate(100); TODO maybe add this to manifest it seems kinda fun
+            pathTrace.clear();
 
             selected=false;
             Coordinate input=trueInput();
+            input=place(input.x(), SCREEN_HEIGHT-input.y());
+            int fromIndex=mapPath.closestTo(position);
+            int toIndex=mapPath.closestTo(input);
+            if(toIndex>fromIndex) {
+                for (int i = fromIndex; i < toIndex+1; i++) {
+                    pathTrace.add(mapPath.getCoordinate(i));
+                }
+            }else{
+                for (int i = fromIndex; i > toIndex-1; i--) {
+                    pathTrace.add(mapPath.getCoordinate(i));
+                }
+            }
 
-            goal = place(input.x(), SCREEN_HEIGHT-input.y());
+            /*checks if input is within x distance of the path if yes final coord should be the input if no it should be the closest possible spot
+            if(input.distanceFrom(pathTrace.get(pathTrace.size()-1))>32){//some arbitrary distance
+                Coordinate v=input.subtract(pathTrace.get(pathTrace.size()-1)).normalize();
+                v=v.multiplyByScalar(32);
+                pathTrace.add(pathTrace.get(pathTrace.size()-1).add(v));
+            }*/
+            pathTraceIndex=0;
+            goal=pathTrace.get(pathTraceIndex);
             moving=true;
-            System.out.println("Hero moving");
+            //System.out.println("Hero moving");
         }
     }
 

@@ -45,7 +45,7 @@ public abstract class RangedTower extends Tower{
             timeSinceLastAttack=0;
         }
     }
-    private void updateExistingProjectiles(){
+    protected void updateExistingProjectiles(){
         if(projectiles==null) return;
         List<Projectile> shouldBeDeleted=new ArrayList<>();
 
@@ -81,6 +81,7 @@ public abstract class RangedTower extends Tower{
     protected void applyUpgrade(TowerUpgrade u){
         switch (u.stat){
             case "damage":
+            case "gold given":
                 this.damage+=u.getIncrease();
                 break;
             default:

@@ -13,7 +13,7 @@ public class FarmTower extends RangedTower {
     public FarmTower(Coordinate position,int towerSpawnID) {
         super(TDGame.fetchTexture("towers/towerTextures/farm"), position, towerSpawnID, 64, "none",10,20,
                 new TowerUpgrade[]{
-                    new TowerUpgrade("damage",10,5,25,1f)
+                    new TowerUpgrade("gold given",10,5,25,1f)
                 },"physical");
         setName("farm");
         setDescription("Doesn't attack, instead makes you money.\nGives "+damage+" gold every "+attackDelay+" seconds.");

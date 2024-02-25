@@ -16,7 +16,7 @@ public class BarracksTower extends SummonerTower {
                 }
             );
         setName("barracks");
-        setDescription("This tower summons a "+summonName+" every "+getAttackDelay()+" seconds, up to a maximum of "+maxSummons+".\n");
+        setDescription("Summons a "+summonName+" every "+getAttackDelay()+" seconds, which attacks the enemies.\n");
         //TODO add summons stats into description maybe
     }
 }

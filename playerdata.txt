@@ -1,3 +1,0 @@
-900	4
-Mordred	None	None	
-archer	barracks	None	None	

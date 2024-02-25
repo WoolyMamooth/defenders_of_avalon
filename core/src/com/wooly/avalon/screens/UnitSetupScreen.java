@@ -26,6 +26,8 @@ import com.wooly.avalon.units.heroes.Mordred;
 import com.wooly.avalon.units.towers.Tower;
 import com.wooly.avalon.units.towers.towers.ArcherTower;
 import com.wooly.avalon.units.towers.towers.BarracksTower;
+import com.wooly.avalon.units.towers.towers.FarmTower;
+import com.wooly.avalon.units.towers.towers.WizardTower;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -71,7 +73,7 @@ public class UnitSetupScreen extends MenuScreen{
      * Swaps the unit on the screen. EVERY SINGLE UNIT must be added here.
      */
     private void swapContainerUnit(){
-        int maxUnitId=4; //case number/id of the last possible unit
+        int maxUnitId=6; //case number/id of the last possible unit
         switch (containerUnitId){
         // HEROES
             case 0:
@@ -94,6 +96,14 @@ public class UnitSetupScreen extends MenuScreen{
             case 4:
                 container.dispose();
                 container=new TowerContainer(containerPos,new BarracksTower(containerPos,0));
+                break;
+            case 5:
+                container.dispose();
+                container=new TowerContainer(containerPos,new WizardTower(containerPos,0));
+                break;
+            case 6:
+                container.dispose();
+                container=new TowerContainer(containerPos,new FarmTower(containerPos,0));
                 break;
 
             case -1:
@@ -411,8 +421,6 @@ public class UnitSetupScreen extends MenuScreen{
         @Override
         public void draw(SpriteBatch batch) {
             super.draw(batch);
-            System.out.println("draw tower");
-
             //texture
             batch.draw(tower.texture,tower.position.x(),tower.position.y(),tower.getWidth(),tower.getHeight());
         }

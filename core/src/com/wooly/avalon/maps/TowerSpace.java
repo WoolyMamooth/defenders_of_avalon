@@ -21,6 +21,8 @@ import com.wooly.avalon.units.towers.Tower;
 import com.wooly.avalon.units.towers.TowerUpgrade;
 import com.wooly.avalon.units.towers.towers.ArcherTower;
 import com.wooly.avalon.units.towers.towers.BarracksTower;
+import com.wooly.avalon.units.towers.towers.FarmTower;
+import com.wooly.avalon.units.towers.towers.WizardTower;
 
 import java.util.List;
 import java.util.Objects;
@@ -145,6 +147,16 @@ public class TowerSpace extends Button {
             case "barracks":
                 if(attemptGoldSpend(80)) {
                     tower = new BarracksTower(position, towerBuildID);
+                }else return;
+                break;
+            case "wizard":
+                if(attemptGoldSpend(80)){
+                    tower=new WizardTower(position,towerBuildID);
+                }else return;
+                break;
+            case "farm":
+                if(attemptGoldSpend(50)){
+                    tower=new FarmTower(position,towerBuildID);
                 }else return;
                 break;
             case "None":

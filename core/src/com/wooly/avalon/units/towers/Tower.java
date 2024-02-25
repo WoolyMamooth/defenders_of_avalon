@@ -11,10 +11,10 @@ import java.util.List;
 import java.util.Objects;
 
 public abstract class Tower extends DrawableUnit implements Attacker {
-    float timeSinceLastAttack=0;
+    protected float timeSinceLastAttack=0;
     int towerSpawnID; //keeps track of the order towers were built in
-    float attackDelay; //defines how much time should pass between attacks
-    float range; //defines how far the tower will target
+    protected float attackDelay; //defines how much time should pass between attacks
+    protected float range; //defines how far the tower will target
     public TowerUpgrade[] upgrades;
     public String name; //only needed in shop
     public String description; //only needed in shop

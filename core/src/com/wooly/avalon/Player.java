@@ -9,7 +9,7 @@ import java.util.Arrays;
 import java.util.Objects;
 
 public class Player {
-    String dataFileName="playerdata.txt";
+    String dataFileName="playerdata.tsv";
     FileHandle fileHandle;
     public String[] existingHeroes={"Arthur","Mordred"};
     public String[] existingTowers={"archer","barracks"};
@@ -29,8 +29,8 @@ public class Player {
         }catch (GdxRuntimeException exception){
             //this happens on first install because the file hasn't been created yet on specific device
             fileHandle.writeString("1000\t0",false); //stardust, difficulty
-            fileHandle.writeString("\nNone\tNone\tNone\t",true); //base unlocked heroes
-            fileHandle.writeString("\narcher\tbarracks\tNone\tNone\t",true); //base unlocked towers
+            fileHandle.writeString("\nArthur\tNone\tNone\t",true); //base unlocked heroes
+            fileHandle.writeString("\narcher\tbarracks\twizard\tfarm\t",true); //base unlocked towers
             loadData();
         }
     }

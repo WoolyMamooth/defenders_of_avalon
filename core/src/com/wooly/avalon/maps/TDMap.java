@@ -111,7 +111,7 @@ public class TDMap {
                 //System.out.println("Enemy "+enemy.getSpawnID()+" has reached the end and will be deleted");
             }else if(enemy.getCurrentHp()<=0){
                 int gold=enemy.getGoldDropped();
-                playerGold+=(int) TDGame.CustomRandom.nextFloat(enemy.getGoldDropped()*0.75f,enemy.getGoldDropped()*1.25f); //get gold from enemies
+                givePlayerGold((int) TDGame.CustomRandom.nextFloat(enemy.getGoldDropped()*0.75f,enemy.getGoldDropped()*1.25f)); //get gold from enemies
                 //System.out.println(enemy.getGoldDropped()+" gold");
 
                 enemy.die();
@@ -157,6 +157,9 @@ public class TDMap {
     }
     public static int getPlayerGold() {
         return playerGold;
+    }
+    public static void givePlayerGold(int amount){
+        playerGold+=amount;
     }
 
     /**

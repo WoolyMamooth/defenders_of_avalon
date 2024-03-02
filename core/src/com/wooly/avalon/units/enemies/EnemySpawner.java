@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.maps.MapLoader;
+import com.wooly.avalon.maps.TDMap;
 import com.wooly.avalon.units.Spawner;
 
 public class EnemySpawner extends Spawner {
@@ -45,9 +46,10 @@ public class EnemySpawner extends Spawner {
      * Spawns an enemy based on the given name. Add all new enemies here.
      * @param spawnID
      * @param name
+     * @param map a reference to the map, needed for units that summon other units
      * @return
      */
-    public Enemy spawnEnemy(int spawnID,String name){
+    public Enemy spawnEnemy(int spawnID, String name, TDMap map){
         //base stats so i don't forget to set something at least
         int health=100,armor=0,magicResistance=0,damageToPlayer=10,damage=0,goldDropped=0;
         String damageType="ph";
@@ -61,12 +63,65 @@ public class EnemySpawner extends Spawner {
                 health=20;armor=0;magicResistance=0;damageToPlayer=1;movementSpeed=50f;damage=10;goldDropped=5;
                 break;
 
-            case "skeleton": //TODO
-            case "necromancer":
-            case "dragon":
+            case "skeleton":
+                health=10;damageToPlayer=1;movementSpeed=50f;damage=10;goldDropped=0;
+                break;
+            case "giant_skeleton":
+                health=70;armor=2;magicResistance=2;damageToPlayer=3;movementSpeed=30f;damage=15;goldDropped=15;
+                break;
+            case "necromancer": //miniboss
+                return new Necromancer(spawnID,texture,spawnLocation,
+                        (int)(40*healthDifModifier),
+                        (int)(0*armorDifModifier),
+                        (int)(10*magResDifModifier),
+                        25f*movespeedDifModifier,
+                        3,
+                        (int) (10*damageDifModifier),
+                        "magic",
+                        (int)(30*goldDropModifier),
+                        map
+                );
+            case "red_dragon":
+            case "dragon": //boss
+                return new Dragon(spawnID,texture,spawnLocation,
+                        (int)(200*healthDifModifier),
+                        (int)(10*armorDifModifier),
+                        (int)(10*magResDifModifier),
+                        10f*movespeedDifModifier,
+                        1000,
+                        (int) (30*damageDifModifier),
+                        "physical",
+                        (int)(100*goldDropModifier)
+                );
             case "giant":
-            case "soldier":
-
+                health=100;armor=3;magicResistance=6;damageToPlayer=3;movementSpeed=40f;damage=20;goldDropped=20;
+                break;
+            case "demon":
+                health=30;armor=0;magicResistance=10;damageToPlayer=1;movementSpeed=60f;damage=25;goldDropped=5;
+                break;
+            case "arch_demon": //boss
+                return new ArchDemon(spawnID,texture,spawnLocation,
+                        (int)(100*healthDifModifier),
+                        (int)(3*armorDifModifier),
+                        (int)(10*magResDifModifier),
+                        30f*movespeedDifModifier,
+                        1000,
+                        (int) (30*damageDifModifier),
+                        "magic",
+                        (int)(100*goldDropModifier)
+                );
+            case "golem":
+                return new Golem(spawnID,texture,spawnLocation,
+                        (int)(100*healthDifModifier),
+                        (int)(3*armorDifModifier),
+                        (int)(10*magResDifModifier),
+                        30f*movespeedDifModifier,
+                        1000,
+                        (int) (30*damageDifModifier),
+                        "magic",
+                        (int)(100*goldDropModifier),
+                        map
+                );
             case "ogre":
                 health=70;armor=2;magicResistance=3;damageToPlayer=3;movementSpeed=25f;damage=20;goldDropped=20;
                 break;

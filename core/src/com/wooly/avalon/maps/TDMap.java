@@ -15,7 +15,9 @@ public class TDMap {
     Texture backgroundTexture;
     Path path; // defines the path enemies take
     String[] enemiesToSpawn; // defines the enemies that will be spawned
-    int enemyCounter=0; // keeps track of which enemy should be spawned next
+    int enemiesToSpawnCounter=0; // keeps track of which enemy should be spawned next
+    int enemyCounter=0; //determines the spawnID of enemies
+    List<Enemy> extraEnemies; //used for enemies that spawn other enemies
     Float[] enemiesSpawnDelay; // defines the delay between enemy spawns
     float timeSinceLastSpawn=0; // keeps track of how much time has passed since we last spawned a new enemy
     List<Enemy> enemies; // keeps track of the enemies on the field
@@ -35,6 +37,7 @@ public class TDMap {
         this.enemiesSpawnDelay=enemiesSpawnDelay;
         this.spawner=new EnemySpawner(path.getCoordinate(0));
         this.enemies=new ArrayList<>();
+        this.extraEnemies=new ArrayList<>();
         this.towerSpaces=towerSpaces;
 
         playerHP=100;
@@ -69,8 +72,23 @@ public class TDMap {
      * spawn location is path.coordinates[0]
      */
     private void spawnNextEnemy(){
-        Enemy enemy=spawner.spawnEnemy(enemyCounter,enemiesToSpawn[enemyCounter]);
+        Enemy enemy=spawner.spawnEnemy(enemyCounter,enemiesToSpawn[enemiesToSpawnCounter],this);
         enemies.add(enemy);
+        enemiesToSpawnCounter++;
+        enemyCounter++;
+    }
+
+    /**
+     * This method is used to allow enemies to spawn other enemies.
+     * @param name what
+     * @param position where
+     * @param pathCoordinate should be the pathCoordinate index of the summoning unit in most cases
+     */
+    public void addExtraEnemy(String name, Coordinate position, int pathCoordinate){
+        Enemy enemy=spawner.spawnEnemy(enemyCounter,name,this);
+        enemy.position=position;
+        enemy.setPathCoordinate(pathCoordinate+1); //+1 insures they start walking forwards
+        extraEnemies.add(enemy);
         enemyCounter++;
     }
 
@@ -124,6 +142,11 @@ public class TDMap {
         for(Enemy enemy:shouldBeDeleted){
             enemies.remove(enemy);
         }
+        shouldBeDeleted.clear();
+
+        //we add the extra units summoned by enemies ex: necromancers summon skeletons
+        enemies.addAll(extraEnemies);
+        extraEnemies.clear();
     }
     /**
      * Moves projectiles

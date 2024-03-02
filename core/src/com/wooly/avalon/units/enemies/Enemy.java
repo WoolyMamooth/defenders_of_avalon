@@ -10,7 +10,7 @@ import com.wooly.avalon.units.AlliedUnit;
 
 public class Enemy extends DamagableUnit implements Attacker {
     int spawnID; // keeps track of where in the enemies list this is
-    private int previousPathCoordinateID =1; //keeps track of the last position from map.path where this enemy was
+    protected int previousPathCoordinateID =1; //keeps track of the last position from map.path where this enemy was
     private Coordinate pathOffset;
     int damageToPlayer;
     int goldDropped;
@@ -100,6 +100,10 @@ public class Enemy extends DamagableUnit implements Attacker {
                 ", position=" + position +
                 ", health=" + getCurrentHp() +
                 '}';
+    }
+
+    public void setPathCoordinate(int pathCoordinate) {
+        this.previousPathCoordinateID = pathCoordinate;
     }
 
     public int getSpawnID() {

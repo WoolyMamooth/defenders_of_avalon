@@ -11,8 +11,14 @@ import java.util.Objects;
 public class Player {
     String dataFileName="playerdata.tsv";
     FileHandle fileHandle;
-    public String[] existingHeroes={"Arthur","Mordred"};
-    public String[] existingTowers={"archer","barracks"};
+    /**
+     * An array with the names of every implemented hero.
+     */
+    public String[] existingHeroes={"Arthur","Mordred","Merlin"};
+    /**
+     * An array with the names of every implemented tower.
+     */
+    public String[] existingTowers={"archer","barracks","wizard","farm","ballista","paladins","priest"};
     String[] unlockedTowers;
     String[] unlockedHeroes;
     String[] equippedTowers;
@@ -29,8 +35,14 @@ public class Player {
         }catch (GdxRuntimeException exception){
             //this happens on first install because the file hasn't been created yet on specific device
             fileHandle.writeString("1000\t0",false); //stardust, difficulty
-            fileHandle.writeString("\nArthur\tNone\tNone\t",true); //base unlocked heroes
-            fileHandle.writeString("\narcher\tbarracks\twizard\tfarm\t",true); //base unlocked towers
+            fileHandle.writeString("\nArthur",true); //base unlocked hero
+            for (int i = 1; i < existingHeroes.length; i++) { //make the rest unlockable
+                fileHandle.writeString("\tNone",true);
+            }
+            fileHandle.writeString("\narcher\tbarracks\twizard",true); //base unlocked towers
+            for (int i = 3; i < existingTowers.length; i++) { //make the rest unlockable
+                fileHandle.writeString("\tNone",true);
+            }
             loadData();
         }
     }
@@ -63,7 +75,7 @@ public class Player {
      * Writes to playerdata.txt to save unlocked towers, heroes and stardust.
      */
     public void saveData(){
-        fileHandle.writeString(String.valueOf(stardust)+"\t"+String.valueOf(MapLoader.GAME_DIFFICULTY),false); //delete all info
+        fileHandle.writeString(stardust +"\t"+ MapLoader.GAME_DIFFICULTY,false); //delete all info
         fileHandle.writeString("\n",true);
         for (String hero:unlockedHeroes) {
             fileHandle.writeString(hero,true);
@@ -107,8 +119,10 @@ public class Player {
      */
     public void unlockTower(String name){
         for (int i = 0; i < unlockedTowers.length; i++) {
-            if(Objects.equals(unlockedTowers[i], "None")) unlockedTowers[i]=name;
-            return;
+            if(Objects.equals(unlockedTowers[i], "None")){
+                unlockedTowers[i]=name;
+                return;
+            }
         }
         //this should never run
         System.out.println("All towers unlocked");

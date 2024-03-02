@@ -13,10 +13,10 @@ public class Path {
         this.coordinates = coordinates;
         enrichSelf(10); //we add extra points
         this.length=this.coordinates.length;
-        System.out.println("PATH IS:");
-        for (int i = 0; i < length; i++) {
-            System.out.println(this.coordinates[i]);
-        }
+        //System.out.println("PATH IS:");
+        //for (int i = 0; i < length; i++) {
+        //    System.out.println(this.coordinates[i]);
+        //}
     }
 
     /**

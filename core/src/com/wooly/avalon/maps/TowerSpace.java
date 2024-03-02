@@ -20,8 +20,11 @@ import com.wooly.avalon.units.towers.SummonerTower;
 import com.wooly.avalon.units.towers.Tower;
 import com.wooly.avalon.units.towers.TowerUpgrade;
 import com.wooly.avalon.units.towers.towers.ArcherTower;
+import com.wooly.avalon.units.towers.towers.BallistaTower;
 import com.wooly.avalon.units.towers.towers.BarracksTower;
 import com.wooly.avalon.units.towers.towers.FarmTower;
+import com.wooly.avalon.units.towers.towers.PaladinsTower;
+import com.wooly.avalon.units.towers.towers.PriestTower;
 import com.wooly.avalon.units.towers.towers.WizardTower;
 
 import java.util.List;
@@ -157,6 +160,21 @@ public class TowerSpace extends Button {
             case "farm":
                 if(attemptGoldSpend(50)){
                     tower=new FarmTower(position,towerBuildID);
+                }else return;
+                break;
+            case "ballista":
+                if(attemptGoldSpend(100)){
+                    tower=new BallistaTower(position,towerBuildID);
+                }else return;
+                break;
+            case "paladins":
+                if(attemptGoldSpend(100)){
+                    tower=new PaladinsTower(position,towerBuildID);
+                }else return;
+                break;
+            case "priest":
+                if(attemptGoldSpend(80)){
+                    tower=new PriestTower(position,towerBuildID);
                 }else return;
                 break;
             case "None":

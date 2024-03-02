@@ -15,7 +15,10 @@ public class Mordred extends RangedHero{
      * @param position
      */
     public Mordred(Coordinate position) {
-        super(fetchTexture("heroes/mordred/mordred"), position,"Mordred","description here", 150, 70, 0, 5, 5, 3, 200,"arrow",300, "magic");
+        super(fetchTexture("heroes/mordred/mordred"),
+                position,"Mordred","description here",
+                150, 70, 0, 5, 5, 3, 200,
+                "arrow",300, "magic");
         baseDamage=damage;
         setAbilities(new HeroAbility[]{
             new AllConsumingFlames(),

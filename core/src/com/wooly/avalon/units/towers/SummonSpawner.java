@@ -48,6 +48,15 @@ public class SummonSpawner extends Spawner {
                 damage+=10;
                 attackDelay=0.75f;
                 break;
+            case "paladin":
+                movementSpeed+=30f;
+                maxHp+=30;
+                armor+=5;
+                magicResistance+=2;
+                damage+=10;
+                attackDelay+=1.2f;
+                damageType="pure";
+                break;
             case "None":
             default:
                 return spawnSummon("guard");

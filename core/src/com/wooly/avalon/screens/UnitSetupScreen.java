@@ -22,11 +22,15 @@ import com.wooly.avalon.screens.buttons.LoadScreenButton;
 import com.wooly.avalon.units.heroes.ArthurPendragon;
 import com.wooly.avalon.units.heroes.Hero;
 import com.wooly.avalon.units.heroes.HeroAbility;
+import com.wooly.avalon.units.heroes.Merlin;
 import com.wooly.avalon.units.heroes.Mordred;
 import com.wooly.avalon.units.towers.Tower;
 import com.wooly.avalon.units.towers.towers.ArcherTower;
+import com.wooly.avalon.units.towers.towers.BallistaTower;
 import com.wooly.avalon.units.towers.towers.BarracksTower;
 import com.wooly.avalon.units.towers.towers.FarmTower;
+import com.wooly.avalon.units.towers.towers.PaladinsTower;
+import com.wooly.avalon.units.towers.towers.PriestTower;
 import com.wooly.avalon.units.towers.towers.WizardTower;
 
 import java.util.Arrays;
@@ -73,7 +77,7 @@ public class UnitSetupScreen extends MenuScreen{
      * Swaps the unit on the screen. EVERY SINGLE UNIT must be added here.
      */
     private void swapContainerUnit(){
-        int maxUnitId=6; //case number/id of the last possible unit
+        int maxUnitId=9; //case number/id of the last possible unit
         switch (containerUnitId){
         // HEROES
             case 0:
@@ -85,8 +89,8 @@ public class UnitSetupScreen extends MenuScreen{
                 container=new HeroContainer(containerPos,new Mordred(containerPos));
                 break;
             case 2:
-                //container.dispose();
-                //container=new HeroContainer(containerPos,new Merlin(unitPos));
+                container.dispose();
+                container=new HeroContainer(containerPos,new Merlin(containerPos));
                 break;
         // TOWERS
             case 3:
@@ -104,6 +108,18 @@ public class UnitSetupScreen extends MenuScreen{
             case 6:
                 container.dispose();
                 container=new TowerContainer(containerPos,new FarmTower(containerPos,0));
+                break;
+            case 7:
+                container.dispose();
+                container=new TowerContainer(containerPos,new BallistaTower(containerPos,0));
+                break;
+            case 8:
+                container.dispose();
+                container=new TowerContainer(containerPos,new PaladinsTower(containerPos,0));
+                break;
+            case 9:
+                container.dispose();
+                container=new TowerContainer(containerPos,new PriestTower(containerPos,0));
                 break;
 
             case -1:
@@ -407,14 +423,11 @@ public class UnitSetupScreen extends MenuScreen{
 
             //button that allows player to buy it/equip it
             if(Arrays.asList(player.getUnlockedTowers()).contains(tower.name)){
-                canBeBought=false;
-                if(canBeBought) {
-                    button = new BuyButton(position, tower.name, 100, false);
-                    button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
-                }else{
-                    button=new EquipButton(position, Arrays.asList(player.getEquippedTowers()).contains(tower.name), tower.name,false);
-                    button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
-                }
+                button=new EquipButton(position, Arrays.asList(player.getEquippedTowers()).contains(tower.name), tower.name,false);
+                button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
+            }else{
+                button = new BuyButton(position, tower.name, 100, false);
+                button.setPosition(button.getPosition().add(new Coordinate(width - button.width - 20, 10)));
             }
         }
 

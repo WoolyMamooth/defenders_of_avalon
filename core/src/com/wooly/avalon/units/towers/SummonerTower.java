@@ -94,6 +94,7 @@ public abstract class SummonerTower extends Tower{
                 spawner.damageUpgrade+=u.getIncrease();
                 break;
             case "heal":
+            case "healing":
                 spawner.healingUpgrade+=u.getIncrease();
                 break;
             default:

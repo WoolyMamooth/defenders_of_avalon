@@ -25,7 +25,6 @@ public class MapLoader {
     //responsible for loading in the map data
     //still needs a lot of work
     TDGame game;
-    public static int GAME_DIFFICULTY =1;
     public static String MAPDATA_PATH ="mapdata/map"; //add mapID and .tsv to the end
     /**
      * Keeps track of what data is in which line of the data file.
@@ -44,6 +43,7 @@ public class MapLoader {
      * 3-Extreme,
      * 4-Nightmare
      */
+    public static int GAME_DIFFICULTY =1;
     String mapdataDelimiter="\t";
     public MapLoader(TDGame game) {
         this.game=game;

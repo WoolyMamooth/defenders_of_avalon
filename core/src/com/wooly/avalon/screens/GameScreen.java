@@ -78,10 +78,13 @@ public class GameScreen implements Screen {
         game.batch.end();
         //drawing ends here
 
-        if (gameState==1) { // exit if player lost the com.wooly.avalon
+        if (gameState==1) { // exit if player lost the game
             this.dispose();
             game.setScreen(new LostScreen(game));
-        }else if(gameState==2){ // player won the com.wooly.avalon
+        }else if(gameState==2){ // player won the game
+            //we give the player an amount of stardust based on the difficulty they played at
+            int difficultyExtraStardust=MapLoader.GAME_DIFFICULTY*10;
+            player.gainStardust(80+difficultyExtraStardust);
             this.dispose();
             game.setScreen(new MainMenuScreen(game));
         }else if(gameState==3){ // player exited to menu

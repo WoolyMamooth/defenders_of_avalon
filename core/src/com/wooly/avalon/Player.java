@@ -174,6 +174,9 @@ public class Player {
     public int getStardust() {
         return stardust;
     }
+    public void gainStardust(int amount){
+        stardust+=amount;
+    }
     @Override
     public String toString() {
         return "Player{" +

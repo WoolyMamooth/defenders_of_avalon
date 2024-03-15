@@ -58,38 +58,41 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
      */
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
         updateBuffs(timeSinceLastFrame);
-        if(target!=null){//if we have a target
-            try{
-                //turn around if needed
-                if (!facingLeft && target.textureCenterPosition().x() < textureCenterPosition().x())
-                    turnAround();
-                if (facingLeft && target.textureCenterPosition().x() > textureCenterPosition().x())
-                    turnAround();
-            }catch (NullPointerException n){
-                //caused by target.position being set to null when they die, this doesn't actually cause
-                //problems because it fixes itself in the next loop
-            }
-
-            if(inRange(target,attackRange)) { //if they are in range
-                if (target.getCurrentHp() > 0) { //and aren't dead yet
-                    tryAttack(timeSinceLastFrame); //attack if we can
-                }else{
-                    target=null;
+        if(!stunned) {
+            if (target != null) {//if we have a target
+                try {
+                    //turn around if needed
+                    if (!facingLeft && target.textureCenterPosition().x() < textureCenterPosition().x())
+                        turnAround();
+                    if (facingLeft && target.textureCenterPosition().x() > textureCenterPosition().x())
+                        turnAround();
+                } catch (NullPointerException n) {
+                    //caused by target.position being set to null when they die, this doesn't actually cause
+                    //problems because it fixes itself in the next loop
                 }
-            }else{ //if not in attack range
-                move(target.getPosition()); //move towards them since they are far
-            }
 
-        }else{//if we dont have a target
-            //search attack range for target
-            target = getTarget(enemies, attackRange,position);
-            if(target==null){ //if there is noone in attack range
-                //search searchrange for target
-                target = getTarget(enemies, searchRange, searchCenterPosition);
-                if (target == null) return; //still nothing then just stand still
-                move(target.getPosition()); //move towards them since they are far
+                if (inRange(target, attackRange)) { //if they are in range
+                    if (target.getCurrentHp() > 0) { //and aren't dead yet
+                        tryAttack(timeSinceLastFrame); //attack if we can
+                    } else {
+                        target = null;
+                    }
+                } else { //if not in attack range
+                    move(target.getPosition()); //move towards them since they are far
+                }
+
+            } else {//if we dont have a target
+                //search attack range for target
+                target = getTarget(enemies, attackRange, position);
+                if (target == null) { //if there is noone in attack range
+                    //search searchrange for target
+                    target = getTarget(enemies, searchRange, searchCenterPosition);
+                    if (target == null) return; //still nothing then just stand still
+                    move(target.getPosition()); //move towards them since they are far
+                }
+                if (!target.inCombat())
+                    target.setTarget(this); //if we found one, set their target to this
             }
-            if(!target.inCombat())target.setTarget(this); //if we found one, set their target to this
         }
     }
     protected Enemy getTarget(List<Enemy> enemies, float range,Coordinate searchCenter){
@@ -107,7 +110,7 @@ public abstract class AlliedUnit extends DamagableUnit implements Attacker {
 
     @Override
     protected void applyBuff(UnitBuff buff, boolean removeMode) {
-        int modifier=buff.getModifier();
+        float modifier=buff.getModifier();
         if(removeMode) modifier*=-1f;
         switch (buff.stat){
             case "damage":

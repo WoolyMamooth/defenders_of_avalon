@@ -2,7 +2,7 @@ package com.wooly.avalon.units;
 
 public class UnitBuff {
     public String stat;
-    private int modifier;
+    private float modifier;
     private float duration; //amount of time this should be applied for
     private float timeSinceActivation=0; //time that has passed since activation
 
@@ -13,7 +13,7 @@ public class UnitBuff {
      * @param modifier how much should it be changed
      * @param duration for how long
      */
-    public UnitBuff(String stat, int modifier, float duration) {
+    public UnitBuff(String stat, float modifier, float duration) {
         this.stat = stat;
         this.modifier = modifier;
         this.duration = duration;
@@ -28,7 +28,7 @@ public class UnitBuff {
         timeSinceActivation+=timeSinceLastFrame;
         return timeSinceActivation >= duration;
     }
-    public int getModifier(){
+    public float getModifier(){
         return this.modifier;
     }
 }

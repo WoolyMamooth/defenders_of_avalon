@@ -184,6 +184,9 @@ public class TDMap {
     public static void givePlayerGold(int amount){
         playerGold+=amount;
     }
+    public Path getPath() {
+        return path;
+    }
 
     /**
      * Use this method when you try to make the player spend gold.

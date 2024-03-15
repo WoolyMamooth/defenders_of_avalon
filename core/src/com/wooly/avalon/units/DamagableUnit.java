@@ -18,6 +18,7 @@ public class DamagableUnit extends MovableUnit{
     protected int armor; //reduces physical damage taken
     protected int magicResistance; //reduces magical damage taken
     protected boolean damageImmune=false;
+    protected boolean stunned=false; //if true unit can't move or attack
     public int healingAmount=0; //amount of health that will be recovered per tick
     protected float timeSinceLastHeal=0f;
     protected static float HEALING_TICK_INTERVAL=1f;
@@ -117,7 +118,6 @@ public class DamagableUnit extends MovableUnit{
     protected boolean inRange(DamagableUnit other,float range){
         return position.distanceFrom(other.position)<=range;
     }
-
     /**
      * Updates the timers of the buffs.
      * @param timeSinceLastFrame
@@ -168,7 +168,8 @@ public class DamagableUnit extends MovableUnit{
      */
     protected void applyBuff(UnitBuff buff,boolean removeMode){
         float modifier=buff.getModifier();
-        if(removeMode) modifier*=-1;
+        if(removeMode) modifier=-modifier;
+        System.out.println("super APPLYING "+buff.stat+" "+modifier);
         switch (buff.stat){
             case "armor":
                 armor+=modifier;
@@ -184,8 +185,15 @@ public class DamagableUnit extends MovableUnit{
             case "damageImmunity":
                 damageImmune=!removeMode;
                 break;
+            case "stun":
+                stunned=!removeMode;
+                break;
             case "healing":
                 healingAmount+=modifier;
+                break;
+            //damage over time effects are basically reverse healing
+            case "onFire":
+                healingAmount-=modifier;
                 break;
             default:
                 System.out.println("WARNING no buff for stat "+buff.stat);
@@ -196,7 +204,6 @@ public class DamagableUnit extends MovableUnit{
      */
     public void die(){
         // die, duh
-        //TODO might need some more work
         movementSpeed=0;
         hpBar.dispose();
         dispose();

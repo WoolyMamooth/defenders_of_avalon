@@ -7,6 +7,7 @@ import com.wooly.avalon.maps.Path;
 import com.wooly.avalon.units.Attacker;
 import com.wooly.avalon.units.DamagableUnit;
 import com.wooly.avalon.units.AlliedUnit;
+import com.wooly.avalon.units.UnitBuff;
 
 public class Enemy extends DamagableUnit implements Attacker {
     int spawnID; // keeps track of where in the enemies list this is
@@ -59,33 +60,54 @@ public class Enemy extends DamagableUnit implements Attacker {
     * and check for if it reached the end of the path. Returns the damage dealt to the player if the end of path is reached, 0 otherwise.
     */
     public int update(Path path,float timeSinceLastFrame){
-        if (atCoordinate(path.getCoordinate(path.getLength()-1).add(pathOffset))) { //if reached the end of path
-            return damageToPlayer;
-        }
+        updateBuffs(timeSinceLastFrame);
+        if(!stunned) {
+            if (atCoordinate(path.getCoordinate(path.getLength() - 1).add(pathOffset))) { //if reached the end of path
+                return damageToPlayer;
+            }
 
-        if(target==null) { //if it not is attacking a Summon, move
-            Coordinate goal = path.getCoordinate(previousPathCoordinateID).add(pathOffset); //where the enemy will want to go next
-            move(goal);
-            if (atCoordinate(goal)) { //if reached goal, set a new goal
-                previousPathCoordinateID++;
-                //System.out.println("Enemy "+spawnID+" new goal: "+goal);
-            }
-            timeSinceLastAttack=0;
-        }else {
-            //if in range of target, attack
-            if(inRange(target,attackRange)){
-                //turn around if needed
-                if(!facingLeft && target.textureCenterPosition().x()<textureCenterPosition().x()) turnAround();
-                if(facingLeft && target.textureCenterPosition().x()>textureCenterPosition().x()) turnAround();
-                tryAttack(timeSinceLastFrame);
-            }
-            else{
-                //otherwise try and move towards target
-                move(target.getPosition());
+            if (target == null) { //if it not is attacking a Summon, move
+                Coordinate goal = path.getCoordinate(previousPathCoordinateID).add(pathOffset); //where the enemy will want to go next
+                move(goal);
+                if (atCoordinate(goal)) { //if reached goal, set a new goal
+                    previousPathCoordinateID++;
+                    //System.out.println("Enemy "+spawnID+" new goal: "+goal);
+                }
+                timeSinceLastAttack = 0;
+            } else {
+                //if in range of target, attack
+                if (inRange(target, attackRange)) {
+                    //turn around if needed
+                    if (!facingLeft && target.textureCenterPosition().x() < textureCenterPosition().x())
+                        turnAround();
+                    if (facingLeft && target.textureCenterPosition().x() > textureCenterPosition().x())
+                        turnAround();
+                    tryAttack(timeSinceLastFrame);
+                } else {
+                    //otherwise try and move towards target
+                    move(target.getPosition());
+                }
             }
         }
         return 0;
     }
+
+    @Override
+    protected void applyBuff(UnitBuff buff, boolean removeMode) {
+        float modifier=buff.getModifier();
+        if(removeMode) modifier=-modifier;
+        if(removeMode) System.out.println("REMOVING");
+        System.out.println("APPLYING "+buff.stat+" "+modifier);
+        switch (buff.stat){
+            case "damage":
+                this.damage+=modifier;
+                break;
+            default:
+                super.applyBuff(buff, removeMode);
+                break;
+        }
+    }
+
     public void die(){
         if(target!=null) {
             target.setTarget(null);

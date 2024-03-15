@@ -81,6 +81,29 @@ public class EnemySpawner extends Spawner {
                         (int)(30*goldDropModifier),
                         map
                 );
+            case "arch_lich": //boss
+                return new ArchLich(spawnID,texture,spawnLocation,
+                        (int)(200*healthDifModifier),
+                        (int)(0*armorDifModifier),
+                        (int)(15*magResDifModifier),
+                        10f*movespeedDifModifier,
+                        1000,
+                        (int) (20*damageDifModifier),
+                        "magic",
+                        (int)(200*goldDropModifier),
+                        map
+                );
+            case "skeleton_dragon":
+                return new Dragon(spawnID,texture,spawnLocation,
+                        (int)(80*healthDifModifier),
+                        (int)(5*armorDifModifier),
+                        (int)(5*magResDifModifier),
+                        10f*movespeedDifModifier,
+                        1000,
+                        (int) (30*damageDifModifier),
+                        "physical",
+                        (int)(75*goldDropModifier)
+                );
             case "red_dragon":
             case "dragon": //boss
                 return new Dragon(spawnID,texture,spawnLocation,
@@ -101,27 +124,43 @@ public class EnemySpawner extends Spawner {
                 break;
             case "arch_demon": //boss
                 return new ArchDemon(spawnID,texture,spawnLocation,
-                        (int)(100*healthDifModifier),
+                        (int)(300*healthDifModifier),
                         (int)(3*armorDifModifier),
                         (int)(10*magResDifModifier),
-                        30f*movespeedDifModifier,
-                        1000,
-                        (int) (30*damageDifModifier),
-                        "magic",
-                        (int)(100*goldDropModifier)
-                );
-            case "golem":
-                return new Golem(spawnID,texture,spawnLocation,
-                        (int)(100*healthDifModifier),
-                        (int)(3*armorDifModifier),
-                        (int)(10*magResDifModifier),
-                        30f*movespeedDifModifier,
+                        10f*movespeedDifModifier,
                         1000,
                         (int) (30*damageDifModifier),
                         "magic",
                         (int)(100*goldDropModifier),
                         map
                 );
+            case "golem":
+                return new Golem(spawnID,texture,spawnLocation,
+                        (int)(100*healthDifModifier),
+                        (int)(10*armorDifModifier),
+                        (int)(0*magResDifModifier),
+                        10f*movespeedDifModifier,
+                        1000,
+                        (int) (30*damageDifModifier),
+                        "physical",
+                        (int)(40*goldDropModifier),
+                        map,
+                        true
+                );
+            case "mini_golem":
+                return new Golem(spawnID,texture,spawnLocation,
+                        (int)(20*healthDifModifier),
+                        (int)(10*armorDifModifier),
+                        (int)(0*magResDifModifier),
+                        20f*movespeedDifModifier,
+                        1000,
+                        (int) (10*damageDifModifier),
+                        "physical",
+                        (int)(10*goldDropModifier),
+                        map,
+                        false
+                );
+
             case "ogre":
                 health=70;armor=2;magicResistance=3;damageToPlayer=3;movementSpeed=25f;damage=20;goldDropped=20;
                 break;

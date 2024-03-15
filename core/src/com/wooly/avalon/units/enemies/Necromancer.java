@@ -7,22 +7,25 @@ import com.wooly.avalon.maps.TDMap;
 
 public class Necromancer extends Enemy{
     TDMap map;
-    float summonDelay,summonMaxDelay=6f;
+    String summonName;
+    float summonDelay,summonMaxDelay;
     public Necromancer(int spawnID, Texture texture, Coordinate position, int health, int armor, int magicResistance, float movementSpeed, int damageToPlayer, int damage, String damageType, int goldDropped, TDMap map) {
         super(spawnID, texture, position, health, armor, magicResistance, movementSpeed, damageToPlayer, damage, damageType, goldDropped);
         this.map=map;
+        summonName="skeleton";
+        summonMaxDelay=6f;
         summonDelay=summonMaxDelay;
     }
-    private void summonSkeleton(float timeSinceLastFrame){
+    protected void summonNext(float timeSinceLastFrame, Coordinate pos){
         summonDelay-=timeSinceLastFrame;
         if(summonDelay<=0){
             summonDelay=summonMaxDelay;
-            map.addExtraEnemy("skeleton",position,previousPathCoordinateID);
+            map.addExtraEnemy(summonName,pos,previousPathCoordinateID);
         }
     }
     @Override
     public int update(Path path, float timeSinceLastFrame) {
-        summonSkeleton(timeSinceLastFrame);
+        summonNext(timeSinceLastFrame, position);
         return super.update(path, timeSinceLastFrame);
     }
 }

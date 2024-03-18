@@ -67,7 +67,7 @@ public abstract class Hero extends AlliedUnit {
         selectorButton =new HeroSelectorButton(position);
         turnAround();
         deadTexture=fetchTexture("heroes/dead_hero");
-        movementIndicator=fetchTexture("heroes/dead_hero");
+        movementIndicator=fetchTexture("heroes/movement_pointer");
 
         rangeOutline=new ShapeRenderer();
         rangeOutline.setColor(Color.BLACK);
@@ -126,7 +126,6 @@ public abstract class Hero extends AlliedUnit {
         if(!isDead()) {
             super.draw(batch);
             selectorButton.drawCheckClick(batch);
-            menu.draw(batch);
             if (selected) {
                 batch.end();
                 drawRange(searchRange,true);
@@ -139,6 +138,16 @@ public abstract class Hero extends AlliedUnit {
             }
         }else{
             batch.draw(deadTexture,position.x(),position.y());
+        }
+    }
+
+    /**
+     * We separate this so we can draw it above the foreground while drawing the hero behind it.
+     * @param batch
+     */
+    public void drawMenu(SpriteBatch batch){
+        if(!isDead()){
+            menu.draw(batch);
         }
     }
     private boolean isDead(){

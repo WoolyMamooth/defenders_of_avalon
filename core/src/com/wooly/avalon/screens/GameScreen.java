@@ -17,6 +17,7 @@ public class GameScreen implements Screen {
     TDMap map; //the map that was chosen in the menu
     int mapID;
     Texture backgroundTexture; //background of the map
+    Texture frontgroundTexture;
     IngameMenu menu; // contains pause button, player HP etc
     boolean paused=false;
     float gametime=0; //keeps track of how much time has passed since the start of the com.wooly.avalon
@@ -37,6 +38,7 @@ public class GameScreen implements Screen {
     @Override
     public void show() {
         this.backgroundTexture = this.map.getBackgroundTexture();
+        this.frontgroundTexture=this.map.getFrontgroundTexture();
     }
 
     @Override
@@ -64,11 +66,18 @@ public class GameScreen implements Screen {
 
         //drawing begins here
         game.batch.begin();
+
         //draw the background
         game.batch.draw(backgroundTexture, SCREEN_BOT_LEFT.x(), SCREEN_BOT_LEFT.y());
 
-        //draws all enemies and towers
+        //draws enemies, towers, hero
         map.draw(game.batch);
+
+        //draw the frontground
+        game.batch.draw(frontgroundTexture, SCREEN_BOT_LEFT.x(), SCREEN_BOT_LEFT.y());
+
+        //draw heroes menu above all
+        map.drawHeroMenu(game.batch);
 
         //draw ingame menu
         menu.draw(game.batch);
@@ -78,6 +87,7 @@ public class GameScreen implements Screen {
         game.batch.end();
         //drawing ends here
 
+        //check state of the game
         if (gameState==1) { // exit if player lost the game
             this.dispose();
             game.setScreen(new LostScreen(game));

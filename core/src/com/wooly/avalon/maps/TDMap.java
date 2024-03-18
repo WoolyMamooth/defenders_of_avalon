@@ -13,6 +13,7 @@ import java.util.List;
 public class TDMap {
     int mapID;
     Texture backgroundTexture;
+    Texture frontgroundTexture;
     Path path; // defines the path enemies take
     String[] enemiesToSpawn; // defines the enemies that will be spawned
     int enemiesToSpawnCounter=0; // keeps track of which enemy should be spawned next
@@ -29,9 +30,10 @@ public class TDMap {
     Hero hero; //the hero the player has selected
     boolean hasHero; //the player may choose not to bring a hero to a fight
 
-    public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces) {
+    public TDMap(int mapID, Texture backgroundTexture,Texture frontgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces) {
         this.mapID=mapID;
         this.backgroundTexture = backgroundTexture;
+        this.frontgroundTexture=frontgroundTexture;
         this.path=path;
         this.enemiesToSpawn=enemiesToSpawn;
         this.enemiesSpawnDelay=enemiesSpawnDelay;
@@ -43,17 +45,13 @@ public class TDMap {
         playerHP=100;
         playerGold=100;
     }
-    public TDMap(int mapID, Texture backgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces, Hero hero){
-        this(mapID, backgroundTexture, path, enemiesToSpawn,enemiesSpawnDelay,towerSpaces);
+    public TDMap(int mapID, Texture backgroundTexture,Texture frontgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces, Hero hero){
+        this(mapID, backgroundTexture,frontgroundTexture, path, enemiesToSpawn,enemiesSpawnDelay,towerSpaces);
         this.hero=hero;
         hero.mapPath=this.path;
         this.hasHero=true;
     }
 
-    //returns the background texture, used in GameScreen.show
-    public Texture getBackgroundTexture() {
-        return backgroundTexture;
-    }
     /**
      * Checks if a new enemy should be spawned and spawns them if they should, returns true if an enemy was spawned
      */
@@ -162,6 +160,9 @@ public class TDMap {
         drawAllEnemies(batch);
         drawAllTowers(batch);
     }
+    public void drawHeroMenu(SpriteBatch batch){
+        if(hasHero) hero.drawMenu(batch);
+    }
     private void drawAllEnemies(SpriteBatch batch){
         for (Enemy enemy:enemies) {
             enemy.draw(batch);
@@ -172,6 +173,14 @@ public class TDMap {
             towerspace.draw(batch);
         }
     }
+    public Texture getBackgroundTexture() {
+        return backgroundTexture;
+    }
+
+    public Texture getFrontgroundTexture() {
+        return frontgroundTexture;
+    }
+
     public int getPlayerHP() {
         return playerHP;
     }

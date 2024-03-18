@@ -66,15 +66,16 @@ public class MapLoader {
         System.out.println(Arrays.toString(mapdata));
 
         Texture backgroundTexture= loadBackgroundTexture(mapID); //loads texture for background
+        Texture frontgroundTexture=loadFrontgroundTexture(mapID);
         Path path = loadPath(); //loads path that enemies will follow
         String[] enemiesToSpawn=loadEnemiesToSpawn(); //loads enemies that will be spawned
         Float[] enemiesSpawnDelay=loadSpawnDelay(); //loads the delay between enemy spawns
         TowerSpace[] towerSpaces=loadTowerLocations(); //loads the buildable spaces
         if(Objects.equals(player.getEquippedHero(), "None")) {
-            return new TDMap(mapID, backgroundTexture, path, enemiesToSpawn, enemiesSpawnDelay, towerSpaces);
+            return new TDMap(mapID, backgroundTexture,frontgroundTexture, path, enemiesToSpawn, enemiesSpawnDelay, towerSpaces);
         }else{
             Hero hero=loadHero(player.getEquippedHero());
-            return new TDMap(mapID, backgroundTexture, path, enemiesToSpawn, enemiesSpawnDelay, towerSpaces,hero);
+            return new TDMap(mapID, backgroundTexture,frontgroundTexture, path, enemiesToSpawn, enemiesSpawnDelay, towerSpaces,hero);
         }
     }
     private Hero loadHero(String heroName) {
@@ -92,6 +93,10 @@ public class MapLoader {
     private Texture loadBackgroundTexture(int mapID){
         System.out.println("TEXTURE: map_assets/backgrounds/"+mapID+TEXTURE_EXTENSION);
         return TDGame.fetchTexture("map_assets/backgrounds/"+mapID);
+    }
+    private Texture loadFrontgroundTexture(int mapID){
+        //System.out.println("TEXTURE: map_assets/frontgrounds/"+mapID+"front"+TEXTURE_EXTENSION);
+        return TDGame.fetchTexture("map_assets/frontgrounds/"+mapID+"front");
     }
     private Path loadPath(){
         //slight issue: top left corner is (0,SCREEN_HEIGHT), not (0,0)

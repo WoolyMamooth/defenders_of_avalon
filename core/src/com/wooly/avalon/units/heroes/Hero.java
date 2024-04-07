@@ -50,7 +50,7 @@ public abstract class Hero extends AlliedUnit {
     /**
      * Heroes are units that can be directly controlled by the player.
      * They can be moved around on the board and they have unique abilities that can be activated using a menu.
-     *
+     * They automatically heal themselves over time, amount increases with level.
      * @param texture
      * @param position
      * @param movementSpeed
@@ -73,6 +73,8 @@ public abstract class Hero extends AlliedUnit {
 
         rangeOutline=new ShapeRenderer();
         rangeOutline.setColor(Color.BLACK);
+
+        healingAmount=1;
     }
 
     @Override
@@ -269,12 +271,16 @@ public abstract class Hero extends AlliedUnit {
         @Override
         public void onClick() {
             if(level>=maxLevel) return;
-            if(TDMap.attemptGoldSpend(cost)) level++;
+            if(TDMap.attemptGoldSpend(cost)){
+                level++;
+                healingAmount++;
+            }
         }
     }
     protected class HeroAbilityMenu{
         protected class HeroAbilityButton extends Button {
             HeroAbility ability;
+            float cooldownHeightPercent;
             /**
              * Used for activating the abilities of heroes.
              * @param position
@@ -283,7 +289,19 @@ public abstract class Hero extends AlliedUnit {
             public HeroAbilityButton(Coordinate position,HeroAbility ability) {
                 super(position, fetchTexture("white_square"), ability.icon);
                 this.ability=ability;
+                cooldownHeightPercent=this.height/ability.maxCooldown;
             }
+
+            @Override
+            public void draw(SpriteBatch batch) {
+                batch.draw(inactiveTexture,position.x(),position.y(),this.width,this.height);
+                if(ability.onCooldown()){
+                    batch.setColor(0,0,0,0.5f);
+                    batch.draw(activeTexture,position.x(),position.y(),width,cooldownHeightPercent*ability.cooldown);
+                    batch.setColor(Color.WHITE);
+                }
+            }
+
             @Override
             public void onClick() {
                 if(!ability.isPassive && !ability.onCooldown()) ability.activate();
@@ -315,6 +333,8 @@ public abstract class Hero extends AlliedUnit {
         HeroAbilityButton[] abilityButtons;
         HeroAbilityInfo[] abilityInfos;
         int abilityNum;
+        int iconWidth,iconHeight;
+        Texture notUnlockedTexture;
 
         /**
          * Contains buttons for every ability the hero has plus the left-most button can be used to select the hero
@@ -322,10 +342,11 @@ public abstract class Hero extends AlliedUnit {
          * @param abilities
          */
         public HeroAbilityMenu(HeroAbility[] abilities){
+            notUnlockedTexture=fetchTexture("white_square");
             abilityNum=abilities.length;
 
-            int iconWidth=abilities[0].icon.getWidth();
-            int iconHeight=abilities[0].icon.getHeight();
+            iconWidth=abilities[0].icon.getWidth();
+            iconHeight=abilities[0].icon.getHeight();
 
             abilityButtons=new HeroAbilityButton[abilityNum];
             abilityInfos=new HeroAbilityInfo[abilityNum];
@@ -349,9 +370,11 @@ public abstract class Hero extends AlliedUnit {
             for (int i = 0; i < abilityNum; i++) {
                 if(i<level) {
                     abilityButtons[i].drawCheckClick(batch);
-                }
-                else{
+                }else{
+                    //if not unlocked
                     abilityButtons[i].draw(batch);
+                    Coordinate pos=abilityButtons[i].getPosition();
+                    batch.draw(notUnlockedTexture,pos.x(),pos.y(),iconWidth,iconHeight);
                 }
                 abilityInfos[i].drawCheckClick(batch);
             }

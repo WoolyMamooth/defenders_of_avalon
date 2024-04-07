@@ -31,7 +31,7 @@ public abstract class AoETower extends RangedTower{
     @Override
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
         super.update(enemies,timeSinceLastFrame);
-        updateExistingProjectiles(enemies);
+        projectileSpawner.update(enemies,aoeRange);
 
         //attack if possible
         timeSinceLastAttack+=timeSinceLastFrame;
@@ -41,21 +41,6 @@ public abstract class AoETower extends RangedTower{
             if(target==null) return; //don't attack if there isn't anyone in range
             else attack();
             timeSinceLastAttack=0;
-        }
-    }
-    protected void updateExistingProjectiles(List<Enemy> enemies){
-        if(projectiles==null) return;
-        List<Projectile> shouldBeDeleted=new ArrayList<>();
-
-        for (Projectile projectile:projectiles) {
-            //if it returns true we should delete the projectile
-            if(projectile.update(enemies,aoeRange)){ //moves the projectiles towards the target
-                shouldBeDeleted.add(projectile);
-            }
-        }
-        //delete the ones that hit
-        for (Projectile projectile:shouldBeDeleted) {
-            projectiles.remove(projectile);
         }
     }
 }

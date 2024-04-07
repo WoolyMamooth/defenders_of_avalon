@@ -12,7 +12,6 @@ import java.util.List;
 
 public abstract class RangedHero extends Hero{
     ProjectileSpawner projectileSpawner;
-    List<Projectile> projectiles=new ArrayList<>();
     String projectileName;
 
     /**
@@ -35,36 +34,18 @@ public abstract class RangedHero extends Hero{
     }
     @Override
     public void attack() {
-        projectiles.add(projectileSpawner.spawnProjectile(projectileName,target,damage,damageType));
+        projectileSpawner.spawnProjectile(projectileName,target,damage,damageType);
     }
 
     @Override
     public void update(List<Enemy> enemies, float timeSinceLastFrame) {
         super.update(enemies, timeSinceLastFrame);
-        updateExistingProjectiles();
-        projectileSpawner.spawnLocation=position;
-    }
-
-    protected void updateExistingProjectiles(){
-        if(projectiles==null) return;
-        List<Projectile> shouldBeDeleted=new ArrayList<>();
-
-        for (Projectile projectile:projectiles) {
-            //if it returns true we should delete the projectile
-            if(projectile.update()){ //moves the projectiles towards the target
-                shouldBeDeleted.add(projectile);
-            }
-        }
-        //delete the ones that hit
-        for (Projectile projectile:shouldBeDeleted) {
-            projectiles.remove(projectile);
-        }
+        projectileSpawner.update();
+        projectileSpawner.spawnLocation=textureCenterPosition();
     }
     @Override
     public void draw(SpriteBatch batch){
-        for (Projectile projectile:projectiles) {
-            projectile.draw(batch);
-        }
+        projectileSpawner.draw(batch);
         if(selected){
             batch.end();
             drawRange(attackRange,false);

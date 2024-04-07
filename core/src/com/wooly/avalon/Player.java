@@ -43,6 +43,9 @@ public class Player {
             for (int i = 3; i < existingTowers.length; i++) { //make the rest unlockable
                 fileHandle.writeString("\tNone",true);
             }
+            //equipped units
+            fileHandle.writeString("\nArthur",true);
+            fileHandle.writeString("\narcher\tbarracks\twizard\tNone",true);
             loadData();
         }
     }
@@ -63,13 +66,8 @@ public class Player {
         MapLoader.GAME_DIFFICULTY=Integer.parseInt(datafile[0].split("\t")[1]);
         unlockedHeroes=datafile[1].split("\t");
         unlockedTowers=datafile[2].split("\t");
-
-        //TODO equip the last used ones
-        this.equippedHero = unlockedHeroes[0];
-        this.equippedTowers = new String[4];
-        for (int i = 0; i < 4; i++) {
-            equippedTowers[i]=unlockedTowers[i];
-        }
+        equippedHero=datafile[3].split("\t")[0];
+        equippedTowers=datafile[4].split("\t");
     }
     /**
      * Writes to playerdata.txt to save unlocked towers, heroes and stardust.
@@ -83,6 +81,13 @@ public class Player {
         }
         fileHandle.writeString("\n",true);
         for (String tower:unlockedTowers) {
+            fileHandle.writeString(tower,true);
+            fileHandle.writeString("\t",true);
+        }
+        fileHandle.writeString("\n",true);
+        fileHandle.writeString(equippedHero,true);
+        fileHandle.writeString("\n",true);
+        for (String tower:equippedTowers) {
             fileHandle.writeString(tower,true);
             fileHandle.writeString("\t",true);
         }

@@ -138,10 +138,8 @@ public class DamagableUnit extends MovableUnit{
         if(healingAmount>0){
             timeSinceLastHeal+=timeSinceLastFrame;
             if (timeSinceLastHeal>=HEALING_TICK_INTERVAL){
-                System.out.println("HEALING from "+currentHp);
                 heal(healingAmount);
                 timeSinceLastHeal=0;
-                System.out.println("to "+currentHp);
             }
         }
     }

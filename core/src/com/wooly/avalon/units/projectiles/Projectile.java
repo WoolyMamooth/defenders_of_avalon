@@ -12,7 +12,6 @@ public class Projectile extends MovableUnit {
     String damageType;
     Enemy target;
     Coordinate targetLocation;
-    public boolean isAoe; //doesn't change anything just here for good measure
 
     public Projectile(Texture texture, Coordinate position, float movementSpeed, int damage,String damageType, Enemy target) {
         super(texture, position, movementSpeed);
@@ -20,11 +19,6 @@ public class Projectile extends MovableUnit {
         this.target=target;
         this.damageType=damageType;
     }
-    public Projectile(Texture texture, Coordinate position, float movementSpeed, int damage,String damageType, Enemy target,boolean isAoe){
-        this(texture,position,movementSpeed,damage,damageType,target);
-        this.isAoe=isAoe;
-    }
-
     /**
      * Moves towards the goal and returns true if reached.
      * @return

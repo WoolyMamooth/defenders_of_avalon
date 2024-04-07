@@ -61,7 +61,7 @@ public class ArthurPendragon extends Hero{
     private class SummonGuards extends HeroAbility{
         public SummonGuards() {
             super("Summon Guards",fetchTexture("enemies/red_square"),30);
-            setDescription("Arthur summons "+level*2+" guards to help fight his enemies.");
+            setDescription("For every level he has,\nArthur summons 2 guards to help fight his enemies.");
         }
         @Override
         public void activate() {

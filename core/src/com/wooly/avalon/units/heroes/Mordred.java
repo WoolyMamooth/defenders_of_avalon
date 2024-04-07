@@ -17,12 +17,13 @@ public class Mordred extends RangedHero{
     public Mordred(Coordinate position) {
         super(fetchTexture("heroes/mordred/mordred"),
                 position,"Mordred","Mordred, a gifted young mage\nshe uses elemental fire damage to\nmassacre her enemies.",
-                150, 70, 0, 5, 5, 3, 200,
-                "arrow",300, "magic");
+                150, 70, 0, 5, 3, 3, 200,
+                "mordred_fireball",300, "magic");
         baseDamage=damage;
         setAbilities(new HeroAbility[]{
             new AllConsumingFlames(),
-            new Lightspeed()
+            new Lightspeed(),
+            new Cataclysm()
         });
     }
     @Override
@@ -63,6 +64,22 @@ public class Mordred extends RangedHero{
         public void activate() {
             addBuff(new UnitBuff("movementSpeed",movementSpeedModifier, buffDuration));
             addBuff(new UnitBuff("attackSpeed",attackSpeedModifier,buffDuration));
+            super.activate();
+        }
+    }
+    private class Cataclysm extends HeroAbility{
+        public Cataclysm(){
+            super("Cataclysm",fetchTexture("enemies/red_square"),60);
+            setDescription("Mordred sacrifices the power she has gained\nfrom All Consuming Flames to deal pure damage\nequal to her current damage to all enemies on screen.\nHer damage is then reset to it's original value.");
+        }
+        @Override
+        public void activate() {
+            for (Enemy enemy:map.getEnemies()) {
+                projectileSpawner.spawnLocation=enemy.position.add(new Coordinate(0,400));
+                projectileSpawner.spawnProjectile("mordred_cataclysm",enemy,damage,"pure");
+                projectileSpawner.spawnLocation=position;
+            }
+            damage=baseDamage;
             super.activate();
         }
     }

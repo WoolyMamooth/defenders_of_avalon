@@ -174,6 +174,9 @@ public class TDMap {
         for (TowerSpace towerspace:towerSpaces) {
             towerspace.draw(batch);
         }
+        for (TowerSpace towerspace:towerSpaces) {
+            towerspace.drawMenu(batch);
+        }
     }
     public Texture getBackgroundTexture() {
         return backgroundTexture;

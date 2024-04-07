@@ -205,8 +205,6 @@ public class TowerSpace extends Button {
                 batch.end(); //for some reason batch and ShapeRenderer caused conflicts so we temporarily have to end the batch
                 drawTowerRange();
                 batch.begin();
-
-                menu.draw(batch);
             }else if(isActive()){ //draw a small outline for the tower while hovering over it
                 batch.setColor(1,1,1,0.2f);
                 batch.draw(activeTexture,position.x(),position.y(),64,64);
@@ -215,12 +213,14 @@ public class TowerSpace extends Button {
             tower.draw(batch);
         }else{
             super.draw(batch);
-            if (menuVisible) {
-                menu.draw(batch);
-            }
         }
         if (isActive() && Gdx.input.justTouched()) {
             onClick();
+        }
+    }
+    public void drawMenu(SpriteBatch batch){
+        if (menuVisible) {
+            menu.draw(batch);
         }
     }
     private void drawTowerRange(){

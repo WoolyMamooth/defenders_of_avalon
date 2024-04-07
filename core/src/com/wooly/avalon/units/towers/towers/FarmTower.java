@@ -26,6 +26,7 @@ public class FarmTower extends RangedTower {
 
     @Override
     public void update(List<Enemy> enemies, float timeSinceLastFrame) {
+        super.update(enemies,timeSinceLastFrame);
         timeSinceLastAttack+=timeSinceLastFrame;
         if(timeSinceLastAttack>=attackDelay){
             attack();

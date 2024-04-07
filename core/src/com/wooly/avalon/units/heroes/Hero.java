@@ -40,6 +40,8 @@ public abstract class Hero extends AlliedUnit {
     private int pathTraceIndex;
     Texture movementIndicator;
     //---------------
+    /**Needed for abilities that affect units on the map, set with the setter.**/
+    TDMap map;
     ShapeRenderer rangeOutline;
     HeroAbility[] abilities;
     HeroAbilityMenu menu;
@@ -82,7 +84,7 @@ public abstract class Hero extends AlliedUnit {
                 die();
                 return;
             }
-            if (moving) { //TODO should only move when map is clicked, not menu
+            if (moving) {
                 if (target != null) {
                     target.setTarget(null);
                     target = null;
@@ -354,5 +356,8 @@ public abstract class Hero extends AlliedUnit {
                 abilityInfos[i].drawCheckClick(batch);
             }
         }
+    }
+    public void setMap(TDMap map) {
+        this.map = map;
     }
 }

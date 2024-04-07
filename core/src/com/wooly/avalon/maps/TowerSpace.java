@@ -247,6 +247,11 @@ public class TowerSpace extends Button {
         if(tower==null) return;
         tower.update(enemies,timeSinceLastFrame);
     }
+
+    public Tower getTower() {
+        return tower;
+    }
+
     @Override
     public void dispose(){
         super.dispose();

@@ -16,7 +16,7 @@ public class Mordred extends RangedHero{
      */
     public Mordred(Coordinate position) {
         super(fetchTexture("heroes/mordred/mordred"),
-                position,"Mordred","description here",
+                position,"Mordred","Mordred, a gifted young mage\nshe uses elemental fire damage to\nmassacre her enemies.",
                 150, 70, 0, 5, 5, 3, 200,
                 "arrow",300, "magic");
         baseDamage=damage;
@@ -27,10 +27,8 @@ public class Mordred extends RangedHero{
     }
     @Override
     public void update(List<Enemy> enemies, float timeSinceLastFrame) {
-        updateExistingProjectiles();
-        projectileSpawner.spawnLocation=position;
-        if(target!=null && target.shouldBeDead()) abilities[0].activate(); //if the target died get the damage buff from the passive
         super.update(enemies, timeSinceLastFrame);
+        if(target!=null && target.shouldBeDead()) abilities[0].activate(); //if the target died get the damage buff from the passive
     }
 
     @Override

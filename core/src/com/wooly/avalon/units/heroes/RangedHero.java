@@ -3,6 +3,7 @@ package com.wooly.avalon.units.heroes;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.units.enemies.Enemy;
 import com.wooly.avalon.units.projectiles.Projectile;
 import com.wooly.avalon.units.projectiles.ProjectileSpawner;
 
@@ -36,6 +37,14 @@ public abstract class RangedHero extends Hero{
     public void attack() {
         projectiles.add(projectileSpawner.spawnProjectile(projectileName,target,damage,damageType));
     }
+
+    @Override
+    public void update(List<Enemy> enemies, float timeSinceLastFrame) {
+        super.update(enemies, timeSinceLastFrame);
+        updateExistingProjectiles();
+        projectileSpawner.spawnLocation=position;
+    }
+
     protected void updateExistingProjectiles(){
         if(projectiles==null) return;
         List<Projectile> shouldBeDeleted=new ArrayList<>();

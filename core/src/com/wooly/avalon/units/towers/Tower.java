@@ -5,8 +5,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.units.Attacker;
 import com.wooly.avalon.units.DrawableUnit;
+import com.wooly.avalon.units.UnitBuff;
 import com.wooly.avalon.units.enemies.Enemy;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,6 +20,7 @@ public abstract class Tower extends DrawableUnit implements Attacker {
     public TowerUpgrade[] upgrades;
     public String name; //only needed in shop
     public String description; //only needed in shop
+    private List<UnitBuff> buffs;
 
     public Tower(Texture texture, Coordinate position,int towerSpawnID,float attackDelay,float range,TowerUpgrade[] upgrades) {
         super(texture, position);
@@ -25,11 +28,14 @@ public abstract class Tower extends DrawableUnit implements Attacker {
         this.range=range;
         this.attackDelay=attackDelay;
         this.upgrades=upgrades;
+        this.buffs=new ArrayList<>();
         name="name";
         description="description";
     }
     public abstract void attack();
-    public abstract void update(List<Enemy> enemies,float timeSinceLastFrame);
+    public void update(List<Enemy> enemies,float timeSinceLastFrame){
+        updateBuffs(timeSinceLastFrame);
+    }
     @Override
     public void draw(SpriteBatch batch){
         super.draw(batch);
@@ -71,6 +77,7 @@ public abstract class Tower extends DrawableUnit implements Attacker {
                 this.range+=u.getIncrease();
                 break;
             case "atkSpeed":
+            case "attackSpeed":
             case "summonSpeed":
                 //10 attackspeed = -0.1f delay between attacks
                 this.attackDelay-=u.getIncrease()/100f;
@@ -78,6 +85,40 @@ public abstract class Tower extends DrawableUnit implements Attacker {
             default:
                 System.out.println("No such upgrade");
                 break;
+        }
+    }
+    public void addBuff(UnitBuff buff){
+        this.buffs.add(buff);
+        applyBuff(buff,false);
+    }
+    public void removeBuff(UnitBuff buff){
+        applyBuff(buff,true);
+        this.buffs.remove(buff);
+    }
+    protected void applyBuff(UnitBuff buff,boolean removeMode) {
+        float modifier = buff.getModifier();
+        if (removeMode) modifier = -modifier;
+        switch (buff.stat) {
+            case "atkSpeed":
+            case "attackSpeed":
+            case "attackDelay":
+                attackDelay -= modifier/100f;
+                System.out.println(attackDelay);
+                break;
+            default:
+                System.out.println("No such buff for towers: "+buff.stat);
+        }
+    }
+    public void updateBuffs(float timeSinceLastFrame){
+        //update the buffs and remove the ones that have expired
+        List<UnitBuff> shouldBeRemoved=new ArrayList<>();
+        for (UnitBuff buff:buffs) {
+            if (buff.update(timeSinceLastFrame)){
+                shouldBeRemoved.add(buff);
+            }
+        }
+        for (UnitBuff buff:shouldBeRemoved) {
+            removeBuff(buff);
         }
     }
     public int getTowerSpawnID() {

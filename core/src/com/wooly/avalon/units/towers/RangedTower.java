@@ -33,6 +33,7 @@ public abstract class RangedTower extends Tower{
         projectiles.add(projectileSpawner.spawnProjectile(projectileName,target,damage,damageType));
     }
     public void update(List<Enemy> enemies,float timeSinceLastFrame){
+        super.update(enemies,timeSinceLastFrame);
         updateExistingProjectiles();
 
         //attack if possible

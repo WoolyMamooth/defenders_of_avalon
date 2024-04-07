@@ -3,6 +3,7 @@ package com.wooly.avalon.units.towers;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.units.UnitBuff;
 import com.wooly.avalon.units.enemies.Enemy;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public abstract class SummonerTower extends Tower{
      */
     @Override
     public void update(List<Enemy> enemies, float timeSinceLastFrame) {
+        super.update(enemies,timeSinceLastFrame);
         updateExistingSummons(enemies,timeSinceLastFrame);
 
         if(summons.size()<maxSummons){
@@ -100,6 +102,22 @@ public abstract class SummonerTower extends Tower{
             default:
                 super.applyUpgrade(u);
                 break;
+        }
+    }
+    protected void applyBuff(UnitBuff buff, boolean removeMode) {
+        float modifier = buff.getModifier();
+        if (removeMode) modifier = -modifier;
+        switch (buff.stat) {
+            //pass it on to the units
+            case "armor":
+            case "magicResistance":
+            case "healing":
+                for (Summon summon:summons){
+                    summon.addBuff(buff);
+                }
+                break;
+            default:
+                super.applyBuff(buff,removeMode);
         }
     }
     @Override

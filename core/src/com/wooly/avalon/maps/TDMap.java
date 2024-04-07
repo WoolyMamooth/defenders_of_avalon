@@ -9,6 +9,7 @@ import com.wooly.avalon.units.heroes.Hero;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class TDMap {
     int mapID;
@@ -43,13 +44,14 @@ public class TDMap {
         this.towerSpaces=towerSpaces;
 
         playerHP=100;
-        playerGold=100;
+        playerGold=10000;
     }
     public TDMap(int mapID, Texture backgroundTexture,Texture frontgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces, Hero hero){
         this(mapID, backgroundTexture,frontgroundTexture, path, enemiesToSpawn,enemiesSpawnDelay,towerSpaces);
         this.hero=hero;
-        hero.mapPath=this.path;
         this.hasHero=true;
+        this.hero.setMap(this);
+        this.hero.mapPath=this.path;
     }
 
     /**
@@ -195,6 +197,12 @@ public class TDMap {
     }
     public Path getPath() {
         return path;
+    }
+    public List<Enemy> getEnemies() {
+        return enemies;
+    }
+    public TowerSpace[] getTowerSpaces() {
+        return towerSpaces;
     }
 
     /**

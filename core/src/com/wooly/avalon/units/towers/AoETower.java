@@ -30,6 +30,7 @@ public abstract class AoETower extends RangedTower{
     }
     @Override
     public void update(List<Enemy> enemies, float timeSinceLastFrame){
+        super.update(enemies,timeSinceLastFrame);
         updateExistingProjectiles(enemies);
 
         //attack if possible

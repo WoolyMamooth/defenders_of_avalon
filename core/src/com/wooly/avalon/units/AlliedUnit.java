@@ -2,8 +2,6 @@ package com.wooly.avalon.units;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.wooly.avalon.maps.Coordinate;
-import com.wooly.avalon.units.Attacker;
-import com.wooly.avalon.units.DamagableUnit;
 import com.wooly.avalon.units.enemies.Enemy;
 
 import java.util.List;

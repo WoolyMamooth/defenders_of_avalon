@@ -24,6 +24,7 @@ public class MovableUnit extends DrawableUnit{
             super.dispose();
             return;
         }
+        if(movementSpeed<=0) return;
 
         //turn the unit around if needed
         if(!facingLeft && goal.x()<position.x()) turnAround();

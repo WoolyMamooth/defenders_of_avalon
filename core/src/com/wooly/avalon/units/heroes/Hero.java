@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.maps.Path;
 import com.wooly.avalon.maps.TDMap;
-import com.wooly.avalon.screens.TextBubble;
+import com.wooly.avalon.screens.other.TextBubble;
 import com.wooly.avalon.screens.buttons.Button;
 import com.wooly.avalon.units.enemies.Enemy;
 import com.wooly.avalon.units.AlliedUnit;

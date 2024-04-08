@@ -6,10 +6,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.screens.other.UIElement;
 
-public abstract class Clickable {
-    //
-    protected Coordinate position;
+public abstract class Clickable extends UIElement {
     public float  width, height;
 
     public Clickable(Coordinate position){
@@ -26,11 +25,6 @@ public abstract class Clickable {
     }
 
     /**
-     * Draws the clickable.
-     * If you want to check if it has been clicked use drawCheckClick() instead;
-     */
-    public abstract void draw(SpriteBatch batch);
-    /**
      * Draws the clickable and also checks if it has been clicked.
     */
     public void drawCheckClick(SpriteBatch batch) {
@@ -41,10 +35,4 @@ public abstract class Clickable {
     }
     public abstract void onClick();
     public abstract void dispose();
-    public Coordinate getPosition() {
-        return position;
-    }
-    public void setPosition(Coordinate position) {
-        this.position = position;
-    }
 }

@@ -17,6 +17,7 @@ import com.wooly.avalon.TDGame;
 import com.wooly.avalon.screens.GameScreen;
 import com.wooly.avalon.screens.buttons.Button;
 import com.wooly.avalon.screens.buttons.CustomButton;
+import com.wooly.avalon.screens.other.VolumeBox;
 
 public class IngameMenu {
     TDGame game;
@@ -124,6 +125,7 @@ public class IngameMenu {
     private class PauseMenu{
         RetryButton retryButton;
         ExitGameButton menuButton;
+        VolumeBox volumeBox;
         float buttonWidth=128,buttonHeight=64;
         int fontSize=35;
 
@@ -135,6 +137,7 @@ public class IngameMenu {
 
             retryButton=new RetryButton(SCREEN_CENTER.add(new Coordinate(centerOffset,100)));
             menuButton=new ExitGameButton(SCREEN_CENTER.add(new Coordinate(centerOffset,-50)));
+            volumeBox=new VolumeBox(SCREEN_CENTER.add(new Coordinate(centerOffset,-120)));
         }
 
         public void draw(SpriteBatch batch){
@@ -144,6 +147,7 @@ public class IngameMenu {
 
             retryButton.drawCheckClick(batch);
             menuButton.drawCheckClick(batch);
+            volumeBox.draw(batch);
         }
         public void dispose(){
             retryButton.dispose();

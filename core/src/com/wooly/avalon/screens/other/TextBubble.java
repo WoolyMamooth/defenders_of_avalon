@@ -1,4 +1,4 @@
-package com.wooly.avalon.screens;
+package com.wooly.avalon.screens.other;
 
 import static com.wooly.avalon.TDGame.fetchFont;
 import static com.wooly.avalon.TDGame.fetchTexture;
@@ -10,10 +10,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.maps.Coordinate;
 
-public class TextBubble {
+public class TextBubble extends UIElement{
     BitmapFont font;
     GlyphLayout layout;
-    Coordinate position;
     Color textColor;
     Color backgroundColor=null;
     Texture backgroundTexture;
@@ -46,6 +45,7 @@ public class TextBubble {
         backgroundWidth= layout.width+20; //+20 padding
         backgroundHeight= layout.height+20;
     }
+    @Override
     public void draw(SpriteBatch batch){
         if(hasBackgound){
             batch.setColor(backgroundColor);

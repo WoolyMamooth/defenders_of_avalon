@@ -31,6 +31,7 @@ public class TDGame extends Game {
 
 	//the player variable stores all data of the player that will be saved
 	public static Player player;
+	public static MusicHandler musicHandler;
 	public static class CustomRandom{
 		static Random r=new Random();
 
@@ -84,6 +85,8 @@ public class TDGame extends Game {
 
 		player=new Player();
 		System.out.println("PLAYER LOADED: "+player);
+
+		musicHandler=new MusicHandler();
 
 		//sets the first screen, which is the main menu
 		this.setScreen(new MainMenuScreen(this));

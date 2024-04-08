@@ -3,10 +3,10 @@ package com.wooly.avalon.units;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.screens.other.UIElement;
 
-public class DrawableUnit {
+public class DrawableUnit extends UIElement {
     public Texture texture;
-    public Coordinate position;
     protected float width;
     protected float height;
     protected boolean facingLeft=false; //false=facing right, true=facing left
@@ -47,19 +47,11 @@ public class DrawableUnit {
         this.texture = texture;
     }
 
-    public Coordinate getPosition() {
-        return position;
-    }
-
     /**
      * @return a coordinate which is visually in the middle of the texture.
      */
     public Coordinate textureCenterPosition(){
         return position.add(new Coordinate(texture.getWidth()/2f, texture.getHeight()/2f));
-    }
-
-    public void setPosition(Coordinate position) {
-        this.position = position;
     }
 
     public float getWidth() {

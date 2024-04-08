@@ -19,6 +19,7 @@ import com.wooly.avalon.screens.buttons.Button;
 import com.wooly.avalon.screens.buttons.Clickable;
 import com.wooly.avalon.screens.buttons.CustomButton;
 import com.wooly.avalon.screens.buttons.LoadScreenButton;
+import com.wooly.avalon.screens.other.TextBubble;
 import com.wooly.avalon.units.heroes.ArthurPendragon;
 import com.wooly.avalon.units.heroes.Hero;
 import com.wooly.avalon.units.heroes.HeroAbility;

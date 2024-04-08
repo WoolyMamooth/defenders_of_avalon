@@ -205,7 +205,7 @@ public class TowerSpace extends Button {
                 batch.end(); //for some reason batch and ShapeRenderer caused conflicts so we temporarily have to end the batch
                 drawTowerRange();
                 batch.begin();
-            }else if(isActive()){ //draw a small outline for the tower while hovering over it
+            }else if(gameNotPaused() && isActive()){ //draw a small outline for the tower while hovering over it
                 batch.setColor(1,1,1,0.2f);
                 batch.draw(activeTexture,position.x(),position.y(),64,64);
                 batch.setColor(Color.WHITE);
@@ -214,7 +214,7 @@ public class TowerSpace extends Button {
         }else{
             super.draw(batch);
         }
-        if (isActive() && Gdx.input.justTouched()) {
+        if (gameNotPaused() && isActive() && Gdx.input.justTouched()) {
             onClick();
         }
     }

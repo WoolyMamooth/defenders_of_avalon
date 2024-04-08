@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
+import com.wooly.avalon.screens.GameScreen;
 import com.wooly.avalon.screens.other.UIElement;
 
 public abstract class Clickable extends UIElement {
@@ -32,6 +33,9 @@ public abstract class Clickable extends UIElement {
         if(isActive() && Gdx.input.justTouched()){
             onClick();
         }
+    }
+    public boolean gameNotPaused(){
+        return !GameScreen.paused;
     }
     public abstract void onClick();
     public abstract void dispose();

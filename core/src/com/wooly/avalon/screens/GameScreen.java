@@ -19,7 +19,7 @@ public class GameScreen implements Screen {
     Texture backgroundTexture; //background of the map
     Texture frontgroundTexture;
     IngameMenu menu; // contains pause button, player HP etc
-    boolean paused=false;
+    public static boolean paused=false;
     float gametime=0; //keeps track of how much time has passed since the start of the com.wooly.avalon
 
     /**
@@ -50,7 +50,7 @@ public class GameScreen implements Screen {
         int gameState = 0;//1 if player lost, 2 if player won, 0 otherwise
 
         //temporary for checking coordinates:
-        if(Gdx.input.justTouched()){System.out.println("CLICKED AT "+trueInput());}
+        //if(Gdx.input.justTouched()){System.out.println("CLICKED AT "+trueInput());}
 
         //if the game is paused then we skip updating the map
         if(!paused) {
@@ -91,15 +91,18 @@ public class GameScreen implements Screen {
 
         //check state of the game
         if (gameState==1) { // exit if player lost the game
+            paused=false;
             this.dispose();
             game.setScreen(new LostScreen(game));
         }else if(gameState==2){ // player won the game
             //we give the player an amount of stardust based on the difficulty they played at
+            paused=false;
             int difficultyExtraStardust=MapLoader.GAME_DIFFICULTY*10;
             player.gainStardust(80+difficultyExtraStardust);
             this.dispose();
             game.setScreen(new MainMenuScreen(game));
         }else if(gameState==3){ // player exited to menu
+            paused=false;
             this.dispose();
             game.setScreen(new MainMenuScreen(game));
         }

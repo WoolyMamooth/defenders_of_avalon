@@ -242,8 +242,8 @@ public abstract class Hero extends AlliedUnit {
         }
         @Override
         public void draw(SpriteBatch batch) {
-            if(!onHero) {
-                batch.draw(inactiveTexture,position.x(),position.y(),width,height);
+            if (!onHero) {
+                batch.draw(inactiveTexture, position.x(), position.y(), width, height);
             }
             if (isActive()) {
                 batch.setColor(1, 1, 1, 0.2f);
@@ -253,8 +253,9 @@ public abstract class Hero extends AlliedUnit {
         }
         @Override
         public void onClick() {
-            selected=!selected;
-            System.out.println("Hero "+(selected?"selected":"not selected"));
+            if(gameNotPaused()) {
+                selected = !selected;
+            }
         }
     }
     protected class LevelUpButton extends Button{
@@ -271,7 +272,7 @@ public abstract class Hero extends AlliedUnit {
         @Override
         public void onClick() {
             if(level>=maxLevel) return;
-            if(TDMap.attemptGoldSpend(cost)){
+            if(gameNotPaused() && TDMap.attemptGoldSpend(cost)){
                 level++;
                 healingAmount++;
             }
@@ -304,7 +305,7 @@ public abstract class Hero extends AlliedUnit {
 
             @Override
             public void onClick() {
-                if(!ability.isPassive && !ability.onCooldown()) ability.activate();
+                if(!ability.isPassive && !ability.onCooldown() && gameNotPaused()) ability.activate();
             }
         }
         protected class HeroAbilityInfo extends Button{

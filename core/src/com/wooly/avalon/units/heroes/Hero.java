@@ -316,7 +316,7 @@ public abstract class Hero extends AlliedUnit {
              * @param position
              */
             public HeroAbilityInfo(Coordinate position, String text) {
-                super(position, fetchTexture("white_square"), fetchTexture("enemies/red_square"));
+                super(position, fetchTexture("white_square"), fetchTexture("heroes/ability_info"));
                 textBubble=new TextBubble(SCREEN_BOT_LEFT,text,20,Color.WHITE,600,new Color(0,0,0,0.5f));
             }
             @Override
@@ -373,7 +373,7 @@ public abstract class Hero extends AlliedUnit {
                     abilityButtons[i].drawCheckClick(batch);
                 }else{
                     //if not unlocked
-                    abilityButtons[i].draw(batch);
+                    //abilityButtons[i].draw(batch);
                     Coordinate pos=abilityButtons[i].getPosition();
                     batch.draw(notUnlockedTexture,pos.x(),pos.y(),iconWidth,iconHeight);
                 }

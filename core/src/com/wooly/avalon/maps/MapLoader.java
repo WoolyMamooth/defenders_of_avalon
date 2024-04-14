@@ -3,6 +3,7 @@ package com.wooly.avalon.maps;
 import static com.wooly.avalon.TDGame.SCREEN_CENTER;
 import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
 import static com.wooly.avalon.TDGame.TEXTURE_EXTENSION;
+import static com.wooly.avalon.TDGame.place;
 import static com.wooly.avalon.TDGame.player;
 
 import com.badlogic.gdx.Gdx;
@@ -105,7 +106,7 @@ public class MapLoader {
         String[] yData=mapdata[mapdataLines.get("pathY")].split(mapdataDelimiter);
         Coordinate[] coords=new Coordinate[xData.length];
         for (int i = 0; i < xData.length; i++) {
-            coords[i]=new Coordinate(Float.parseFloat(xData[i]),SCREEN_HEIGHT-Float.parseFloat(yData[i]));
+            coords[i]=place(Float.parseFloat(xData[i]),SCREEN_HEIGHT-Float.parseFloat(yData[i]));
         }
         Path path=new Path(coords);
         System.out.println("PATH:"+path);
@@ -155,7 +156,7 @@ public class MapLoader {
         String[] yData=mapdata[mapdataLines.get("towerY")].split(mapdataDelimiter);
         TowerSpace[] spaces= new TowerSpace[xData.length];
         for (int i = 0; i < xData.length; i++) {
-            spaces[i]=towerSpaceByCoordinate(new Coordinate(Float.parseFloat(xData[i]),SCREEN_HEIGHT-Float.parseFloat(yData[i])));
+            spaces[i]=towerSpaceByCoordinate(place(Float.parseFloat(xData[i]),SCREEN_HEIGHT-Float.parseFloat(yData[i])));
         }
         return spaces;
     }

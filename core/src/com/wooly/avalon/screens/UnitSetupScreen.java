@@ -313,6 +313,10 @@ public class UnitSetupScreen extends MenuScreen{
                 super(position, fetchTexture("white_square"), fetchTexture("enemies/red_square"));
                 abilityDescription=text;
             }
+            public HeroInfoButton(Coordinate position, String text,Texture texture) {
+                super(position, texture, texture);
+                abilityDescription=text;
+            }
             public HeroInfoButton(Coordinate position, String text,float width, float height,Texture texture) {
                 super(position, texture, texture);
                 this.width=width;
@@ -364,7 +368,7 @@ public class UnitSetupScreen extends MenuScreen{
             int offsetX=abilities[0].icon.getWidth();
             int offsetY=-abilities[0].icon.getHeight()*2;
             for (int i = 0; i < abilitynum; i++) {
-                abilityInfoButtons[i]=new HeroInfoButton(hero.position.add(new Coordinate(offsetX*i,offsetY)),abilities[i].getDescription());
+                abilityInfoButtons[i]=new HeroInfoButton(hero.position.add(new Coordinate(offsetX*i,offsetY)),abilities[i].getDescription(),abilities[i].icon);
             }
 
 

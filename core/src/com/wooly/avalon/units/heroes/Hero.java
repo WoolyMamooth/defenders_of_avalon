@@ -186,7 +186,7 @@ public abstract class Hero extends AlliedUnit {
 
             selected=false;
             Coordinate input=trueInput();
-            input=place(input.x(), SCREEN_HEIGHT-input.y());
+            input=new Coordinate(input.x(), SCREEN_HEIGHT-input.y());
             int fromIndex=mapPath.closestTo(position);
             int toIndex=mapPath.closestTo(input);
             if(toIndex>fromIndex) {

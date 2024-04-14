@@ -25,7 +25,7 @@ public class MapLoader {
     //responsible for loading in the map data
     //still needs a lot of work
     TDGame game;
-    public static String MAPDATA_PATH ="mapdata/map"; //add mapID and .tsv to the end
+    public static String MAPDATA_PATH ="map_assets/mapdata/map"; //add mapID and .tsv to the end
     /**
      * Keeps track of what data is in which line of the data file.
      */
@@ -61,11 +61,11 @@ public class MapLoader {
 
     public TDMap getMap(int mapID){
         System.out.println("MAPLOADER LOADING");
-        FileHandle fileHandle=Gdx.files.local(MAPDATA_PATH +mapID+".tsv");
+        FileHandle fileHandle=Gdx.files.internal(MAPDATA_PATH +mapID+".tsv");
         mapdata=fileHandle.readString().split("\n");
         System.out.println(Arrays.toString(mapdata));
 
-        Texture backgroundTexture= loadBackgroundTexture(mapID); //loads texture for background
+        Texture backgroundTexture=loadBackgroundTexture(mapID); //loads texture for background
         Texture frontgroundTexture=loadFrontgroundTexture(mapID);
         Path path = loadPath(); //loads path that enemies will follow
         String[] enemiesToSpawn=loadEnemiesToSpawn(); //loads enemies that will be spawned

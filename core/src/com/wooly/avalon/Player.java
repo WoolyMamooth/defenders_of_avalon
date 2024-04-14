@@ -57,7 +57,7 @@ public class Player {
             System.out.println("NO LOCAL STORAGE AVAILABLE");
             return;
         }
-        String dataPath=Gdx.files.getLocalStoragePath()+"/"+dataFileName;
+        String dataPath=Gdx.files.getLocalStoragePath()+dataFileName;
         System.out.println("LOADING Player data from "+dataPath);
 
         //loads player info into memory

@@ -24,7 +24,7 @@ public class Merlin extends RangedHero{
     private class LikeTheWind extends HeroAbility{
         float duration=10;
         public LikeTheWind(){
-            super("Like The Wind",fetchTexture("enemies/red_square"),10);
+            super("Like The Wind",fetchTexture("heroes/merlin/ability1"),10);
             setDescription("Merlin calls on the power of the wind\nto grant all towers an attack speed\nboost for"+duration+" seconds.");
         }
 
@@ -46,7 +46,7 @@ public class Merlin extends RangedHero{
         int resistance=3;
         int healing=5;
         public LikeTheEarth(){
-            super("Like The Earth",fetchTexture("enemies/red_square"),20);
+            super("Like The Earth",fetchTexture("heroes/merlin/ability2"),20);
             setDescription("Merlin calls on the power\nof the earth to grant all allied units bonus armor,\nmagic resistance and healing for"+duration+" seconds.");
         }
         @Override
@@ -74,7 +74,7 @@ public class Merlin extends RangedHero{
         float duration=6;
         float modifier=-0.5f;
         public LikeTheSea(){
-            super("Like The Sea",fetchTexture("enemies/red_square"),10);
+            super("Like The Sea",fetchTexture("heroes/merlin/ability3"),10);
             setDescription("Merlin calls on the power\nof the sea to slow down every enemy on screen.\nLasts for "+duration+" seconds.");
         }
         @Override

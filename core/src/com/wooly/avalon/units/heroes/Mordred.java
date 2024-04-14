@@ -41,7 +41,7 @@ public class Mordred extends RangedHero{
     private class AllConsumingFlames extends HeroAbility{
         int damageIncreasePerStack;
         public AllConsumingFlames(){
-            super("All Consuming Flames",fetchTexture("enemies/red_square"));
+            super("All Consuming Flames",fetchTexture("heroes/mordred/ability1"));
             damageIncreasePerStack=1;
             setDescription(" Mordred gains power from the enemies she fells.\n After every unit killed she gets "
                     +damageIncreasePerStack+" damage.\n Stacks infinitely, but resets on death.");
@@ -56,7 +56,7 @@ public class Mordred extends RangedHero{
         int movementSpeedModifier=200;
         int attackSpeedModifier=250;
         public Lightspeed(){
-            super("Lightspeed",fetchTexture("enemies/red_square"),20);
+            super("Lightspeed",fetchTexture("heroes/mordred/ability2"),20);
             setDescription(" Mordred channels the power of fire to accelerate herself,\n for "+buffDuration+" seconds she gains "+
                     movementSpeedModifier+" movement speed\n and "+attackSpeedModifier+" attack speed.");
         }
@@ -69,7 +69,7 @@ public class Mordred extends RangedHero{
     }
     private class Cataclysm extends HeroAbility{
         public Cataclysm(){
-            super("Cataclysm",fetchTexture("enemies/red_square"),60);
+            super("Cataclysm",fetchTexture("heroes/mordred/ability3"),60);
             setDescription("Mordred sacrifices the power she has gained\nfrom All Consuming Flames to deal pure damage\nequal to her current damage to all enemies on screen.\nHer damage is then reset to it's original value.");
         }
         @Override

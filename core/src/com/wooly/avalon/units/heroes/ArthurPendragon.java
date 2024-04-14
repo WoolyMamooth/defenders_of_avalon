@@ -60,7 +60,7 @@ public class ArthurPendragon extends Hero{
     }
     private class SummonGuards extends HeroAbility{
         public SummonGuards() {
-            super("Summon Guards",fetchTexture("enemies/red_square"),30);
+            super("For the King",fetchTexture("heroes/arthur/ability1"),30);
             setDescription("For every level he has,\nArthur summons 2 guards to help fight his enemies.");
         }
         @Override
@@ -73,7 +73,7 @@ public class ArthurPendragon extends Hero{
     }
     private class BuffGuards extends HeroAbility{
         public BuffGuards() {
-            super("Buff Guards", fetchTexture("enemies/red_square"),15);
+            super("Buff Guards", fetchTexture("heroes/arthur/ability2"),15);
             setDescription("Arthur uses his power to heal his guards\nand to grant them bonus armor.");
         }
         @Override
@@ -89,7 +89,7 @@ public class ArthurPendragon extends Hero{
     private class HealSelf extends HeroAbility{
         private int amount=100;
         public HealSelf() {
-            super("Heal Self",fetchTexture("enemies/red_square"),40);
+            super("Heal Self",fetchTexture("heroes/arthur/ability3"),40);
             setDescription("Arthur channels his power to heal himself for "+amount+" HP.");
         }
         @Override

@@ -34,7 +34,7 @@ public class Player {
             loadData();
         }catch (GdxRuntimeException exception){
             //this happens on first install because the file hasn't been created yet on specific device
-            fileHandle.writeString("1000\t0",false); //stardust, difficulty
+            fileHandle.writeString("1000\t0\t5",false); //stardust, difficulty, music volume
             fileHandle.writeString("\nArthur",true); //base unlocked hero
             for (int i = 1; i < existingHeroes.length; i++) { //make the rest unlockable
                 fileHandle.writeString("\tNone",true);
@@ -62,8 +62,11 @@ public class Player {
 
         //loads player info into memory
         String[] datafile =fileHandle.readString().split("\n");
+
         stardust=Integer.parseInt(datafile[0].split("\t")[0]);
         MapLoader.GAME_DIFFICULTY=Integer.parseInt(datafile[0].split("\t")[1]);
+        TDGame.musicHandler.setVolume(Integer.parseInt(datafile[0].split("\t")[2]));
+
         unlockedHeroes=datafile[1].split("\t");
         unlockedTowers=datafile[2].split("\t");
         equippedHero=datafile[3].split("\t")[0];
@@ -73,7 +76,7 @@ public class Player {
      * Writes to playerdata.txt to save unlocked towers, heroes and stardust.
      */
     public void saveData(){
-        fileHandle.writeString(stardust +"\t"+ MapLoader.GAME_DIFFICULTY,false); //delete all info
+        fileHandle.writeString(stardust +"\t"+ MapLoader.GAME_DIFFICULTY+"\t"+TDGame.musicHandler.getVolume(),false); //delete all info
         fileHandle.writeString("\n",true);
         for (String hero:unlockedHeroes) {
             fileHandle.writeString(hero,true);

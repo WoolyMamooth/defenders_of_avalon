@@ -83,10 +83,10 @@ public class TDGame extends Game {
 				"\nheightOffset: "+heightOffset+
 				"\nBOT_L: "+SCREEN_BOT_LEFT);
 
+		musicHandler=new MusicHandler();
 		player=new Player();
 		System.out.println("PLAYER LOADED: "+player);
 
-		musicHandler=new MusicHandler();
 
 		//sets the first screen, which is the main menu
 		this.setScreen(new MainMenuScreen(this));

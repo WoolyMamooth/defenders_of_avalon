@@ -51,7 +51,9 @@ public class MusicHandler {
 
     public void setVolume(int volume) {
         this.volume = volume;
-        currentTrack.setVolume(volume/10f);
+        if(currentTrack!=null) {
+            currentTrack.setVolume(volume / 10f);
+        }
     }
 
     public int getVolume() {

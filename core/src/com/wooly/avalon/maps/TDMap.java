@@ -9,7 +9,6 @@ import com.wooly.avalon.units.heroes.Hero;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class TDMap {
     int mapID;
@@ -17,6 +16,7 @@ public class TDMap {
     Texture frontgroundTexture;
     Path path; // defines the path enemies take
     String[] enemiesToSpawn; // defines the enemies that will be spawned
+    int enemiesLeftCounter; //needed to prevent a bug, keeps track of how many enemies have been spawned from the originals
     int enemiesToSpawnCounter=0; // keeps track of which enemy should be spawned next
     int enemyCounter=0; //determines the spawnID of enemies
     List<Enemy> extraEnemies; //used for enemies that spawn other enemies
@@ -38,6 +38,7 @@ public class TDMap {
         this.path=path;
         this.enemiesToSpawn=enemiesToSpawn;
         this.enemiesSpawnDelay=enemiesSpawnDelay;
+        this.enemiesLeftCounter=enemiesToSpawn.length;
         this.spawner=new EnemySpawner(path.getCoordinate(0));
         this.enemies=new ArrayList<>();
         this.extraEnemies=new ArrayList<>();
@@ -58,9 +59,9 @@ public class TDMap {
      * Checks if a new enemy should be spawned and spawns them if they should, returns true if an enemy was spawned
      */
     public boolean trySpawn(float timeSinceLastFrame){
-        if(enemyCounter>=enemiesToSpawn.length) return false; //return if they have already all been spawned
+        if(enemiesLeftCounter<=0) return false; //return if they have already all been spawned
         timeSinceLastSpawn+=timeSinceLastFrame;
-        if(timeSinceLastSpawn>=enemiesSpawnDelay[enemyCounter]){
+        if(timeSinceLastSpawn>=enemiesSpawnDelay[enemiesToSpawnCounter]){
             timeSinceLastSpawn=0;
             spawnNextEnemy();
             return true;
@@ -76,6 +77,7 @@ public class TDMap {
         enemies.add(enemy);
         enemiesToSpawnCounter++;
         enemyCounter++;
+        enemiesLeftCounter--;
     }
 
     /**
@@ -105,7 +107,7 @@ public class TDMap {
         if(playerHP<=0){
             System.out.println("PLAYER LOST THE GAME");
             return 1;
-        }else if(enemyCounter>=enemiesToSpawn.length && enemies.isEmpty()){
+        }else if(enemiesLeftCounter<=0 && enemies.isEmpty()){
             System.out.println("PLAYER WON THE GAME");
             return 2;
         }

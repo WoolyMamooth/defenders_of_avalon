@@ -40,7 +40,7 @@ public class GameScreen implements Screen {
         this.backgroundTexture = this.map.getBackgroundTexture();
         this.frontgroundTexture=this.map.getFrontgroundTexture();
 
-        TDGame.musicHandler.playMusic("menu1");
+        TDGame.musicHandler.playMusic("ingame1");
     }
 
     @Override

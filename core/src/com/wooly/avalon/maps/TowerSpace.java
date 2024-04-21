@@ -85,19 +85,20 @@ public class TowerSpace extends Button {
         private class TowerUpradeButton extends CustomButton{
             TowerUpgrade u;
             public TowerUpradeButton(Coordinate position, TowerUpgrade upgrade) {
-                super(position, upgrade.getIncrease()+" "+upgrade.stat+":"+upgrade.getLevel()+"/"+upgrade.getMaxLevel()+" - "+ upgrade.getCost(),
+                super(position, upgrade.stat+":"+upgrade.getLevel()+"/"+upgrade.getMaxLevel()+" - "+ upgrade.getCost()+" g",
                         buttonFontsize,Color.WHITE, Color.BLACK,buttonWidth,buttonHeight);
                 this.u =upgrade;
             }
             @Override
             public void onClick() {
-                System.out.println("Upgrade button clicked: "+ u.stat+" to level "+(u.getLevel()+1));
+                //System.out.println("Upgrade button clicked: "+ u.stat+" to level "+(u.getLevel()+1));
                 if(!u.isMaxed()) {
                     upgrade(u.stat);
                     if (u.isMaxed()) {
                         this.backgroundColor = Color.RED;
                         this.text = u.stat + ":" + u.getLevel() + "/" + u.getMaxLevel();
-                    }else this.text = u.getIncrease() + " " + u.stat + ":" + u.getLevel() + "/" + u.getMaxLevel() + " - " + u.getCost();
+                        setCorrectWidth();
+                    }else this.text = u.stat + ":" + u.getLevel() + "/" + u.getMaxLevel() + " - " + u.getCost() + " g";
                 }
             }
         }

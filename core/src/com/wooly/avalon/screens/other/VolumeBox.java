@@ -31,11 +31,12 @@ public class VolumeBox extends UIElement{
         }
     }
     public VolumeBox(Coordinate position) {
-        this.position=position;
         volumeIndicatorLength=TDGame.musicHandler.getNumberOfIncrements();
-
         whiteSquare=TDGame.fetchTexture("white_square");
         volumeSegmentWidth=whiteSquare.getWidth();
+
+        //center position on the screen
+        this.position=position.subtract(new Coordinate((elementGap+volumeSegmentWidth)*(volumeIndicatorLength)*0.5f,0));
 
         volumeDownButton= new VolumeDownButton(this.position);
         volumeUpButton= new VolumeUpButton(this.position.add(

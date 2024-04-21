@@ -35,7 +35,8 @@ public abstract class CustomButton extends Clickable{
         //based on if the button is active or not so honestly it's easier to just leave this class be
         //changing it wouldn't simplify anything.
         this.height=height;
-        this.width= layout.width+20;
+        //this.width= layout.width+20;
+        setCorrectWidth();
 
         textOffsetX=10;
         textOffsetY=height*0.7f;
@@ -46,16 +47,22 @@ public abstract class CustomButton extends Clickable{
         background=fetchTexture("white_square");
 
     }
+    protected void setCorrectWidth(){
+        SpriteBatch b=new SpriteBatch();
+        b.begin();
+        this.width=(font.draw(b, text, -500, -500).width);
+        b.end();
+    }
     @Override
     public void draw(SpriteBatch batch) {
         if(!isActive()) {
             batch.setColor(backgroundColor);
-            batch.draw(background, position.x(), position.y(),width,height);
+            batch.draw(background, position.x(), position.y(),width+textOffsetX*2,height);
             font.setColor(textColor);
-            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY,width,-1,false);
+            font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY,width, -1 ,false);
         }else{
             batch.setColor(textColor);
-            batch.draw(background, position.x(), position.y(),width,height);
+            batch.draw(background, position.x(), position.y(),width+textOffsetX*2,height);
             font.setColor(backgroundColor);
             font.draw(batch, text, position.x()+textOffsetX, position.y()+textOffsetY,width,-1,false);
         }

@@ -83,7 +83,7 @@ public class EnemySpawner extends Spawner {
                 );
             case "arch_lich": //boss
                 return new ArchLich(spawnID,texture,spawnLocation,
-                        (int)(200*healthDifModifier),
+                        (int)(3000*healthDifModifier),
                         (int)(0*armorDifModifier),
                         (int)(15*magResDifModifier),
                         10f*movespeedDifModifier,
@@ -98,7 +98,7 @@ public class EnemySpawner extends Spawner {
                         (int)(80*healthDifModifier),
                         (int)(5*armorDifModifier),
                         (int)(5*magResDifModifier),
-                        10f*movespeedDifModifier,
+                        30f*movespeedDifModifier,
                         1000,
                         (int) (30*damageDifModifier),
                         "physical",
@@ -116,15 +116,12 @@ public class EnemySpawner extends Spawner {
                         "physical",
                         (int)(100*goldDropModifier)
                 );
-            case "giant":
-                health=100;armor=3;magicResistance=6;damageToPlayer=3;movementSpeed=40f;damage=20;goldDropped=20;
-                break;
             case "demon":
                 health=30;armor=0;magicResistance=10;damageToPlayer=1;movementSpeed=60f;damage=25;goldDropped=5;
                 break;
             case "arch_demon": //boss
                 return new ArchDemon(spawnID,texture,spawnLocation,
-                        (int)(300*healthDifModifier),
+                        (int)(3000*healthDifModifier),
                         (int)(3*armorDifModifier),
                         (int)(10*magResDifModifier),
                         10f*movespeedDifModifier,

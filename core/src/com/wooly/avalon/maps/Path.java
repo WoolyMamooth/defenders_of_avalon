@@ -7,7 +7,7 @@ import java.util.List;
 public class Path {
     // These define the turningpoints in the path that enemies take.
     Coordinate[] coordinates;
-    int length;
+    private int length;
 
     public Path(Coordinate[] coordinates) {
         this.coordinates = coordinates;
@@ -61,7 +61,6 @@ public class Path {
     public int getLength() {
         return length;
     }
-
     @Override
     public String toString() {
         return "Path{" +

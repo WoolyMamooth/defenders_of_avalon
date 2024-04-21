@@ -21,6 +21,7 @@ public class DamagableUnit extends MovableUnit{
     protected boolean stunned=false; //if true unit can't move or attack
     public int healingAmount=0; //amount of health that will be recovered per tick
     protected float timeSinceLastHeal=0f;
+    protected float healingTimeout=0,maxHealingTimeout=5; //a unit will not heal for 2 seconds after getting hit
     protected static float HEALING_TICK_INTERVAL=1f;
     HPBar hpBar;
     List<UnitBuff> buffs;
@@ -106,6 +107,7 @@ public class DamagableUnit extends MovableUnit{
                 default:
                     this.currentHp -= damage;
             }
+            healingTimeout=maxHealingTimeout;
         }
     }
     /**
@@ -136,10 +138,14 @@ public class DamagableUnit extends MovableUnit{
 
         //handle healing the unit if applicable
         if(healingAmount>0){
-            timeSinceLastHeal+=timeSinceLastFrame;
-            if (timeSinceLastHeal>=HEALING_TICK_INTERVAL){
-                heal(healingAmount);
-                timeSinceLastHeal=0;
+            if(healingTimeout <= 0) {
+                timeSinceLastHeal += timeSinceLastFrame;
+                if (timeSinceLastHeal >= HEALING_TICK_INTERVAL) {
+                    heal(healingAmount);
+                    timeSinceLastHeal = 0;
+                }
+            }else{
+                healingTimeout-=timeSinceLastFrame;
             }
         }
     }

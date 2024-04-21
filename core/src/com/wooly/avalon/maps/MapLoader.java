@@ -75,12 +75,11 @@ public class MapLoader {
         if(Objects.equals(player.getEquippedHero(), "None")) {
             return new TDMap(mapID, backgroundTexture,frontgroundTexture, path, enemiesToSpawn, enemiesSpawnDelay, towerSpaces);
         }else{
-            Hero hero=loadHero(player.getEquippedHero());
+            Hero hero=loadHero(player.getEquippedHero(),path.getCoordinate((int)(path.getLength()*0.75)));
             return new TDMap(mapID, backgroundTexture,frontgroundTexture, path, enemiesToSpawn, enemiesSpawnDelay, towerSpaces,hero);
         }
     }
-    private Hero loadHero(String heroName) {
-        Coordinate spawnPos=SCREEN_CENTER;
+    private Hero loadHero(String heroName, Coordinate spawnPos) {
         switch (heroName){
             case "Mordred":
                 return new Mordred(spawnPos);

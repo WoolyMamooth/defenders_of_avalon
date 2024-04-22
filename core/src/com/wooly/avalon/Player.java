@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 import com.wooly.avalon.maps.MapLoader;
+import com.wooly.avalon.units.heroes.Hero;
 
 import java.util.Arrays;
 import java.util.Objects;
@@ -34,7 +35,7 @@ public class Player {
             loadData();
         }catch (GdxRuntimeException exception){
             //this happens on first install because the file hasn't been created yet on specific device
-            fileHandle.writeString("1000\t0\t5",false); //stardust, difficulty, music volume
+            fileHandle.writeString("1000\t0\t5\t10",false); //stardust, difficulty, music volume, menu scale
             fileHandle.writeString("\nArthur",true); //base unlocked hero
             for (int i = 1; i < existingHeroes.length; i++) { //make the rest unlockable
                 fileHandle.writeString("\tNone",true);
@@ -66,6 +67,7 @@ public class Player {
         stardust=Integer.parseInt(datafile[0].split("\t")[0]);
         MapLoader.GAME_DIFFICULTY=Integer.parseInt(datafile[0].split("\t")[1]);
         TDGame.musicHandler.setVolume(Integer.parseInt(datafile[0].split("\t")[2]));
+        Hero.menuScale=Integer.parseInt(datafile[0].split("\t")[3])/10f;
 
         unlockedHeroes=datafile[1].split("\t");
         unlockedTowers=datafile[2].split("\t");
@@ -76,7 +78,7 @@ public class Player {
      * Writes to playerdata.txt to save unlocked towers, heroes and stardust.
      */
     public void saveData(){
-        fileHandle.writeString(stardust +"\t"+ MapLoader.GAME_DIFFICULTY+"\t"+TDGame.musicHandler.getVolume(),false); //delete all info
+        fileHandle.writeString(stardust +"\t"+ MapLoader.GAME_DIFFICULTY+"\t"+TDGame.musicHandler.getVolume()+"\t"+(int)(Hero.menuScale*10),false); //delete all info
         fileHandle.writeString("\n",true);
         for (String hero:unlockedHeroes) {
             fileHandle.writeString(hero,true);

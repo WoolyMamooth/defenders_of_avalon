@@ -6,6 +6,7 @@ import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.screens.ChooseMapScreen;
 import com.wooly.avalon.screens.MainMenuScreen;
 import com.wooly.avalon.screens.MenuScreen;
+import com.wooly.avalon.screens.SettingsScreen;
 import com.wooly.avalon.screens.UnitSetupScreen;
 
 public class LoadScreenButton extends Button {
@@ -30,6 +31,9 @@ public class LoadScreenButton extends Button {
                 break;
             case "shop":
                 screenToLoad=new UnitSetupScreen(game);
+                break;
+            case "settings":
+                screenToLoad=new SettingsScreen(game);
                 break;
             default:
                 screenToLoad = new MainMenuScreen(game);

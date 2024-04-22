@@ -224,6 +224,7 @@ public abstract class Hero extends AlliedUnit {
     public HeroAbility[] getAbilities() {
         return abilities;
     }
+    public static float menuScale=1.5f;
     protected class HeroSelectorButton extends Button {
         private boolean onHero=true;
         /**
@@ -236,6 +237,8 @@ public abstract class Hero extends AlliedUnit {
         public HeroSelectorButton(Coordinate position,Texture texture) {
             super(position, fetchTexture("white_square"), texture);
             onHero=false;
+            width*=menuScale;
+            height*=menuScale;
         }
         public void update(Coordinate position){
             this.position=position;
@@ -267,6 +270,8 @@ public abstract class Hero extends AlliedUnit {
          */
         public LevelUpButton(Coordinate position) {
             super(position, fetchTexture("heroes/level_up"), fetchTexture("heroes/level_up"));
+            width*=menuScale;
+            height*=menuScale;
         }
 
         @Override
@@ -290,6 +295,8 @@ public abstract class Hero extends AlliedUnit {
             public HeroAbilityButton(Coordinate position,HeroAbility ability) {
                 super(position, fetchTexture("white_square"), ability.icon);
                 this.ability=ability;
+                width*=menuScale;
+                height*=menuScale;
                 cooldownHeightPercent=this.height/ability.maxCooldown;
             }
 
@@ -316,8 +323,10 @@ public abstract class Hero extends AlliedUnit {
              * @param position
              */
             public HeroAbilityInfo(Coordinate position, String text) {
-                super(position, fetchTexture("white_square"), fetchTexture("heroes/ability_info"));
+                super(position, fetchTexture("heroes/ability_info"), fetchTexture("heroes/ability_info"));
                 textBubble=new TextBubble(SCREEN_BOT_LEFT,text,20,Color.WHITE,600,new Color(0,0,0,0.5f));
+                width*=menuScale;
+                height*=menuScale;
             }
             @Override
             public void draw(SpriteBatch batch) {
@@ -346,8 +355,8 @@ public abstract class Hero extends AlliedUnit {
             notUnlockedTexture=fetchTexture("white_square");
             abilityNum=abilities.length;
 
-            iconWidth=abilities[0].icon.getWidth();
-            iconHeight=abilities[0].icon.getHeight();
+            iconWidth= (int) (abilities[0].icon.getWidth()*menuScale);
+            iconHeight= (int) (abilities[0].icon.getHeight()*menuScale);
 
             abilityButtons=new HeroAbilityButton[abilityNum];
             abilityInfos=new HeroAbilityInfo[abilityNum];

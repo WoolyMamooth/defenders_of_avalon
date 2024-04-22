@@ -1,5 +1,5 @@
-600	0	0
-Arthur	Mordred	None	
-archer	barracks	wizard	priest	ballista	paladins	None	
-Mordred
-ballista	barracks	wizard	priest	
+1000	0	0	10
+Arthur	None	None	
+archer	barracks	wizard	None	None	None	None	
+Arthur
+archer	barracks	wizard	None	

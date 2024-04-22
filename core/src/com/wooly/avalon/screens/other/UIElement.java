@@ -5,6 +5,12 @@ import com.wooly.avalon.maps.Coordinate;
 
 public abstract class UIElement {
     public Coordinate position;
+
+    public UIElement(Coordinate position) {
+        this.position=position;
+    }
+    public UIElement(){}
+
     public abstract void draw(SpriteBatch batch);
     public Coordinate getPosition() {
         return position;

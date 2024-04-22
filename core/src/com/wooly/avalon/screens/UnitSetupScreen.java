@@ -65,8 +65,8 @@ public class UnitSetupScreen extends MenuScreen{
         containerPos=place(SCREEN_WIDTH*0.125f,0);
         container=new HeroContainer(containerPos,new ArthurPendragon(containerPos));
 
-        forward=new SwitchUnitButton(SCREEN_BOT_RIGHT.subtract(new Coordinate(64,0)),true); //TODO place this correctly
-        backward=new SwitchUnitButton(SCREEN_BOT_LEFT,false);
+        forward=new SwitchUnitButton(SCREEN_BOT_RIGHT.subtract(new Coordinate(192,0)),true); //TODO place this correctly
+        backward=new SwitchUnitButton(SCREEN_BOT_LEFT.add(new Coordinate(64,0)),false);
 
         equippedUnits=new EquippedUnitsContainer(SCREEN_TOP_LEFT);
     }
@@ -165,7 +165,7 @@ public class UnitSetupScreen extends MenuScreen{
          * Switches the unit in container to the next one/previous one.
          */
         public SwitchUnitButton(Coordinate position,boolean forward) {
-            super(position, fetchTexture("white_square"), fetchTexture("white_square"));
+            super(position, fetchTexture("buttons/switch_unit"), fetchTexture("buttons/switch_unit"));
             this.forward=forward;
         }
         @Override
@@ -176,6 +176,12 @@ public class UnitSetupScreen extends MenuScreen{
                 containerUnitId--;
             }
             swapContainerUnit();
+        }
+
+        @Override
+        public void draw(SpriteBatch batch) {
+            if(forward) super.draw(batch);
+            else batch.draw((isActive() ? activeTexture : inactiveTexture), position.x()+width, position.y(), -width, height);
         }
     }
     private class BuyButton extends CustomButton{

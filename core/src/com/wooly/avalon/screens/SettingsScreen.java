@@ -14,7 +14,7 @@ import com.wooly.avalon.screens.other.VolumeSlider;
 
 public class SettingsScreen extends MenuScreen{
     Clickable mainMenuButton,difficultyButton;
-    TextBubble difficultyText, volumeText;
+    TextBubble difficultyText, volumeText,menuScaleText;
     VolumeSlider volumeSlider;
     HeroMenuScaleSlider menuScaleSlider;
     public SettingsScreen(TDGame game) {
@@ -25,7 +25,7 @@ public class SettingsScreen extends MenuScreen{
                 place(pos.x(), pos.y()),"mainMenu");
 
         pos=centerButton(2);
-        this.difficultyText=new TextBubble(place(pos.x(), pos.y()),"DIFFICULTY:",42, Color.WHITE,600);
+        this.difficultyText=new TextBubble(place(pos.x(), pos.y()),"DIFFICULTY",42, Color.WHITE,600);
         this.difficultyText.setPosition(
                 this.difficultyText.getPosition().subtract(
                         new Coordinate(this.difficultyText.getWidth()*0.25f,0)
@@ -36,12 +36,15 @@ public class SettingsScreen extends MenuScreen{
         this.difficultyButton=new DifficultyButton(place(pos.x(), pos.y()),42,Color.BLACK,1200,64);
 
         pos=centerButton(4);
-        this.volumeText=new TextBubble(place(pos.x(), pos.y()),"MUSIC",42,Color.WHITE,600);
+        this.volumeText=new TextBubble(place(pos.x()-20, pos.y()),"MUSIC",42,Color.WHITE,600);
 
         pos=centerButton(5);
         this.volumeSlider =new VolumeSlider(place(pos.x(),pos.y()));
 
-        pos=centerButton(8);
+        pos=centerButton(6);
+        this.menuScaleText=new TextBubble(place(pos.x()-90, pos.y()),"INGAME UI SIZE",42,Color.WHITE,600);
+
+        pos=centerButton(7);
         this.menuScaleSlider =new HeroMenuScaleSlider(place(pos.x(),pos.y()));
     }
 
@@ -54,6 +57,7 @@ public class SettingsScreen extends MenuScreen{
         renderButton(difficultyButton);
         volumeText.draw(game.batch);
         volumeSlider.draw(game.batch);
+        menuScaleText.draw(game.batch);
         menuScaleSlider.draw(game.batch);
         game.batch.end();
     }

@@ -27,6 +27,8 @@ import com.wooly.avalon.units.towers.towers.PaladinsTower;
 import com.wooly.avalon.units.towers.towers.PriestTower;
 import com.wooly.avalon.units.towers.towers.WizardTower;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
 import java.util.List;
 import java.util.Objects;
 
@@ -56,13 +58,15 @@ public class TowerSpace extends Button {
     }
     private class TowerBuildMenu extends TowerMenu{
         private class TowerBuildButton extends CustomButton {
+            String towerName;
             public TowerBuildButton(Coordinate position, String towerName) {
-                super(position,towerName,buttonFontsize,Color.WHITE, Color.BLACK,buttonWidth,buttonHeight);
+                super(position,towerName+" "+towerPrices.get(towerName),buttonFontsize,Color.WHITE, Color.BLACK,buttonWidth,buttonHeight);
+                this.towerName=towerName;
             }
             @Override
             public void onClick() {
                 if(Objects.equals(text, "None")) return;
-                build(text);
+                build(towerName);
             }
         }
         /**
@@ -71,11 +75,12 @@ public class TowerSpace extends Button {
          */
         public TowerBuildMenu(float buttonOffsetX) {
             super(buttonOffsetX);
-            this.amountOfButtons=player.getEquippedTowers().length; //max number of towers that can be brought to a com.wooly.avalon. should remain 4 but you never know
+            this.amountOfButtons=player.getEquippedTowers().length; //max number of towers that can be brought to a game. should remain 4 but you never know
 
             buttons=new TowerBuildButton[amountOfButtons]; //buttons that can be clicked to build the chosen tower
             String[] buildableTowerNames = player.getEquippedTowers(); //we show the equipped towers as options
             for (int i = 0; i < amountOfButtons; i++) {
+                //if(buildableTowerNames[i]==null) continue;
                 buttons[i]=new TowerBuildButton(new Coordinate(position.x()+this.buttonOffsetX, position.y()+this.buttonOffsetY),buildableTowerNames[i]);
                 buttonOffsetY-=buttons[i].height; //increment vertical offset so we get a list of buttons
             }
@@ -124,8 +129,20 @@ public class TowerSpace extends Button {
     int towerBuildID =0; //ID of the tower that will be built
     boolean occupied=false; //defines if a tower has been built here or not
     boolean menuVisible=false; //defines if the menu is visible or not, use in onClick and draw
+    Dictionary<String, Integer> towerPrices;
     public TowerSpace(Coordinate position, Texture activeTexture, Texture inactiveTexture) {
         super(position, activeTexture, inactiveTexture);
+
+        towerPrices=new Hashtable<>();
+        towerPrices.put("archer",70);
+        towerPrices.put("barracks",80);
+        towerPrices.put("wizard",80);
+        towerPrices.put("farm",50);
+        towerPrices.put("ballista",100);
+        towerPrices.put("paladins",100);
+        towerPrices.put("priest",80);
+
+
         this.menu=new TowerBuildMenu(activeTexture.getWidth());
 
         rangeOutline=new ShapeRenderer();
@@ -144,37 +161,37 @@ public class TowerSpace extends Button {
     private void build(String towerName){
         switch (towerName){
             case "archer":
-                if(attemptGoldSpend(70)) {
+                if(attemptGoldSpend(towerPrices.get(towerName))) {
                     tower = new ArcherTower(position, towerBuildID);
                 }else return;
                 break;
             case "barracks":
-                if(attemptGoldSpend(80)) {
+                if(attemptGoldSpend(towerPrices.get(towerName))) {
                     tower = new BarracksTower(position, towerBuildID);
                 }else return;
                 break;
             case "wizard":
-                if(attemptGoldSpend(80)){
+                if(attemptGoldSpend(towerPrices.get(towerName))){
                     tower=new WizardTower(position,towerBuildID);
                 }else return;
                 break;
             case "farm":
-                if(attemptGoldSpend(50)){
+                if(attemptGoldSpend(towerPrices.get(towerName))){
                     tower=new FarmTower(position,towerBuildID);
                 }else return;
                 break;
             case "ballista":
-                if(attemptGoldSpend(100)){
+                if(attemptGoldSpend(towerPrices.get(towerName))){
                     tower=new BallistaTower(position,towerBuildID);
                 }else return;
                 break;
             case "paladins":
-                if(attemptGoldSpend(100)){
+                if(attemptGoldSpend(towerPrices.get(towerName))){
                     tower=new PaladinsTower(position,towerBuildID);
                 }else return;
                 break;
             case "priest":
-                if(attemptGoldSpend(80)){
+                if(attemptGoldSpend(towerPrices.get(towerName))){
                     tower=new PriestTower(position,towerBuildID);
                 }else return;
                 break;

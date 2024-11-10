@@ -25,21 +25,21 @@ public class MainMenuScreen extends MenuScreen {
                 "chooseMap");
 
         pos=centerButton(2);
-        this.exitButton=new ExitButton(TDGame.fetchTexture("buttons/exit_active"),
-                TDGame.fetchTexture("buttons/exit"),
-                place(pos.x(), pos.y()));
-
-        pos=centerButton(3);
-        this.shopButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/play_active"),
-                TDGame.fetchTexture("buttons/play"),
+        this.shopButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/store_active"),
+                TDGame.fetchTexture("buttons/store"),
                 place(pos.x(), pos.y()),
                 "shop");
 
-        pos=centerButton(4);
-        this.settingsButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/play_active"),
-                TDGame.fetchTexture("buttons/play"),
+        pos=centerButton(3);
+        this.settingsButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/settings_active"),
+                TDGame.fetchTexture("buttons/settings"),
                 place(pos.x(), pos.y()),
                 "settings");
+
+        pos=centerButton(4);
+        this.exitButton=new ExitButton(TDGame.fetchTexture("buttons/exit_active"),
+                TDGame.fetchTexture("buttons/exit"),
+                place(pos.x(), pos.y()));
 
         TDGame.musicHandler.playMusic("menu1");
     }

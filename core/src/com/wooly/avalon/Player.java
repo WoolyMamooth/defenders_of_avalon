@@ -39,26 +39,31 @@ public class Player {
             loadData();
         }catch (GdxRuntimeException exception){
             //this happens on first install because the file hasn't been created yet on specific device
-            fileHandle.writeString("1000\t0\t5\t10",false); //stardust, difficulty, music volume, menu scale
-            fileHandle.writeString("\nArthur",true); //base unlocked hero
-            for (int i = 1; i < existingHeroes.length; i++) { //make the rest unlockable
-                fileHandle.writeString("\tNone",true);
-            }
-            fileHandle.writeString("\narcher\tbarracks\twizard",true); //base unlocked towers
-            for (int i = 3; i < existingTowers.length; i++) { //make the rest unlockable
-                fileHandle.writeString("\tNone",true);
-            }
-            //equipped units
-            fileHandle.writeString("\nArthur",true);
-            fileHandle.writeString("\narcher\tbarracks\twizard\tNone\n",true);
-
-            //map stars
-            for (int i = 0; i < MAP_NUMBER; i++) {
-                fileHandle.writeString("0\t",true);
-            }
+            createSavefile();
             loadData();
         }
     }
+
+    public void createSavefile(){
+        fileHandle.writeString("1000\t0\t5\t10",false); //stardust, difficulty, music volume, menu scale
+        fileHandle.writeString("\nArthur",true); //base unlocked hero
+        for (int i = 1; i < existingHeroes.length; i++) { //make the rest unlockable
+            fileHandle.writeString("\tNone",true);
+        }
+        fileHandle.writeString("\narcher\tbarracks\twizard",true); //base unlocked towers
+        for (int i = 3; i < existingTowers.length; i++) { //make the rest unlockable
+            fileHandle.writeString("\tNone",true);
+        }
+        //equipped units
+        fileHandle.writeString("\nArthur",true);
+        fileHandle.writeString("\narcher\tbarracks\twizard\tNone\n",true);
+
+        //map stars
+        for (int i = 0; i < MAP_NUMBER; i++) {
+            fileHandle.writeString("0\t",true);
+        }
+    }
+
     /**
      * Loads stardust amount, unlocked and equipped towers, heroes into memory.
      */

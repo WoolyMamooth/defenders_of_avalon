@@ -1,11 +1,13 @@
 package com.wooly.avalon.screens;
 
 import static com.wooly.avalon.TDGame.place;
+import static com.wooly.avalon.TDGame.player;
 
 import com.badlogic.gdx.graphics.Color;
 import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.screens.buttons.Clickable;
+import com.wooly.avalon.screens.buttons.CustomButton;
 import com.wooly.avalon.screens.buttons.DifficultyButton;
 import com.wooly.avalon.screens.buttons.LoadScreenButton;
 import com.wooly.avalon.screens.other.HeroMenuScaleSlider;
@@ -13,7 +15,7 @@ import com.wooly.avalon.screens.other.TextBubble;
 import com.wooly.avalon.screens.other.VolumeSlider;
 
 public class SettingsScreen extends MenuScreen{
-    Clickable mainMenuButton,difficultyButton;
+    Clickable mainMenuButton,difficultyButton, deleteSaveButton;
     TextBubble difficultyText, volumeText,menuScaleText;
     VolumeSlider volumeSlider;
     HeroMenuScaleSlider menuScaleSlider;
@@ -46,6 +48,16 @@ public class SettingsScreen extends MenuScreen{
 
         pos=centerButton(7);
         this.menuScaleSlider =new HeroMenuScaleSlider(place(pos.x(),pos.y()));
+
+        pos=centerButton(8);
+        //this button will allow the player to create a new save
+        this.deleteSaveButton=new CustomButton(pos,"DELETE SAVE",42,Color.WHITE,Color.BLACK,600,64) {
+            @Override
+            public void onClick() {
+                player.createSavefile();
+                player.loadData();
+            }
+        };
     }
 
     @Override
@@ -59,6 +71,7 @@ public class SettingsScreen extends MenuScreen{
         volumeSlider.draw(game.batch);
         menuScaleText.draw(game.batch);
         menuScaleSlider.draw(game.batch);
+        renderButton(deleteSaveButton);
         game.batch.end();
     }
 }

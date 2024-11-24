@@ -1,6 +1,7 @@
 package com.wooly.avalon.screens;
 
 import static com.wooly.avalon.TDGame.*;
+import static com.wooly.avalon.maps.MapLoader.GAME_DIFFICULTY;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -97,8 +98,10 @@ public class GameScreen implements Screen {
         }else if(gameState==2){ // player won the game
             //we give the player an amount of stardust based on the difficulty they played at
             paused=false;
-            int difficultyExtraStardust=MapLoader.GAME_DIFFICULTY*10;
+            int difficultyExtraStardust= GAME_DIFFICULTY*10;
             player.gainStardust(80+difficultyExtraStardust);
+            player.updateStarCount(mapID,GAME_DIFFICULTY+1); //easy is 0 difficulty but is worth 1 star
+            player.saveData();
             this.dispose();
             game.setScreen(new MainMenuScreen(game));
         }else if(gameState==3){ // player exited to menu

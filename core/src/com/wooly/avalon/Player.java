@@ -1,5 +1,7 @@
 package com.wooly.avalon;
 
+import static com.wooly.avalon.maps.MapLoader.MAP_NUMBER;
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
@@ -26,6 +28,8 @@ public class Player {
     String equippedHero;
     private int stardust; //global currency used to purchase towers and heroes, gained from completing maps
 
+    int[] mapStars=new int[MAP_NUMBER]; //keeps track of what difficulty the player has defeated on what maps
+
     /**
      * Keeps track of all data related to the player. ex.: unlocked towers.
      */
@@ -46,7 +50,12 @@ public class Player {
             }
             //equipped units
             fileHandle.writeString("\nArthur",true);
-            fileHandle.writeString("\narcher\tbarracks\twizard\tNone",true);
+            fileHandle.writeString("\narcher\tbarracks\twizard\tNone\n",true);
+
+            //map stars
+            for (int i = 0; i < MAP_NUMBER; i++) {
+                fileHandle.writeString("0\t",true);
+            }
             loadData();
         }
     }
@@ -63,6 +72,7 @@ public class Player {
 
         //loads player info into memory
         String[] datafile =fileHandle.readString().split("\n");
+        System.out.println(datafile);
 
         stardust=Integer.parseInt(datafile[0].split("\t")[0]);
         MapLoader.GAME_DIFFICULTY=Integer.parseInt(datafile[0].split("\t")[1]);
@@ -73,6 +83,15 @@ public class Player {
         unlockedTowers=datafile[2].split("\t");
         equippedHero=datafile[3].split("\t")[0];
         equippedTowers=datafile[4].split("\t");
+
+        String[] stars=datafile[5].split("\t");
+        for (int i = 0; i < MAP_NUMBER; i++) {
+            if(stars[i] == null){
+                mapStars[i]=0;
+                continue;
+            }
+            mapStars[i]=Integer.parseInt(stars[i]);
+        }
     }
     /**
      * Writes to playerdata.txt to save unlocked towers, heroes and stardust.
@@ -95,6 +114,10 @@ public class Player {
         for (String tower:equippedTowers) {
             fileHandle.writeString(tower,true);
             fileHandle.writeString("\t",true);
+        }
+        fileHandle.writeString("\n",true);
+        for (int map:mapStars) {
+            fileHandle.writeString(map+"\t",true);
         }
     }
 
@@ -166,6 +189,16 @@ public class Player {
                     return true;
                 }
             }
+        }
+        return false;
+    }
+    public int getStarCount(int mapID){
+        return mapStars[mapID];
+    }
+    public boolean updateStarCount(int mapID, int stars){
+        if(stars > mapStars[mapID]){
+            mapStars[mapID] = stars;
+            return true;
         }
         return false;
     }

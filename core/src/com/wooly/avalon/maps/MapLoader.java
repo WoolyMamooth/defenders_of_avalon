@@ -27,6 +27,7 @@ public class MapLoader {
     //still needs a lot of work
     TDGame game;
     public static String MAPDATA_PATH ="map_assets/mapdata/map"; //add mapID and .tsv to the end
+    public static int MAP_NUMBER=5; // how many maps are implemented
     /**
      * Keeps track of what data is in which line of the data file.
      */

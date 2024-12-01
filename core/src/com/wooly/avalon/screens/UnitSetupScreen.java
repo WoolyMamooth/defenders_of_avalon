@@ -244,7 +244,7 @@ public class UnitSetupScreen extends MenuScreen{
         public EquippedUnitsContainer(Coordinate position) {
             unitNum=5; //4 towers + 1 hero
             unitTextures=new Texture[unitNum];
-            emptyPosTexture=fetchTexture("white_square");
+            emptyPosTexture=fetchTexture("menus/empty_equipped_unit");
 
             if(!Objects.equals(player.getEquippedHero(), "None")){
                 unitTextures[0]=fetchTexture("heroes/"+player.getEquippedHero().toLowerCase()+"/"+player.getEquippedHero().toLowerCase());

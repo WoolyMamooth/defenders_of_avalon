@@ -18,25 +18,26 @@ public class MainMenuScreen extends MenuScreen {
     public MainMenuScreen(TDGame game){
         super(game);
         System.out.println("LOADING MainMenuScreen");
-        Coordinate pos=centerButton(1);
-        this.playButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/play_active"),
+        int menuPos=2;
+        Coordinate pos=centerButton(menuPos++);
+        this.playButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/play"),
                 TDGame.fetchTexture("buttons/play"),
-                place(pos.x(), pos.y()),
+                place(pos.x()-60, pos.y()),
                 "chooseMap");
 
-        pos=centerButton(2);
-        this.shopButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/store_active"),
+        pos=centerButton(menuPos++);
+        this.shopButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/store"),
                 TDGame.fetchTexture("buttons/store"),
                 place(pos.x(), pos.y()),
                 "shop");
 
-        pos=centerButton(3);
-        this.settingsButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/settings_active"),
+        pos=centerButton(menuPos++);
+        this.settingsButton=new LoadScreenButton(this.game,TDGame.fetchTexture("buttons/settings"),
                 TDGame.fetchTexture("buttons/settings"),
-                place(pos.x(), pos.y()),
+                place(pos.x()-30, pos.y()),
                 "settings");
 
-        pos=centerButton(4);
+        pos=centerButton(menuPos++);
         this.exitButton=new ExitButton(TDGame.fetchTexture("buttons/exit_active"),
                 TDGame.fetchTexture("buttons/exit"),
                 place(pos.x(), pos.y()));

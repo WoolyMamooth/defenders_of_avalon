@@ -20,7 +20,6 @@ public class LoadScreenButton extends Button {
 
     @Override
     public void onClick() {
-        System.out.println("PLAY BUTTON CLICKED");
         MenuScreen screenToLoad;
         switch (screenType) {
             case "mainMenu":
@@ -37,7 +36,6 @@ public class LoadScreenButton extends Button {
                 break;
             default:
                 screenToLoad = new MainMenuScreen(game);
-                System.out.println("your button is configured wrong");
         }
         game.setScreen(screenToLoad);
         dispose();

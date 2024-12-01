@@ -198,8 +198,7 @@ public class TowerSpace extends Button {
             case "None":
             default:
                 System.out.println("Warning tower "+ towerBuildID +" is set to default");
-                build("archer");
-                break;
+                return;
         }
         occupied=true;
         TDMap.lastTowerID++; //increment tower IDs to help keep track of them

@@ -51,7 +51,7 @@ public class SettingsScreen extends MenuScreen{
 
         pos=centerButton(8);
         //this button will allow the player to create a new save
-        this.deleteSaveButton=new CustomButton(pos,"DELETE SAVE",42,Color.WHITE,Color.BLACK,600,64) {
+        this.deleteSaveButton=new CustomButton(place(pos.x()-90, pos.y()),"DELETE SAVE",42,Color.WHITE,Color.BLACK,600,64) {
             @Override
             public void onClick() {
                 player.createSavefile();

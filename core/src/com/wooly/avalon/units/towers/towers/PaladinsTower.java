@@ -15,6 +15,6 @@ public class PaladinsTower extends SummonerTower {
                         new TowerUpgrade("HP",3,25,30,1.25f)
                 });
         setName("paladins");
-        setDescription("Summons paladins, holy warriors\nwho use the power of light to heal their wounds\nand deal pure damage to their enemies.");
+        setDescription("Summons paladins, holy warriors\nwho use the power of light to heal\ntheir wounds and deal pure damage\nto their enemies.");
     }
 }

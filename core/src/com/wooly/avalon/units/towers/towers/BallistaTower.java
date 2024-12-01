@@ -13,6 +13,6 @@ public class BallistaTower extends RangedTower {
                         new TowerUpgrade("atkSpeed",3,100,100,1.5f)
                 }, "physical");
         setName("ballista");
-        setDescription("Extremely high range, very high damage, shoots slowly.");
+        setDescription("Extremely high range, very high damage,\nshoots slowly.");
     }
 }

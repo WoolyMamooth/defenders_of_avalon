@@ -27,9 +27,7 @@ public class Player {
     String[] equippedTowers;
     String equippedHero;
     private int stardust; //global currency used to purchase towers and heroes, gained from completing maps
-
     int[] mapStars=new int[MAP_NUMBER]; //keeps track of what difficulty the player has defeated on what maps
-
     /**
      * Keeps track of all data related to the player. ex.: unlocked towers.
      */
@@ -45,7 +43,7 @@ public class Player {
     }
 
     public void createSavefile(){
-        fileHandle.writeString("1000\t0\t5\t10",false); //stardust, difficulty, music volume, menu scale
+        fileHandle.writeString("0\t0\t5\t10",false); //stardust, difficulty, music volume, menu scale
         fileHandle.writeString("\nArthur",true); //base unlocked hero
         for (int i = 1; i < existingHeroes.length; i++) { //make the rest unlockable
             fileHandle.writeString("\tNone",true);

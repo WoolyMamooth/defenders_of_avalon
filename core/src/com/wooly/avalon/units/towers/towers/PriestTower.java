@@ -9,9 +9,10 @@ import com.wooly.avalon.units.towers.TowerUpgrade;
 public class PriestTower extends AoETower {
     public PriestTower(Coordinate position, int towerSpawnID) {
         super(fetchTexture("towers/towerTextures/priest"),
-                position, towerSpawnID, 150f, "priest_light", 10, 0.8f,
+                position, towerSpawnID, 150f, "priest_light", 8, 0.8f,
                 new TowerUpgrade[]{
-                        new TowerUpgrade("range", 5, 10, 30, 1.25f)
+                        new TowerUpgrade("range", 5, 15, 30, 1.25f),
+                        new TowerUpgrade("damage",3,5,30,1.5f)
                 },
                 "pure", 70);
         setName("priest");

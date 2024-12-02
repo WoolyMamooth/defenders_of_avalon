@@ -11,7 +11,7 @@ import java.util.List;
 
 public class FarmTower extends RangedTower {
     public FarmTower(Coordinate position,int towerSpawnID) {
-        super(TDGame.fetchTexture("towers/towerTextures/farm"), position, towerSpawnID, 64, "none",10,20,
+        super(TDGame.fetchTexture("towers/towerTextures/farm"), position, towerSpawnID, 64, "none",10,10,
                 new TowerUpgrade[]{
                     new TowerUpgrade("gold given",10,5,25,1f)
                 },"physical");

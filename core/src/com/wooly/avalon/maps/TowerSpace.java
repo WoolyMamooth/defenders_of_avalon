@@ -1,5 +1,6 @@
 package com.wooly.avalon.maps;
 
+import static com.wooly.avalon.TDGame.SCREEN_HEIGHT;
 import static com.wooly.avalon.TDGame.SCREEN_WIDTH;
 import static com.wooly.avalon.TDGame.fetchTexture;
 import static com.wooly.avalon.TDGame.player;
@@ -43,7 +44,15 @@ public class TowerSpace extends Button {
 
         public TowerMenu(float buttonOffsetX) {
             this.buttonOffsetX = buttonOffsetX;
-            if(position.x()>SCREEN_WIDTH/2f) this.buttonOffsetX *= -2; //flip the menu to left side if on right side of the screen
+            if(position.x()>SCREEN_WIDTH/2f){
+                //this.buttonOffsetX *= -2; //flip the menu to left side if on right side of the screen
+               /* if(position.y()>SCREEN_HEIGHT/2f){
+                    buttonOffsetY*=-0.5;
+                }else{
+                    buttonOffsetY*=2;
+                }*/
+            }
+            //TODO use y dimension
         }
         public void draw(SpriteBatch batch){
             for (int i = 0; i < amountOfButtons; i++) {

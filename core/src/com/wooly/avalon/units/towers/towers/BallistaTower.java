@@ -10,7 +10,7 @@ public class BallistaTower extends RangedTower {
         super(TDGame.fetchTexture("towers/towerTextures/ballista"),
                 position, towerSpawnID, 700, "ballista_arrow", 100, 10,
                 new TowerUpgrade[]{
-                        new TowerUpgrade("atkSpeed",3,100,100,1.5f)
+                        new TowerUpgrade("atkSpeed",8,100,80,1.5f)
                 }, "physical");
         setName("ballista");
         setDescription("Extremely high range, very high damage,\nshoots slowly.");

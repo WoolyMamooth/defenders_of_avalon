@@ -1,5 +1,7 @@
 package com.wooly.avalon.maps;
 
+import static com.wooly.avalon.maps.MapLoader.GAME_DIFFICULTY;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.TDGame;
@@ -44,8 +46,31 @@ public class TDMap {
         this.extraEnemies=new ArrayList<>();
         this.towerSpaces=towerSpaces;
 
-        playerHP=100;
-        playerGold=10000;
+        //set gold and hp according to difficulty
+        switch(GAME_DIFFICULTY){
+            case 0:
+                playerHP=30;
+                playerGold=200;
+                break;
+            case 1:
+                playerHP=20;
+                playerGold=200;
+                break;
+            case 2:
+                playerHP=10;
+                playerGold=200;
+                break;
+            case 3:
+                playerHP=10;
+                playerGold=150;
+                break;
+            case 4:
+            default:
+                playerHP=1;
+                playerGold=150;
+                break;
+        }
+
     }
     public TDMap(int mapID, Texture backgroundTexture,Texture frontgroundTexture, Path path, String[] enemiesToSpawn,Float[] enemiesSpawnDelay,TowerSpace[] towerSpaces, Hero hero){
         this(mapID, backgroundTexture,frontgroundTexture, path, enemiesToSpawn,enemiesSpawnDelay,towerSpaces);
@@ -164,8 +189,11 @@ public class TDMap {
         drawAllEnemies(batch);
         drawAllTowers(batch);
     }
-    public void drawHeroMenu(SpriteBatch batch){
+    public void drawMenus(SpriteBatch batch){
         if(hasHero) hero.drawMenu(batch);
+        for (TowerSpace towerspace:towerSpaces) {
+            towerspace.drawMenu(batch);
+        }
     }
     private void drawAllEnemies(SpriteBatch batch){
         for (Enemy enemy:enemies) {
@@ -175,9 +203,6 @@ public class TDMap {
     private void drawAllTowers(SpriteBatch batch){
         for (TowerSpace towerspace:towerSpaces) {
             towerspace.draw(batch);
-        }
-        for (TowerSpace towerspace:towerSpaces) {
-            towerspace.drawMenu(batch);
         }
     }
     public Texture getBackgroundTexture() {

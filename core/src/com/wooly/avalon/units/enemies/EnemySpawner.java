@@ -142,7 +142,7 @@ public class EnemySpawner extends Spawner {
                         "physical",
                         (int)(40*goldDropModifier),
                         map,
-                        true
+                        false
                 );
             case "mini_golem":
                 return new Golem(spawnID,texture,spawnLocation,
@@ -155,14 +155,14 @@ public class EnemySpawner extends Spawner {
                         "physical",
                         (int)(10*goldDropModifier),
                         map,
-                        false
+                        true
                 );
 
             case "ogre":
                 health=70;armor=2;magicResistance=3;damageToPlayer=3;movementSpeed=25f;damage=20;goldDropped=20;
                 break;
             case "troll":
-                health=100;armor=5;magicResistance=3;damageToPlayer=5;movementSpeed=25f;damage=20;goldDropped=30;
+                health=150;armor=5;magicResistance=3;damageToPlayer=5;movementSpeed=25f;damage=20;goldDropped=30;
                 break;
             case "test":
             default:

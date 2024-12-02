@@ -32,7 +32,7 @@ public class ArchDemon extends Enemy{
         summonMaxDelay=20;
         summonDelay=summonMaxDelay;
         summonLocationNumber=3;
-        summonPerLocation=4;
+        summonPerLocation=10;
         summonName="demon";
         summonLocations=new Coordinate[summonLocationNumber];
         summonLocationIDs=new int[summonLocationNumber];

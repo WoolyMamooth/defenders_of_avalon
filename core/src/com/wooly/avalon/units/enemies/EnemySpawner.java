@@ -64,7 +64,7 @@ public class EnemySpawner extends Spawner {
                 break;
 
             case "skeleton":
-                health=10;damageToPlayer=1;movementSpeed=50f;damage=10;goldDropped=0;
+                health=10;damageToPlayer=1;movementSpeed=50f;damage=10;goldDropped=1;
                 break;
             case "giant_skeleton":
                 health=70;armor=2;magicResistance=2;damageToPlayer=3;movementSpeed=30f;damage=15;goldDropped=15;

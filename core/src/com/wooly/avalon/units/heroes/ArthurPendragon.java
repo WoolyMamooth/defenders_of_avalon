@@ -2,6 +2,7 @@ package com.wooly.avalon.units.heroes;
 
 import static com.wooly.avalon.TDGame.fetchTexture;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.units.UnitBuff;
@@ -72,6 +73,7 @@ public class ArthurPendragon extends Hero{
         }
     }
     private class BuffGuards extends HeroAbility{
+        Texture buffIndicator=fetchTexture("heroes/arthur/armorBuff");
         public BuffGuards() {
             super("Buff Guards", fetchTexture("heroes/arthur/ability2"),15);
             setDescription("Arthur uses his power to heal his guards\nand to grant them bonus armor.");
@@ -80,7 +82,7 @@ public class ArthurPendragon extends Hero{
         public void activate() {
             for (int i = 0; i < summons.length; i++) {
                 if(summons[i]==null) continue;
-                summons[i].addBuff(new UnitBuff("armor",20,10));
+                summons[i].addBuff(new UnitBuff("armor",20,10,buffIndicator));
                 summons[i].addBuff(new UnitBuff("healing",1,10));
             }
             super.activate();

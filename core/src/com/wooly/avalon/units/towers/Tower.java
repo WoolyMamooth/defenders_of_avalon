@@ -39,6 +39,9 @@ public abstract class Tower extends DrawableUnit implements Attacker {
     @Override
     public void draw(SpriteBatch batch){
         super.draw(batch);
+        for (UnitBuff buff:buffs) {
+            buff.draw(batch,position,width,height);
+        }
     }
     /**
      * Increases the level of the specified stat by one.

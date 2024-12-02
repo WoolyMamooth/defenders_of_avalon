@@ -2,6 +2,7 @@ package com.wooly.avalon.units.heroes;
 
 import static com.wooly.avalon.TDGame.fetchTexture;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.units.UnitBuff;
 import com.wooly.avalon.units.enemies.Enemy;
@@ -55,6 +56,7 @@ public class Mordred extends RangedHero{
         float buffDuration =10f;
         int movementSpeedModifier=200;
         int attackSpeedModifier=250;
+        Texture buffIndicator=fetchTexture("heroes/mordred/lightspeedBuff");
         public Lightspeed(){
             super("Lightspeed",fetchTexture("heroes/mordred/ability2"),20);
             setDescription(" Mordred channels the power of fire\n to accelerate herself,\n for "+buffDuration+" seconds she gains\n "+
@@ -62,7 +64,7 @@ public class Mordred extends RangedHero{
         }
         @Override
         public void activate() {
-            addBuff(new UnitBuff("movementSpeed",movementSpeedModifier, buffDuration));
+            addBuff(new UnitBuff("movementSpeed",movementSpeedModifier, buffDuration,buffIndicator));
             addBuff(new UnitBuff("attackSpeed",attackSpeedModifier,buffDuration));
             super.activate();
         }

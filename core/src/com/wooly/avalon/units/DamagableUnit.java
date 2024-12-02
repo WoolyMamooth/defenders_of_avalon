@@ -229,6 +229,9 @@ public class DamagableUnit extends MovableUnit{
             hpBar.update(position, maxHp, currentHp);
             hpBar.draw(batch);
         }
+        for (UnitBuff buff:buffs) {
+            buff.draw(batch,position,width,height);
+        }
         super.draw(batch);
     }
     /**

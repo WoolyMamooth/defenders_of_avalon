@@ -51,7 +51,7 @@ public class GameScreen implements Screen {
         int gameState = 0;//1 if player lost, 2 if player won, 0 otherwise
 
         //temporary for checking coordinates:
-        if(Gdx.input.justTouched()){System.out.println("CLICKED AT "+trueInput());}
+        //if(Gdx.input.justTouched()){System.out.println("CLICKED AT "+trueInput());}
 
         //if the game is paused then we skip updating the map
         if(!paused) {

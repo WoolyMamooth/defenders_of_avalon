@@ -68,8 +68,8 @@ public class TowerSpace extends Button {
     private class TowerBuildMenu extends TowerMenu{
         private class TowerBuildButton extends CustomButton {
             String towerName;
-            public TowerBuildButton(Coordinate position, String towerName) {
-                super(position,towerName+" "+towerPrices.get(towerName),buttonFontsize,Color.WHITE, Color.BLACK,buttonWidth,buttonHeight);
+            public TowerBuildButton(Coordinate position, String towerName,String price) {
+                super(position,towerName+price,buttonFontsize,Color.WHITE, Color.BLACK,buttonWidth,buttonHeight);
                 this.towerName=towerName;
             }
             @Override
@@ -90,7 +90,14 @@ public class TowerSpace extends Button {
             String[] buildableTowerNames = player.getEquippedTowers(); //we show the equipped towers as options
             for (int i = 0; i < amountOfButtons; i++) {
                 //if(buildableTowerNames[i]==null) continue;
-                buttons[i]=new TowerBuildButton(new Coordinate(position.x()+this.buttonOffsetX, position.y()+this.buttonOffsetY),buildableTowerNames[i]);
+                String name=buildableTowerNames[i];
+                String price="";
+                if(Objects.equals(name, "None")){
+                    name="Unequipped";
+                }else{
+                    price=" "+towerPrices.get(name);
+                }
+                buttons[i]=new TowerBuildButton(new Coordinate(position.x()+this.buttonOffsetX, position.y()+this.buttonOffsetY),name,price);
                 buttonOffsetY-=buttons[i].height; //increment vertical offset so we get a list of buttons
             }
         }

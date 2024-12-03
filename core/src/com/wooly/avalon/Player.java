@@ -43,7 +43,7 @@ public class Player {
     }
 
     public void createSavefile(){
-        fileHandle.writeString("0\t0\t5\t10",false); //stardust, difficulty, music volume, menu scale
+        fileHandle.writeString("0\t0\t5\t15",false); //stardust, difficulty, music volume, menu scale
         fileHandle.writeString("\nArthur",true); //base unlocked hero
         for (int i = 1; i < existingHeroes.length; i++) { //make the rest unlockable
             fileHandle.writeString("\tNone",true);

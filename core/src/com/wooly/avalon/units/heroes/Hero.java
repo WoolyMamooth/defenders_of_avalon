@@ -345,6 +345,7 @@ public abstract class Hero extends AlliedUnit {
         int abilityNum;
         int iconWidth,iconHeight;
         Texture notUnlockedTexture;
+        Texture abilityBackgroundTexture;
 
         /**
          * Contains buttons for every ability the hero has plus the left-most button can be used to select the hero
@@ -352,7 +353,9 @@ public abstract class Hero extends AlliedUnit {
          * @param abilities
          */
         public HeroAbilityMenu(HeroAbility[] abilities){
-            notUnlockedTexture=fetchTexture("white_square");
+            notUnlockedTexture=fetchTexture("heroes/not_unlocked_ability");
+            abilityBackgroundTexture=fetchTexture("heroes/ability_background");
+
             abilityNum=abilities.length;
 
             iconWidth= (int) (abilities[0].icon.getWidth()*menuScale);
@@ -378,12 +381,13 @@ public abstract class Hero extends AlliedUnit {
             selectorButton.drawCheckClick(batch);
             levelUpButton.drawCheckClick(batch);
             for (int i = 0; i < abilityNum; i++) {
+                Coordinate pos=abilityButtons[i].getPosition();
                 if(i<level) {
+                    batch.draw(abilityBackgroundTexture,pos.x(),pos.y(),iconWidth,iconHeight);
                     abilityButtons[i].drawCheckClick(batch);
                 }else{
                     //if not unlocked
                     //abilityButtons[i].draw(batch);
-                    Coordinate pos=abilityButtons[i].getPosition();
                     batch.draw(notUnlockedTexture,pos.x(),pos.y(),iconWidth,iconHeight);
                 }
                 abilityInfos[i].drawCheckClick(batch);

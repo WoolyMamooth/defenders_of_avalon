@@ -1,5 +1,7 @@
 package com.wooly.avalon.units.enemies;
 
+import static com.wooly.avalon.TDGame.fetchTexture;
+
 import com.badlogic.gdx.graphics.Texture;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.maps.Path;
@@ -26,6 +28,7 @@ public class Golem extends Enemy{
     boolean canSplit;
     float immunityCooldownMax,immunityCooldown;
     float immunityDuration;
+    Texture immunityTexture;
     public Golem(int spawnID, Texture texture, Coordinate position, int health, int armor, int magicResistance, float movementSpeed, int damageToPlayer, int damage, String damageType, int goldDropped, TDMap map, boolean isMiniGolem) {
         super(spawnID, texture, position, health, armor, magicResistance, movementSpeed, damageToPlayer, damage, damageType, goldDropped);
         this.map=map;
@@ -34,16 +37,18 @@ public class Golem extends Enemy{
         immunityCooldownMax=15;
         immunityCooldown=2;
         immunityDuration=3f;
+        immunityTexture=fetchTexture("enemies/golem_shield");
         if(isMiniGolem){
             healingAmount=0;
             immunityDuration=1f;
         }
     }
     private void split(){
-        map.addExtraEnemy("mini_golem",position.subtract(new Coordinate(10,0)),previousPathCoordinateID);
-        map.addExtraEnemy("mini_golem",position.add(new Coordinate(10,0)),previousPathCoordinateID);
-        map.addExtraEnemy("mini_golem",position.subtract(new Coordinate(0,10)),previousPathCoordinateID);
-        map.addExtraEnemy("mini_golem",position.add(new Coordinate(0,10)),previousPathCoordinateID);
+        int offset=40;
+        map.addExtraEnemy("mini_golem",position.subtract(new Coordinate(offset,0)),previousPathCoordinateID);
+        map.addExtraEnemy("mini_golem",position.add(new Coordinate(offset,0)),previousPathCoordinateID);
+        map.addExtraEnemy("mini_golem",position.subtract(new Coordinate(0,offset)),previousPathCoordinateID);
+        map.addExtraEnemy("mini_golem",position.add(new Coordinate(0,offset)),previousPathCoordinateID);
     }
 
     /**
@@ -54,7 +59,7 @@ public class Golem extends Enemy{
         if(currentHp<maxHp){
             immunityCooldown-=timeSinceLastFrame;
             if(immunityCooldown<=0){
-                this.addBuff(new UnitBuff("damageImmunity",1,immunityDuration));
+                this.addBuff(new UnitBuff("damageImmunity",1,immunityDuration,immunityTexture));
                 this.addBuff(new UnitBuff("stun",1,immunityDuration));
                 immunityCooldown=immunityCooldownMax;
             }

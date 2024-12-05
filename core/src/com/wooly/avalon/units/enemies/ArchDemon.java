@@ -52,14 +52,12 @@ public class ArchDemon extends Enemy{
         System.out.println("SUMMONING");
         for (int i = 0; i < summonLocationNumber; i++) {
             System.out.println("Location: "+i);
+            Coordinate summonPlace=summonLocations[i];
             for (int j = 0; j < summonPerLocation; j++) {
                 System.out.println("Demon: "+ j);
-                Coordinate summonPlace=summonLocations[i];
-                map.addExtraEnemy(
-                        summonName,
-                        summonPlace,
-                        summonLocationIDs[i]);
+                map.addExtraEnemy(summonName,summonPlace,summonLocationIDs[i]);
             }
+            map.addExtraEnemy("summon_circle",summonPlace,summonLocationIDs[i]);
         }
     }
 

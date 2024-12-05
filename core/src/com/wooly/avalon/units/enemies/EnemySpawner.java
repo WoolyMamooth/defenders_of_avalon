@@ -131,6 +131,8 @@ public class EnemySpawner extends Spawner {
                         (int)(100*goldDropModifier),
                         map
                 );
+            case "summon_circle":
+                return new SummonCircle(spawnID,texture,spawnLocation);
             case "golem":
                 return new Golem(spawnID,texture,spawnLocation,
                         (int)(100*healthDifModifier),

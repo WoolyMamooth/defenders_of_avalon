@@ -231,6 +231,7 @@ public class DamagableUnit extends MovableUnit{
         }
         for (UnitBuff buff:buffs) {
             buff.draw(batch,position,width,height);
+            System.out.println("DRAWING "+buff.stat);
         }
         super.draw(batch);
     }

@@ -39,7 +39,6 @@ public class Enemy extends DamagableUnit implements Attacker {
         this.position=this.position.add(pathOffset);
     }
 
-    //TODO
     @Override
     public void attack(){
         //attack a summon or hero

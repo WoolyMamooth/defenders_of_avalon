@@ -6,7 +6,7 @@ import com.wooly.avalon.units.enemies.Enemy;
 
 import java.util.List;
 
-public abstract class AlliedUnit extends DamagableUnit implements Attacker {
+public abstract class AlliedUnit extends DamageableUnit implements Attacker {
     protected Enemy target=null;
     protected Coordinate searchCenterPosition;
     float timeSinceLastAttack=0;

@@ -9,7 +9,7 @@ import com.wooly.avalon.maps.Coordinate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DamagableUnit extends MovableUnit{
+public class DamageableUnit extends MovableUnit{
     public static final float HPBAR_HEIGHT=5; // height of the HP bar above the unit
     public static final int MAX_ARMOR=20; //1 armor = 5% physical damage reduction
     public static final int MAX_MAGIC_RESISTANCE=20;
@@ -36,7 +36,7 @@ public class DamagableUnit extends MovableUnit{
      * @param magicResistance
      * @param isAlly
      */
-    public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,boolean isAlly) {
+    public DamageableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance, boolean isAlly) {
         super(texture, position, movementSpeed);
         this.maxHp = maxHp;
         this.currentHp = maxHp;
@@ -62,7 +62,7 @@ public class DamagableUnit extends MovableUnit{
      * @param armor
      * @param magicResistance
      */
-    public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance) {
+    public DamageableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance) {
         this(texture,position,movementSpeed,maxHp,armor,magicResistance,false,0);
     }
 
@@ -77,7 +77,7 @@ public class DamagableUnit extends MovableUnit{
      * @param isAlly
      * @param baseHealing
      */
-    public DamagableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance,boolean isAlly, int baseHealing) {
+    public DamageableUnit(Texture texture, Coordinate position, float movementSpeed, int maxHp, int armor, int magicResistance, boolean isAlly, int baseHealing) {
         this(texture,position,movementSpeed,maxHp,armor,magicResistance,isAlly);
         healingAmount+=baseHealing;
     }
@@ -117,7 +117,7 @@ public class DamagableUnit extends MovableUnit{
     public void takeDamage(int damage){
         takeDamage(damage,"pure");
     }
-    protected boolean inRange(DamagableUnit other,float range){
+    protected boolean inRange(DamageableUnit other, float range){
         return position.distanceFrom(other.position)<=range;
     }
     /**

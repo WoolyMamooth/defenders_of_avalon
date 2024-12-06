@@ -5,11 +5,11 @@ import com.wooly.avalon.TDGame;
 import com.wooly.avalon.maps.Coordinate;
 import com.wooly.avalon.maps.Path;
 import com.wooly.avalon.units.Attacker;
-import com.wooly.avalon.units.DamagableUnit;
+import com.wooly.avalon.units.DamageableUnit;
 import com.wooly.avalon.units.AlliedUnit;
 import com.wooly.avalon.units.UnitBuff;
 
-public class Enemy extends DamagableUnit implements Attacker {
+public class Enemy extends DamageableUnit implements Attacker {
     int spawnID; // keeps track of where in the enemies list this is
     protected int previousPathCoordinateID =1; //keeps track of the last position from map.path where this enemy was
     private Coordinate pathOffset;

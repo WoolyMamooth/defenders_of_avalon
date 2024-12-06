@@ -10,8 +10,7 @@ import java.util.List;
 
 public class Summon extends AlliedUnit {
     /**
-     * Allied units are units which are on the players side such as Summons and Heroes.
-     *
+     * Summons are spawned by SummonerTowers.
      * @param texture
      * @param position
      * @param movementSpeed
